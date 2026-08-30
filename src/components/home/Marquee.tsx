@@ -1,14 +1,9 @@
-const ITEMS = [
-  "Handcrafted in Dhaka",
-  "Damage-free removal",
-  "Reusable up to 5 wears",
-  "HEMA-free formula",
-  "Cash on delivery nationwide",
-  "10-minute application",
-];
+import { getMarqueeItems } from "@/db/queries";
 
-export default function Marquee() {
-  const row = [...ITEMS, ...ITEMS];
+export default async function Marquee() {
+  const items = await getMarqueeItems();
+  const row = [...items, ...items];
+
   return (
     <div className="hairline overflow-hidden border-y bg-cream py-4">
       <div className="animate-marquee flex w-max items-center">

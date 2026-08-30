@@ -1,14 +1,10 @@
-"use client";
-
-import { motion } from "motion/react";
 import Link from "next/link";
-import { products } from "@/data/products";
-import ProductCard from "@/components/ProductCard";
+import { listBestsellers } from "@/db/queries";
+import BestsellersGrid from "./BestsellersGrid";
 import Reveal from "@/components/motion/Reveal";
-import { EASE } from "@/components/motion/Reveal";
 
-export default function Bestsellers() {
-  const featured = products.filter((p) => p.badge === "Bestseller").slice(0, 4);
+export default async function Bestsellers() {
+  const featured = await listBestsellers();
 
   return (
     <section className="mx-auto max-w-[1440px] px-5 py-20 md:px-10 md:py-32">
@@ -26,29 +22,7 @@ export default function Bestsellers() {
         </Reveal>
       </div>
 
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.15 }}
-        transition={{ staggerChildren: 0.1 }}
-        className="grid grid-cols-2 gap-x-4 gap-y-10 md:gap-x-6 lg:grid-cols-4"
-      >
-        {featured.map((p, i) => (
-          <motion.div
-            key={p.slug}
-            variants={{
-              hidden: { opacity: 0, y: 40 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.9, ease: EASE, delay: i * 0.08 },
-              },
-            }}
-          >
-            <ProductCard product={p} />
-          </motion.div>
-        ))}
-      </motion.div>
+      <BestsellersGrid products={featured} />
 
       <div className="mt-12 text-center md:hidden">
         <Link href="/shop" className="eyebrow inline-block border border-ink px-10 py-4">

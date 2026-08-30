@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { useCart } from "./CartProvider";
-import { getProduct, formatBDT } from "@/data/products";
+import { formatBDT } from "@/lib/format";
 import Swatch from "@/components/Swatch";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -65,63 +65,66 @@ export default function CartDrawer() {
               <>
                 <ul className="flex-1 divide-y divide-line overflow-y-auto px-6">
                   <AnimatePresence initial={false}>
-                    {lines.map((line) => {
-                      const p = getProduct(line.slug);
-                      if (!p) return null;
-                      return (
-                        <motion.li
-                          key={line.slug}
-                          layout
-                          initial={{ opacity: 0, y: 12 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, x: 24 }}
-                          transition={{ duration: 0.4, ease: EASE }}
-                          className="flex gap-4 py-5"
+                    {lines.map((line) => (
+                      <motion.li
+                        key={`${line.slug}-${line.size}`}
+                        layout
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, x: 24 }}
+                        transition={{ duration: 0.4, ease: EASE }}
+                        className="flex gap-4 py-5"
+                      >
+                        <Link
+                          href={`/product/${line.slug}`}
+                          onClick={closeCart}
+                          className="shrink-0"
                         >
-                          <Link
-                            href={`/product/${p.slug}`}
-                            onClick={closeCart}
-                            className="shrink-0"
-                          >
-                            <Swatch tones={p.tones} className="h-24 w-20" variant="thumb" />
-                          </Link>
-                          <div className="flex flex-1 flex-col">
-                            <div className="flex items-start justify-between gap-3">
-                              <div>
-                                <p className="font-serif text-lg leading-tight">{p.name}</p>
-                                <p className="mt-0.5 text-xs text-taupe">{p.finish}</p>
-                              </div>
-                              <p className="text-sm">{formatBDT(p.price * line.qty)}</p>
+                          <Swatch
+                            tones={line.tones}
+                            imageUrl={line.imageUrl}
+                            className="h-24 w-20"
+                            variant="thumb"
+                          />
+                        </Link>
+                        <div className="flex flex-1 flex-col">
+                          <div className="flex items-start justify-between gap-3">
+                            <div>
+                              <p className="font-serif text-lg leading-tight">{line.name}</p>
+                              <p className="mt-0.5 text-xs text-taupe">
+                                {line.finish} · Size {line.size}
+                              </p>
                             </div>
-                            <div className="mt-auto flex items-center justify-between pt-3">
-                              <div className="hairline flex items-center border">
-                                <button
-                                  className="px-3 py-1.5 text-sm transition-colors hover:bg-sand"
-                                  onClick={() => setQty(line.slug, line.qty - 1)}
-                                  aria-label="Decrease quantity"
-                                >
-                                  −
-                                </button>
-                                <span className="w-7 text-center text-sm">{line.qty}</span>
-                                <button
-                                  className="px-3 py-1.5 text-sm transition-colors hover:bg-sand"
-                                  onClick={() => setQty(line.slug, line.qty + 1)}
-                                  aria-label="Increase quantity"
-                                >
-                                  +
-                                </button>
-                              </div>
+                            <p className="text-sm">{formatBDT(line.price * line.qty)}</p>
+                          </div>
+                          <div className="mt-auto flex items-center justify-between pt-3">
+                            <div className="hairline flex items-center border">
                               <button
-                                onClick={() => remove(line.slug)}
-                                className="link-sweep text-xs text-taupe"
+                                className="px-3 py-1.5 text-sm transition-colors hover:bg-sand"
+                                onClick={() => setQty(line.slug, line.size, line.qty - 1)}
+                                aria-label="Decrease quantity"
                               >
-                                Remove
+                                −
+                              </button>
+                              <span className="w-7 text-center text-sm">{line.qty}</span>
+                              <button
+                                className="px-3 py-1.5 text-sm transition-colors hover:bg-sand"
+                                onClick={() => setQty(line.slug, line.size, line.qty + 1)}
+                                aria-label="Increase quantity"
+                              >
+                                +
                               </button>
                             </div>
+                            <button
+                              onClick={() => remove(line.slug, line.size)}
+                              className="link-sweep text-xs text-taupe"
+                            >
+                              Remove
+                            </button>
                           </div>
-                        </motion.li>
-                      );
-                    })}
+                        </div>
+                      </motion.li>
+                    ))}
                   </AnimatePresence>
                 </ul>
 

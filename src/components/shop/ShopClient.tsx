@@ -3,18 +3,19 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "motion/react";
-import { products, finishes, type Finish } from "@/data/products";
+import type { ProductDTO, Finish } from "@/db/types";
+import { finishes } from "@/db/types";
 import ProductCard from "@/components/ProductCard";
 import { cn } from "@/lib/cn";
 import { EASE } from "@/components/motion/Reveal";
 
 type Sort = "featured" | "low" | "high";
 
-export default function ShopClient() {
+export default function ShopClient({ products }: { products: ProductDTO[] }) {
   const params = useSearchParams();
   const [finish, setFinish] = useState<Finish | null>(() => {
     const f = params.get("finish") as Finish | null;
-    return f && finishes.includes(f) ? f : null;
+    return f && (finishes as readonly string[]).includes(f) ? f : null;
   });
   const [sort, setSort] = useState<Sort>("featured");
 
@@ -23,7 +24,7 @@ export default function ShopClient() {
     if (sort === "low") list.sort((a, b) => a.price - b.price);
     if (sort === "high") list.sort((a, b) => b.price - a.price);
     return list;
-  }, [finish, sort]);
+  }, [products, finish, sort]);
 
   return (
     <section className="mx-auto max-w-[1440px] px-5 pb-24 pt-12 md:px-10 md:pt-16">
@@ -44,7 +45,6 @@ export default function ShopClient() {
         All <em>shades</em>
       </motion.h1>
 
-      {/* Filter bar */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
@@ -76,7 +76,6 @@ export default function ShopClient() {
         </div>
       </motion.div>
 
-      {/* Grid */}
       <motion.div layout className="mt-12 grid grid-cols-2 gap-x-4 gap-y-12 md:gap-x-6 lg:grid-cols-4">
         {visible.map((p, i) => (
           <motion.div
@@ -92,7 +91,7 @@ export default function ShopClient() {
       </motion.div>
 
       <p className="eyebrow mt-16 text-center text-taupe">
-        {visible.length} shades · Handcrafted in Dhaka
+        {visible.length} shades · Hand-finished in Dhaka
       </p>
     </section>
   );

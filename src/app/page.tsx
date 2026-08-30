@@ -1,4 +1,4 @@
-import Hero from "@/components/home/Hero";
+import HeroCarousel from "@/components/home/HeroCarousel";
 import Marquee from "@/components/home/Marquee";
 import Bestsellers from "@/components/home/Bestsellers";
 import Ritual from "@/components/home/Ritual";
@@ -9,7 +9,7 @@ import Newsletter from "@/components/home/Newsletter";
 export default function Home() {
   return (
     <>
-      <Hero />
+      <HeroCarousel />
       <Marquee />
       <Bestsellers />
       <Ritual />

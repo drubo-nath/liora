@@ -1,0 +1,222 @@
+import { cache } from "react";
+import { asc, eq, desc, inArray } from "drizzle-orm";
+import { db, isDbConfigured, schema } from "./index";
+import { productSeeds, reviewSeeds, contentSeeds } from "./seed-data";
+import type { ProductDTO, ReviewDTO } from "./types";
+import { keyFromStoredUrl, resolveImageUrl } from "@/lib/storage";
+
+export type { ProductDTO, ReviewDTO, Finish } from "./types";
+export { finishes } from "./types";
+
+/* ─── DTO mapping ──────────────────────────────────────────────────── */
+
+type ProductRow = typeof schema.products.$inferSelect;
+
+/** Default size range when a product has no explicit sizes. */
+export const DEFAULT_SIZES = ["XS", "S", "M", "L"];
+
+/** Attach ordered gallery URLs to a set of product rows in one query. */
+async function attachImages(
+  rows: ProductRow[],
+): Promise<Map<number, string[]>> {
+  const map = new Map<number, string[]>();
+  if (rows.length === 0) return map;
+  const imgs = await db
+    .select({
+      productId: schema.productImages.productId,
+      url: schema.productImages.url,
+    })
+    .from(schema.productImages)
+    .where(
+      inArray(
+        schema.productImages.productId,
+        rows.map((r) => r.id),
+      ),
+    )
+    .orderBy(asc(schema.productImages.position));
+  for (const img of imgs) {
+    const list = map.get(img.productId) ?? [];
+    // Presigned (or local) URL resolved per row at read time.
+    list.push(await resolveImageUrl(img.url));
+    map.set(img.productId, list);
+  }
+  return map;
+}
+
+function toDTO(
+  r: ProductRow,
+  images: string[] = [],
+  imageUrlOverride?: string | null,
+): ProductDTO {
+  const cover = images[0] ?? imageUrlOverride ?? r.imageUrl ?? null;
+  return {
+    slug: r.slug,
+    name: r.name,
+    tagline: r.tagline,
+    description: r.description,
+    price: r.price,
+    compareAtPrice: r.compareAtPrice,
+    finish: r.finish,
+    badge: r.badge,
+    tones: [r.toneA, r.toneB],
+    imageUrl: cover,
+    sizes: r.sizes?.length ? r.sizes : DEFAULT_SIZES,
+    images: images.length ? images : cover ? [cover] : [],
+  };
+}
+
+function seedToDTO(s: (typeof productSeeds)[number]): ProductDTO {
+  return {
+    slug: s.slug,
+    name: s.name,
+    tagline: s.tagline,
+    description: s.description,
+    price: s.price,
+    compareAtPrice: s.compareAtPrice ?? null,
+    finish: s.finish as ProductDTO["finish"],
+    badge: (s.badge as ProductDTO["badge"]) ?? null,
+    tones: [s.toneA, s.toneB],
+    imageUrl: s.imageUrl ?? null,
+    sizes: DEFAULT_SIZES,
+    images: s.imageUrl ? [s.imageUrl] : [],
+  };
+}
+
+/** List rows whose legacy cover is an S3 URL instead of a key (one-time migration). */
+export async function migrateLegacyImageUrls(): Promise<void> {
+  if (!isDbConfigured) return;
+  try {
+    const rows = await db
+      .select({ id: schema.products.id, imageUrl: schema.products.imageUrl })
+      .from(schema.products);
+    for (const r of rows) {
+      if (!r.imageUrl) continue;
+      const key = keyFromStoredUrl(r.imageUrl);
+      if (key) {
+        await db
+          .update(schema.products)
+          .set({ imageUrl: key })
+          .where(eq(schema.products.id, r.id));
+      }
+    }
+    const imgs = await db
+      .select({ id: schema.productImages.id, url: schema.productImages.url })
+      .from(schema.productImages);
+    for (const img of imgs) {
+      const key = keyFromStoredUrl(img.url);
+      if (key) {
+        await db
+          .update(schema.productImages)
+          .set({ url: key })
+          .where(eq(schema.productImages.id, img.id));
+      }
+    }
+  } catch (e) {
+    console.error("[db] migrateLegacyImageUrls failed:", e);
+  }
+}
+
+/* ─── Products ──────────────────────────────────────────────────────── */
+
+/** Resolve the legacy cover column when a product has no gallery rows. */
+async function resolveCoverFallback(
+  rows: ProductRow[],
+  images: Map<number, string[]>,
+): Promise<Map<number, string | null>> {
+  const covers = new Map<number, string | null>();
+  for (const r of rows) {
+    if (!(images.get(r.id)?.length) && r.imageUrl) {
+      covers.set(r.id, await resolveImageUrl(r.imageUrl));
+    }
+  }
+  return covers;
+}
+
+/** Request-memoized via React cache(); falls back to seed data pre-setup. */
+export const listProducts = cache(async (): Promise<ProductDTO[]> => {
+  if (!isDbConfigured) return productSeeds.map(seedToDTO);
+  try {
+    const rows = await db
+      .select()
+      .from(schema.products)
+      .where(eq(schema.products.isActive, true))
+      .orderBy(asc(schema.products.sortOrder));
+    const images = await attachImages(rows);
+    const covers = await resolveCoverFallback(rows, images);
+    return rows.map((r) => toDTO(r, images.get(r.id) ?? [], covers.get(r.id)));
+  } catch (e) {
+    console.error("[db] listProducts failed, using fallback:", e);
+    return productSeeds.map(seedToDTO);
+  }
+});
+
+export const getProductBySlug = cache(
+  async (slug: string): Promise<ProductDTO | null> => {
+    if (!isDbConfigured)
+      return productSeeds.map(seedToDTO).find((p) => p.slug === slug) ?? null;
+    try {
+      const rows = await db
+        .select()
+        .from(schema.products)
+        .where(eq(schema.products.slug, slug))
+        .limit(1);
+      if (!rows[0]) return null;
+      const images = await attachImages(rows);
+      const covers = await resolveCoverFallback(rows, images);
+      return toDTO(rows[0], images.get(rows[0].id) ?? [], covers.get(rows[0].id));
+    } catch (e) {
+      console.error("[db] getProductBySlug failed:", e);
+      return productSeeds.map(seedToDTO).find((p) => p.slug === slug) ?? null;
+    }
+  },
+);
+
+export const listBestsellers = cache(async (): Promise<ProductDTO[]> => {
+  const all = await listProducts();
+  return all.filter((p) => p.badge === "Bestseller").slice(0, 4);
+});
+
+/* ─── Reviews ───────────────────────────────────────────────────────── */
+
+export const listBrandReviews = cache(async (): Promise<ReviewDTO[]> => {
+  if (!isDbConfigured)
+    return reviewSeeds.map((r, i) => ({ id: i + 1, ...r }));
+  try {
+    const rows = await db
+      .select()
+      .from(schema.reviews)
+      .where(eq(schema.reviews.isApproved, true))
+      .orderBy(desc(schema.reviews.createdAt))
+      .limit(6);
+    return rows.filter((r) => r.productId === null);
+  } catch (e) {
+    console.error("[db] listBrandReviews failed:", e);
+    return reviewSeeds.map((r, i) => ({ id: i + 1, ...r }));
+  }
+});
+
+/* ─── Site content ──────────────────────────────────────────────────── */
+
+function contentFallback(key: string): string[] {
+  const row = contentSeeds.find((c) => c.key === key);
+  return Array.isArray(row?.value) ? (row.value as string[]) : [];
+}
+
+export const getContentList = cache(async (key: string): Promise<string[]> => {
+  if (!isDbConfigured) return contentFallback(key);
+  try {
+    const rows = await db
+      .select()
+      .from(schema.siteContent)
+      .where(eq(schema.siteContent.key, key))
+      .limit(1);
+    const v = rows[0]?.value;
+    return Array.isArray(v) ? (v as string[]) : contentFallback(key);
+  } catch (e) {
+    console.error(`[db] getContentList(${key}) failed:`, e);
+    return contentFallback(key);
+  }
+});
+
+export const getAnnouncements = () => getContentList("announcements");
+export const getMarqueeItems = () => getContentList("marquee");

@@ -6,6 +6,8 @@ import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import CartDrawer from "@/components/cart/CartDrawer";
+import { getAnnouncements } from "@/db/queries";
+import { cn } from "@/lib/utils";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -28,12 +30,18 @@ export const metadata: Metadata = {
     "Salon-perfect press-on nails handcrafted in Dhaka. Damage-free, reusable, and delivered to your door across Bangladesh.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const announcements = await getAnnouncements();
+
   return (
-    <html lang="en" className={`${fraunces.variable} ${inter.variable} h-full antialiased`}>
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      className={cn("h-full", "antialiased", fraunces.variable, inter.variable)}
+    >
       <body className="min-h-full flex flex-col bg-bone text-ink">
         <CartProvider>
-          <AnnouncementBar />
+          <AnnouncementBar messages={announcements} />
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />

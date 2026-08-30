@@ -3,19 +3,16 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 
-const MESSAGES = [
-  "Complimentary delivery on orders over ৳2,500",
-  "Cash on delivery — anywhere in Bangladesh",
-  "The Monsoon Edit has arrived",
-];
-
-export default function AnnouncementBar() {
+export default function AnnouncementBar({ messages }: { messages: string[] }) {
   const [i, setI] = useState(0);
 
   useEffect(() => {
-    const t = setInterval(() => setI((v) => (v + 1) % MESSAGES.length), 4200);
+    if (messages.length < 2) return;
+    const t = setInterval(() => setI((v) => (v + 1) % messages.length), 4200);
     return () => clearInterval(t);
-  }, []);
+  }, [messages.length]);
+
+  if (messages.length === 0) return null;
 
   return (
     <div className="relative z-[60] flex h-9 items-center justify-center overflow-hidden bg-ink text-cream">
@@ -28,7 +25,7 @@ export default function AnnouncementBar() {
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           className="eyebrow absolute text-[10px] tracking-[0.24em]"
         >
-          {MESSAGES[i]}
+          {messages[i]}
         </motion.p>
       </AnimatePresence>
     </div>

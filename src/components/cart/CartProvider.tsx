@@ -8,10 +8,21 @@ import {
   useMemo,
   useState,
 } from "react";
-import { getProduct } from "@/data/products";
+import type { ProductDTO } from "@/db/types";
 
+/**
+ * Cart lines carry a product SNAPSHOT (name/price/image) — anonymous carts
+ * live client-side by design, and checkout re-verifies every price against
+ * the database server-side before creating the order.
+ */
 export interface CartLine {
   slug: string;
+  size: string;
+  name: string;
+  finish: string;
+  price: number;
+  tones: [string, string];
+  imageUrl: string | null;
   qty: number;
 }
 
@@ -22,14 +33,14 @@ interface CartState {
   isOpen: boolean;
   openCart: () => void;
   closeCart: () => void;
-  add: (slug: string, qty?: number) => void;
-  remove: (slug: string) => void;
-  setQty: (slug: string, qty: number) => void;
+  add: (product: ProductDTO, opts?: { qty?: number; size?: string }) => void;
+  remove: (slug: string, size: string) => void;
+  setQty: (slug: string, size: string, qty: number) => void;
   clear: () => void;
 }
 
 const CartContext = createContext<CartState | null>(null);
-const STORAGE_KEY = "liora-cart-v1";
+const STORAGE_KEY = "liora-cart-v2";
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [lines, setLines] = useState<CartLine[]>([]);
@@ -61,28 +72,45 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     };
   }, [isOpen]);
 
-  const add = useCallback((slug: string, qty = 1) => {
-    setLines((prev) => {
-      const i = prev.findIndex((l) => l.slug === slug);
-      if (i >= 0) {
-        const next = [...prev];
-        next[i] = { ...next[i], qty: next[i].qty + qty };
-        return next;
-      }
-      return [...prev, { slug, qty }];
-    });
-    setIsOpen(true);
+  const add = useCallback(
+    (product: ProductDTO, opts?: { qty?: number; size?: string }) => {
+      const qty = opts?.qty ?? 1;
+      const size = opts?.size ?? "M";
+      setLines((prev) => {
+        const i = prev.findIndex((l) => l.slug === product.slug && l.size === size);
+        if (i >= 0) {
+          const next = [...prev];
+          next[i] = { ...next[i], qty: next[i].qty + qty };
+          return next;
+        }
+        return [
+          ...prev,
+          {
+            slug: product.slug,
+            size,
+            name: product.name,
+            finish: product.finish,
+            price: product.price,
+            tones: product.tones,
+            imageUrl: product.imageUrl,
+            qty,
+          },
+        ];
+      });
+      setIsOpen(true);
+    },
+    [],
+  );
+
+  const remove = useCallback((slug: string, size: string) => {
+    setLines((prev) => prev.filter((l) => !(l.slug === slug && l.size === size)));
   }, []);
 
-  const remove = useCallback((slug: string) => {
-    setLines((prev) => prev.filter((l) => l.slug !== slug));
-  }, []);
-
-  const setQty = useCallback((slug: string, qty: number) => {
+  const setQty = useCallback((slug: string, size: string, qty: number) => {
     setLines((prev) =>
       qty <= 0
-        ? prev.filter((l) => l.slug !== slug)
-        : prev.map((l) => (l.slug === slug ? { ...l, qty } : l)),
+        ? prev.filter((l) => !(l.slug === slug && l.size === size))
+        : prev.map((l) => (l.slug === slug && l.size === size ? { ...l, qty } : l)),
     );
   }, []);
 
@@ -94,10 +122,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     let count = 0;
     let subtotal = 0;
     for (const l of lines) {
-      const p = getProduct(l.slug);
-      if (!p) continue;
       count += l.qty;
-      subtotal += p.price * l.qty;
+      subtotal += l.price * l.qty;
     }
     return { count, subtotal };
   }, [lines]);

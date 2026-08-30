@@ -2,7 +2,9 @@
 
 import { motion, useScroll, useMotionValueEvent } from "motion/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { authClient } from "@/lib/auth-client";
 import { useCart } from "@/components/cart/CartProvider";
 import { cn } from "@/lib/cn";
 import MobileMenu from "./MobileMenu";
@@ -15,11 +17,15 @@ const NAV = [
 
 export default function Header() {
   const { count, openCart } = useCart();
+  const { data: session, isPending } = authClient.useSession();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { scrollY } = useScroll();
+  const router = useRouter();
 
   useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 24));
+
+  const isAdmin = session?.user.role === "admin";
 
   return (
     <>
@@ -42,6 +48,11 @@ export default function Header() {
                 {item.label}
               </Link>
             ))}
+            {!isPending && isAdmin && (
+              <Link href="/admin" className="link-sweep eyebrow text-clay">
+                Admin
+              </Link>
+            )}
           </nav>
           <button
             className="eyebrow flex items-center gap-2 md:hidden"
@@ -63,9 +74,22 @@ export default function Header() {
 
           {/* Right — actions */}
           <div className="flex items-center justify-end gap-7">
-            <Link href="/shop" className="link-sweep eyebrow hidden md:block">
-              Search
-            </Link>
+            {!isPending &&
+              (session ? (
+                <button
+                  onClick={async () => {
+                    await authClient.signOut();
+                    router.refresh();
+                  }}
+                  className="link-sweep eyebrow hidden md:block"
+                >
+                  Sign Out
+                </button>
+              ) : (
+                <Link href="/login" className="link-sweep eyebrow hidden md:block">
+                  Sign In
+                </Link>
+              ))}
             <button
               onClick={openCart}
               className="link-sweep eyebrow flex items-center gap-2"

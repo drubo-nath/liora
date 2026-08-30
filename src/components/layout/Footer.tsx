@@ -33,9 +33,9 @@ export default function Footer() {
       <div className="mx-auto max-w-[1440px] px-5 py-16 md:px-10 md:py-24">
         <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
-            <Image src="/liora.svg" alt="Liora" width={100} height={10} /> 
+            <Image src="/liora.svg" alt="Liora" width={100} height={10} />
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-taupe">
-              Luxury press-on nails, designed and handcrafted in Dhaka.
+              Premium press-on nails. Curated for Bangladesh's most refined hands.
               Damage-free, reusable, and made to move with your life.
             </p>
           </div>

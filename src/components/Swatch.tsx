@@ -1,20 +1,37 @@
+import Image from "next/image";
 import { cn } from "@/lib/cn";
 
 /**
- * Swatch — editorial placeholder art for a shade.
- * Layered radial gradients + gloss arc + film grain.
- * Swap for real photography later by replacing this component's internals.
+ * Swatch — product visual. Renders the product photo when available,
+ * otherwise falls back to layered gradient art with film grain.
  */
 export default function Swatch({
   tones,
   className,
   variant = "card",
+  imageUrl,
 }: {
   tones: [string, string];
   className?: string;
   variant?: "card" | "hero" | "thumb";
+  imageUrl?: string | null;
 }) {
   const [a, b] = tones;
+
+  if (imageUrl) {
+    return (
+      <div className={cn("relative overflow-hidden bg-sand", className)}>
+        <Image
+          src={imageUrl}
+          alt=""
+          fill
+          sizes="(max-width: 768px) 50vw, 25vw"
+          className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+        />
+      </div>
+    );
+  }
+
   return (
     <div
       aria-hidden

@@ -2,22 +2,24 @@
 
 import { useState } from "react";
 import { motion } from "motion/react";
-import type { Product } from "@/data/products";
-import { formatBDT } from "@/data/products";
+import type { ProductDTO } from "@/db/types";
+import { formatBDT } from "@/lib/format";
 import { useCart } from "@/components/cart/CartProvider";
 import { cn } from "@/lib/cn";
 import { EASE } from "@/components/motion/Reveal";
 
-const SIZES = ["XS", "S", "M", "L"];
+const FINISH_ORDER = ["XS", "S", "M", "L"];
 
-export default function BuyPanel({ product }: { product: Product }) {
+export default function BuyPanel({ product }: { product: ProductDTO }) {
   const { add } = useCart();
   const [qty, setQty] = useState(1);
-  const [size, setSize] = useState("M");
+  const [size, setSize] = useState(
+    product.sizes.includes("M") ? "M" : (product.sizes[0] ?? "M"),
+  );
   const [added, setAdded] = useState(false);
 
   const handleAdd = () => {
-    add(product.slug, qty);
+    add(product, { qty, size });
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);
   };
@@ -31,9 +33,9 @@ export default function BuyPanel({ product }: { product: Product }) {
       {/* Price */}
       <div className="mt-6 flex items-baseline gap-3">
         <p className="font-serif text-3xl">{formatBDT(product.price)}</p>
-        {product.compareAt && (
+        {product.compareAtPrice && (
           <p className="text-sm text-taupe line-through">
-            {formatBDT(product.compareAt)}
+            {formatBDT(product.compareAtPrice)}
           </p>
         )}
       </div>
@@ -49,7 +51,9 @@ export default function BuyPanel({ product }: { product: Product }) {
           <button className="link-sweep text-xs text-taupe">Size guide</button>
         </div>
         <div className="mt-3 flex gap-2">
-          {SIZES.map((s) => (
+          {[...product.sizes].sort(
+            (a, b) => FINISH_ORDER.indexOf(a) - FINISH_ORDER.indexOf(b),
+          ).map((s) => (
             <button
               key={s}
               onClick={() => setSize(s)}
