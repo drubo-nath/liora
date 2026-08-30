@@ -3,7 +3,7 @@ import { asc, eq, desc, inArray } from "drizzle-orm";
 import { db, isDbConfigured, schema } from "./index";
 import { productSeeds, reviewSeeds, contentSeeds } from "./seed-data";
 import type { ProductDTO, ReviewDTO } from "./types";
-import { keyFromStoredUrl, resolveImageUrl } from "@/lib/storage";
+import { resolveImageUrl } from "@/lib/storage";
 
 export type { ProductDTO, ReviewDTO, Finish } from "./types";
 export { finishes } from "./types";
@@ -80,40 +80,6 @@ function seedToDTO(s: (typeof productSeeds)[number]): ProductDTO {
     sizes: DEFAULT_SIZES,
     images: s.imageUrl ? [s.imageUrl] : [],
   };
-}
-
-/** List rows whose legacy cover is an S3 URL instead of a key (one-time migration). */
-export async function migrateLegacyImageUrls(): Promise<void> {
-  if (!isDbConfigured) return;
-  try {
-    const rows = await db
-      .select({ id: schema.products.id, imageUrl: schema.products.imageUrl })
-      .from(schema.products);
-    for (const r of rows) {
-      if (!r.imageUrl) continue;
-      const key = keyFromStoredUrl(r.imageUrl);
-      if (key) {
-        await db
-          .update(schema.products)
-          .set({ imageUrl: key })
-          .where(eq(schema.products.id, r.id));
-      }
-    }
-    const imgs = await db
-      .select({ id: schema.productImages.id, url: schema.productImages.url })
-      .from(schema.productImages);
-    for (const img of imgs) {
-      const key = keyFromStoredUrl(img.url);
-      if (key) {
-        await db
-          .update(schema.productImages)
-          .set({ url: key })
-          .where(eq(schema.productImages.id, img.id));
-      }
-    }
-  } catch (e) {
-    console.error("[db] migrateLegacyImageUrls failed:", e);
-  }
 }
 
 /* ─── Products ──────────────────────────────────────────────────────── */

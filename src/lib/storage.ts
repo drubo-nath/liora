@@ -1,23 +1,22 @@
 /**
  * Object storage for product images.
  *
- * Production: any S3-compatible bucket (Trigris, AWS S3, R2, MinIO...) via
- * the standard S3 API. The bucket stays fully PRIVATE — shoppers are served
- * short-lived presigned GET URLs generated on the fly (local signing, no
- * network overhead).
+ * Production: S3-compatible bucket (Tigris, AWS S3, R2, MinIO...) over the
+ * standard S3 API. The bucket stays fully PRIVATE - HTML references the
+ * stable /api/media route, which signs a short-lived URL per request.
  *
- * Configure in .env.local:
- *
- *   S3_ENDPOINT        e.g. https://t3.storage.dev
- *   S3_REGION          e.g. auto (Tigris) / us-east-1 (AWS)
- *   S3_BUCKET          bucket name
- *   S3_ACCESS_KEY_ID   access key from the console
- *   S3_SECRET_ACCESS_KEY
- *   S3_PUBLIC_BASE_URL optional — only when a real public/CDN domain exists;
- *                      skips presigning entirely
+ * Env (in .env.local):
+ *   AWS_ENDPOINT_URL_S3    e.g. https://t3.storage.dev
+ *   AWS_REGION             e.g. auto
+ *   AWS_BUCKET_NAME_IMAGE   bucket name
+ *   AWS_ACCESS_KEY_ID
+ *   AWS_SECRET_ACCESS_KEY
  *
  * Dev fallback: when unconfigured, files are written to public/uploads
  * (gitignored) and served locally.
+ *
+ * DB stores the bare object KEY ("products/<id>/<file>"; local mode stores
+ * "/uploads/<key>"). resolveImageUrl() derives servable URLs at read time.
  */
 
 import {
@@ -38,124 +37,142 @@ export const ALLOWED_IMAGE_TYPES = new Set([
   "image/avif",
 ]);
 
-/** Presigned URLs live 7 days; re-signing happens per request via React cache. */
-const PRESIGN_TTL_SECONDS = 60 * 60 * 24 * 7;
+/** Only objects under this prefix are ever managed or proxied. */
+const KEY_ROOT = "products";
+/** KEY_ROOT/<id>/<file> - a STRING, so it can safely seed RegExp. */
+const KEY_PATTERN = `${KEY_ROOT}/[^/?#]+/[^/?#]+`;
 
 export function imageKey(productId: number, fileName: string) {
-  return `products/${productId}/${fileName}`;
+  return `${KEY_ROOT}/${productId}/${fileName}`;
+}
+
+/* ─── Config ────────────────────────────────────────────────────────── */
+
+export function bucketName(): string | undefined {
+  return process.env.AWS_BUCKET_NAME_IMAGE;
 }
 
 export function storageConfigured(): boolean {
   return Boolean(
-    process.env.S3_BUCKET &&
-      process.env.S3_ACCESS_KEY_ID &&
-      process.env.S3_SECRET_ACCESS_KEY,
+    bucketName() &&
+      process.env.AWS_ACCESS_KEY_ID &&
+      process.env.AWS_SECRET_ACCESS_KEY,
   );
 }
 
-function client(): S3Client {
+export function client(): S3Client {
+  const endpoint = process.env.AWS_ENDPOINT_URL_S3;
   return new S3Client({
-    region: process.env.S3_REGION ?? "auto",
-    endpoint: process.env.S3_ENDPOINT || undefined,
-    forcePathStyle: true,
-    // Tigris (and other strict S3 clones) reject the checksum params the SDK
-    // adds by default — especially as unsigned presigned-query params.
+    region: process.env.AWS_REGION || "auto",
+    endpoint: endpoint || undefined,
+    // Custom endpoints (Tigris/R2/MinIO) serve objects path-style.
+    forcePathStyle: Boolean(endpoint),
+    // Strict S3 clones reject the checksum params the SDK adds by default.
     requestChecksumCalculation: "WHEN_REQUIRED",
     responseChecksumValidation: "WHEN_REQUIRED",
     credentials: {
-      accessKeyId: process.env.S3_ACCESS_KEY_ID!,
-      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
     },
   });
 }
 
+/* ─── Key ⇄ URL mapping ─────────────────────────────────────────────── */
+
 /**
- * Extract the S3 object key from a stored URL (legacy rows may hold a full
- * URL). Returns null for plain local paths like "/uploads/products/x.jpg".
+ * Extract the object key from any stored form:
+ *   "products/1/a.jpg"                          -> "products/1/a.jpg"
+ *   "/uploads/products/1/a.jpg" (dev)           -> "products/1/a.jpg"
+ *   "/api/media/products/1/a.jpg"               -> "products/1/a.jpg"
+ *   "https://t3.storage.dev/liora/products/…"   -> "products/1/a.jpg"
+ *   anything else (foreign CDN URLs)            -> null
  */
 export function keyFromStoredUrl(url: string): string | null {
   if (!url) return null;
-  // Local public path — served directly, no signing.
-  if (url.startsWith("/")) return null;
-  // Already a bare object key.
-  if (url.startsWith("products/")) return url;
-  // Legacy full URL (…/products/<id>/<file>) — extract the key part.
-  const marker = "/products/";
-  const idx = url.lastIndexOf(marker);
-  if (idx === -1) return null;
-  return url.slice(idx + 1);
-}
+  const u = url.trim();
 
-/**
- * Presign a GET for an object key. Low-level — most callers want
- * resolveImageUrl (stable route) instead, which keeps HTML cacheable.
- */
-export async function presignedUrl(
-  key: string,
-  expiresIn: number = PRESIGN_TTL_SECONDS,
-): Promise<string> {
-  try {
-    return await getSignedUrl(
-      client(),
-      new GetObjectCommand({ Bucket: process.env.S3_BUCKET, Key: key }),
-      { expiresIn },
-    );
-  } catch (e) {
-    console.error("[storage] presign failed:", e);
-    throw e;
+  const direct = u.match(new RegExp(`^(${KEY_PATTERN})$`));
+  if (direct) return direct[1];
+
+  for (const prefix of ["/uploads", "/api/media", "/"]) {
+    if (u.startsWith(prefix + "/")) {
+      const m = u.slice(prefix.length + 1).match(new RegExp(`^(${KEY_PATTERN})$`));
+      if (m) return m[1];
+    }
   }
+
+  // Legacy full bucket URLs (endpoint path-style).
+  const endpoint = process.env.AWS_ENDPOINT_URL_S3?.replace(/\/$/, "");
+  if (endpoint && u.startsWith(`${endpoint}/`)) {
+    const m = u.match(new RegExp(KEY_PATTERN));
+    if (m) return m[0];
+  }
+
+  return null;
 }
 
 /**
- * Turn a stored value (S3 key, legacy full URL, or local path) into a URL a
- * browser can load right now: presigned for S3 keys, untouched for absolute
- * URLs (legacy Shopify CDN images) and local paths.
+ * Turn a stored value into a URL the browser can load:
+ *  - key / bucket URL -> /api/media/<key> (bucket) or /uploads/<key> (dev)
+ *  - foreign URLs and anything else -> passed through untouched
  */
 export async function resolveImageUrl(stored: string): Promise<string> {
-  // Already an absolute URL (legacy seed/CDN images) — nothing to do.
-  if (/^https?:\/\//i.test(stored)) return stored;
-  if (!storageConfigured()) return stored;
+  if (!stored) return stored;
+  const u = stored.trim();
 
-  const base = process.env.S3_PUBLIC_BASE_URL;
-  if (base) {
-    return `${base.replace(/\/$/, "")}/${stored}`;
+  if (u.startsWith("/api/media/") || u.startsWith("/uploads/")) return u;
+
+  const key = keyFromStoredUrl(u);
+  if (key) {
+    return storageConfigured() ? `/api/media/${key}` : `/uploads/${key}`;
   }
-
-  const key = keyFromStoredUrl(stored);
-  if (!key) return stored;
-
-  // Stable internal route: never expires, safe for ISR/static HTML. The
-  // route handler signs a fresh short-lived URL per request.
-  return `/api/media/${key}`;
+  return u;
 }
+
+/** Short-lived signed GET URL for a private bucket object. */
+export async function presignedUrl(
+  key: string,
+  expiresIn: number = 300,
+): Promise<string> {
+  return getSignedUrl(
+    client(),
+    new GetObjectCommand({ Bucket: bucketName(), Key: key }),
+    { expiresIn },
+  );
+}
+
+/* ─── Object IO ─────────────────────────────────────────────────────── */
 
 export type StorageResult =
   | { ok: true; url: string }
   | { ok: false; error: string };
 
+/**
+ * Store an object. Returns what the DB stores: the bare KEY in S3 mode,
+ * or "/uploads/<key>" in local dev mode.
+ */
 export async function putObject(
   key: string,
   body: Buffer,
   contentType: string,
 ): Promise<StorageResult> {
   if (!storageConfigured()) {
-    const dir = path.join(process.cwd(), "public", path.dirname(key));
-    await fsp.mkdir(dir, { recursive: true });
-    await fsp.writeFile(path.join(process.cwd(), "public", key), body);
-    return { ok: true, url: `/${key}` };
+    const dest = path.join(process.cwd(), "public", "uploads", key);
+    await fsp.mkdir(path.dirname(dest), { recursive: true });
+    await fsp.writeFile(dest, body);
+    return { ok: true, url: `/uploads/${key}` };
   }
 
   try {
     await client().send(
       new PutObjectCommand({
-        Bucket: process.env.S3_BUCKET,
+        Bucket: bucketName(),
         Key: key,
         Body: body,
         ContentType: contentType,
         CacheControl: "public, max-age=31536000, immutable",
       }),
     );
-    // DB stores the KEY; presigning happens at read time.
     return { ok: true, url: key };
   } catch (e) {
     console.error("[storage] putObject failed:", e);
@@ -163,14 +180,23 @@ export async function putObject(
   }
 }
 
+/**
+ * Delete a stored object. Accepts a bare key (S3 mode) or the local forms
+ * "uploads/<key>" / "/uploads/<key>".
+ */
 export async function deleteObject(key: string): Promise<void> {
   if (!storageConfigured()) {
-    await fsp.rm(path.join(process.cwd(), "public", key), { force: true });
+    const cleaned = key
+      .replace(/^\/+/, "")
+      .replace(/^uploads\//, "");
+    await fsp.rm(path.join(process.cwd(), "public", "uploads", cleaned), {
+      force: true,
+    });
     return;
   }
   try {
     await client().send(
-      new DeleteObjectCommand({ Bucket: process.env.S3_BUCKET, Key: key }),
+      new DeleteObjectCommand({ Bucket: bucketName(), Key: key }),
     );
   } catch (e) {
     // Orphaned object is harmless; the DB row is already gone.

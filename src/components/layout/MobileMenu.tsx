@@ -13,6 +13,12 @@ const LINKS = [
   { href: "/checkout", label: "Checkout" },
 ];
 
+interface MenuEntry {
+  href: string;
+  label: string;
+  onClick?: () => void;
+}
+
 export default function MobileMenu({
   open,
   onClose,
@@ -23,8 +29,25 @@ export default function MobileMenu({
   const { data: session, isPending } = authClient.useSession();
   const router = useRouter();
 
-  const links = [...LINKS];
-  if (session?.user.role === "admin") links.push({ href: "/admin", label: "Admin" });
+  const links: MenuEntry[] = [
+    ...LINKS,
+    ...(session?.user.role === "admin"
+      ? [{ href: "/admin", label: "Admin" }]
+      : []),
+    // Auth entry — sign in for guests, sign out for sessions.
+    !isPending &&
+      (!session
+        ? { href: "/login", label: "SIGN IN" }
+        : {
+            href: "#",
+            label: "SIGN OUT",
+            onClick: async () => {
+              await authClient.signOut();
+              onClose();
+              router.refresh();
+            },
+          }),
+  ].filter(Boolean) as MenuEntry[];
 
   return (
     <AnimatePresence>
@@ -45,51 +68,30 @@ export default function MobileMenu({
           <nav className="flex flex-1 flex-col justify-center gap-2 px-8">
             {links.map((l, i) => (
               <motion.div
-                key={l.href}
+                key={l.label}
                 initial={{ y: 40, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: 20, opacity: 0 }}
                 transition={{ delay: 0.08 * i + 0.1, duration: 0.6, ease: EASE }}
               >
-                <Link
-                  href={l.href}
-                  onClick={onClose}
-                  className="headline block py-3 text-5xl"
-                >
-                  {l.label}
-                </Link>
-              </motion.div>
-            ))}
-
-            {!isPending && (
-              <motion.div
-                initial={{ y: 40, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: 20, opacity: 0 }}
-                transition={{ delay: 0.08 * links.length + 0.1, duration: 0.6, ease: EASE }}
-              >
-                {session ? (
+                {l.onClick ? (
                   <button
-                    onClick={async () => {
-                      await authClient.signOut();
-                      onClose();
-                      router.refresh();
-                    }}
-                    className="headline block py-3 text-left text-5xl text-taupe"
+                    onClick={l.onClick}
+                    className="headline block py-3 text-left text-5xl"
                   >
-                    Sign Out
+                    {l.label}
                   </button>
                 ) : (
                   <Link
-                    href="/login"
+                    href={l.href}
                     onClick={onClose}
-                    className="headline block py-3 text-5xl text-taupe"
+                    className="headline block py-3 text-5xl"
                   >
-                    Sign In
+                    {l.label}
                   </Link>
                 )}
               </motion.div>
-            )}
+            ))}
           </nav>
           <p className="eyebrow px-8 pb-10 text-taupe">
             Pioneering Luxury Press-Ons in Bangladesh
