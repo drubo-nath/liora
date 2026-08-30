@@ -35,7 +35,7 @@ export default function Footer() {
           <div>
             <Image src="/liora.svg" alt="Liora" width={100} height={10} />
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-taupe">
-              Premium press-on nails. Curated for Bangladesh's most refined hands.
+              Premium press-on nails. Curated for Bangladesh&rsquo;s most refined hands.
               Damage-free, reusable, and made to move with your life.
             </p>
           </div>
