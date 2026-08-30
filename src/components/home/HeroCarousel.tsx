@@ -69,7 +69,7 @@ export default function HeroCarousel() {
 
   return (
     <section
-      className="relative w-full overflow-hidden"
+      className="relative w-full overflow-hidden min-h-[540px]"
       style={{ height: "calc(100svh - 6.25rem)" }}
       aria-roledescription="carousel"
       aria-label="Featured campaigns"
@@ -103,11 +103,12 @@ export default function HeroCarousel() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Legibility veil over the text corner only */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-bone/70 via-bone/25 to-transparent" />
+      {/* Legibility veil over the text corner — stronger on phones, where
+          the crop pushes the subject toward the text zone */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-bone/90 via-bone/50 to-transparent md:h-2/5 md:from-bone/70 md:via-bone/25" />
 
       {/* ── Copy — bottom-left, fashion-campaign style ─────────────── */}
-      <div className="absolute bottom-0 left-0 z-10 max-w-2xl p-7 pb-12 md:p-14 md:pb-16">
+      <div className="absolute inset-x-0 bottom-0 left-0 z-10 max-w-2xl p-6 pb-10 md:max-w-2xl md:p-14 md:pb-16">
         <AnimatePresence mode="wait">
           <motion.div key={slide.src + "-copy"}>
             <p className="eyebrow overflow-hidden text-ink/60">
@@ -122,7 +123,7 @@ export default function HeroCarousel() {
               </motion.span>
             </p>
 
-            <h1 className="headline mt-4 text-[13vw] text-ink sm:text-6xl md:text-7xl">
+            <h1 className="headline mt-4 text-[10.5vw] leading-[1.03] text-ink sm:text-6xl md:text-7xl">
               <span className="block overflow-hidden pb-0.5">
                 <motion.span
                   variants={textLine}

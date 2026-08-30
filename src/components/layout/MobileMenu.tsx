@@ -2,6 +2,8 @@
 
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -18,6 +20,12 @@ export default function MobileMenu({
   open: boolean;
   onClose: () => void;
 }) {
+  const { data: session, isPending } = authClient.useSession();
+  const router = useRouter();
+
+  const links = [...LINKS];
+  if (session?.user.role === "admin") links.push({ href: "/admin", label: "Admin" });
+
   return (
     <AnimatePresence>
       {open && (
@@ -35,7 +43,7 @@ export default function MobileMenu({
             </button>
           </div>
           <nav className="flex flex-1 flex-col justify-center gap-2 px-8">
-            {LINKS.map((l, i) => (
+            {links.map((l, i) => (
               <motion.div
                 key={l.href}
                 initial={{ y: 40, opacity: 0 }}
@@ -52,9 +60,39 @@ export default function MobileMenu({
                 </Link>
               </motion.div>
             ))}
+
+            {!isPending && (
+              <motion.div
+                initial={{ y: 40, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: 20, opacity: 0 }}
+                transition={{ delay: 0.08 * links.length + 0.1, duration: 0.6, ease: EASE }}
+              >
+                {session ? (
+                  <button
+                    onClick={async () => {
+                      await authClient.signOut();
+                      onClose();
+                      router.refresh();
+                    }}
+                    className="headline block py-3 text-left text-5xl text-taupe"
+                  >
+                    Sign Out
+                  </button>
+                ) : (
+                  <Link
+                    href="/login"
+                    onClick={onClose}
+                    className="headline block py-3 text-5xl text-taupe"
+                  >
+                    Sign In
+                  </Link>
+                )}
+              </motion.div>
+            )}
           </nav>
           <p className="eyebrow px-8 pb-10 text-taupe">
-            Handcrafted in Dhaka, Bangladesh
+            Pioneering Luxury Press-Ons in Bangladesh
           </p>
         </motion.div>
       )}

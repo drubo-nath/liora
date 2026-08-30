@@ -87,6 +87,26 @@ export function keyFromStoredUrl(url: string): string | null {
 }
 
 /**
+ * Presign a GET for an object key. Low-level — most callers want
+ * resolveImageUrl (stable route) instead, which keeps HTML cacheable.
+ */
+export async function presignedUrl(
+  key: string,
+  expiresIn: number = PRESIGN_TTL_SECONDS,
+): Promise<string> {
+  try {
+    return await getSignedUrl(
+      client(),
+      new GetObjectCommand({ Bucket: process.env.S3_BUCKET, Key: key }),
+      { expiresIn },
+    );
+  } catch (e) {
+    console.error("[storage] presign failed:", e);
+    throw e;
+  }
+}
+
+/**
  * Turn a stored value (S3 key, legacy full URL, or local path) into a URL a
  * browser can load right now: presigned for S3 keys, untouched for absolute
  * URLs (legacy Shopify CDN images) and local paths.
@@ -104,24 +124,9 @@ export async function resolveImageUrl(stored: string): Promise<string> {
   const key = keyFromStoredUrl(stored);
   if (!key) return stored;
 
-  try {
-    return await getSignedUrl(
-      client(),
-      new GetObjectCommand({ Bucket: process.env.S3_BUCKET, Key: key }),
-      { expiresIn: PRESIGN_TTL_SECONDS },
-    );
-  } catch (e) {
-    console.error("[storage] presign failed:", e);
-    return stored;
-  }
-}
-
-/**
- * True when a stored value will expire (S3 presign) and should be re-signed —
- * used by the admin UI to keep previews fresh on long-lived pages.
- */
-export function storedUrlIsPresigned(stored: string): boolean {
-  return storageConfigured() && keyFromStoredUrl(stored) !== null;
+  // Stable internal route: never expires, safe for ISR/static HTML. The
+  // route handler signs a fresh short-lived URL per request.
+  return `/api/media/${key}`;
 }
 
 export type StorageResult =

@@ -69,7 +69,14 @@ export default function Header() {
             className="justify-self-center font-serif text-[22px] tracking-[0.32em] md:text-2xl"
             aria-label="Liora home"
           >
-            <Image src='/liora.svg' alt="liora" width={100} height={10} />
+            <Image
+              src="/liora.svg"
+              alt="liora"
+              width={1024}
+              height={1024}
+              priority
+              className="h-8 w-auto md:h-9"
+            />
           </Link>
 
           {/* Right — actions */}
