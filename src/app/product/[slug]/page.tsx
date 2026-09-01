@@ -8,13 +8,52 @@ import ProductCard from "@/components/ProductCard";
 
 export const dynamic = "force-dynamic";
 
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://www.liorapressedons.com";
+
 export async function generateMetadata({
   params,
 }: PageProps<"/product/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const p = await getProductBySlug(slug);
   if (!p) return {};
-  return { title: p.name, description: p.description };
+
+  const title = `${p.name} — Luxury ${p.finish} Press-On Nails`;
+  const description = p.tagline
+    ? `${p.tagline}. ${p.description.slice(0, 140)}`
+    : p.description.slice(0, 155);
+
+  const images = p.imageUrl ? [p.imageUrl] : [];
+
+  return {
+    title,
+    description,
+    keywords: [
+      p.name.toLowerCase(),
+      `${p.finish.toLowerCase()} press on nails`,
+      "press on nails bangladesh",
+      "handmade nails dhaka",
+      "liora beauty",
+    ],
+    alternates: {
+      canonical: `/product/${p.slug}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `/product/${p.slug}`,
+      type: "article",
+      images: images.map((url) => ({
+        url,
+        alt: `${p.name} — LIORA Press-On Nails`,
+      })),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images,
+    },
+  };
 }
 
 export default async function ProductPage({
@@ -30,8 +69,71 @@ export default async function ProductPage({
     .concat(all.filter((p) => p.slug !== product.slug && p.finish !== product.finish))
     .slice(0, 4);
 
+  const productUrl = `${baseUrl}/product/${product.slug}`;
+
+  // Structured Data Schema for Google Rich Snippets (Product & Offers)
+  const productJsonLd = {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": product.name,
+    "image": product.images.length ? product.images : [product.imageUrl || `${baseUrl}/header-image.jpg`],
+    "description": product.description,
+    "sku": product.slug,
+    "brand": {
+      "@type": "Brand",
+      "name": "LIORA",
+    },
+    "offers": {
+      "@type": "Offer",
+      "url": productUrl,
+      "priceCurrency": "BDT",
+      "price": product.price,
+      "priceValidUntil": "2027-12-31",
+      "itemCondition": "https://schema.org/NewCondition",
+      "availability": "https://schema.org/InStock",
+      "seller": {
+        "@type": "Organization",
+        "name": "LIORA Beauty",
+      },
+    },
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": baseUrl,
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Shop",
+        "item": `${baseUrl}/shop`,
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": product.name,
+        "item": productUrl,
+      },
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+
       <nav className="mx-auto max-w-[1440px] px-5 pt-8 md:px-10" aria-label="Breadcrumb">
         <ol className="eyebrow flex items-center gap-3 text-[10px] text-taupe">
           <li>
@@ -58,11 +160,11 @@ export default async function ProductPage({
             <div
               className={`grid gap-4 ${product.images.length >= 3 ? "grid-cols-3" : product.images.length === 2 ? "grid-cols-2" : "grid-cols-1"}`}
             >
-              {product.images.slice(1, 4).map((url) => (
+              {product.images.slice(1).map((img, i) => (
                 <Swatch
-                  key={url}
+                  key={i}
                   tones={product.tones}
-                  imageUrl={url}
+                  imageUrl={img}
                   className="aspect-square w-full"
                 />
               ))}
@@ -70,29 +172,22 @@ export default async function ProductPage({
           )}
         </div>
 
-        <div>
-          {product.badge && <p className="eyebrow text-clay">{product.badge}</p>}
-          <h1 className="headline mt-3 text-5xl md:text-6xl">{product.name}</h1>
-          <p className="mt-3 font-serif text-xl italic text-taupe">
-            {product.tagline} · {product.finish}
-          </p>
-          <BuyPanel product={product} />
-        </div>
+        <BuyPanel product={product} />
       </section>
 
-      <section className="hairline mx-auto max-w-[1440px] border-t px-5 py-16 md:px-10 md:py-24">
-        <div className="mb-10 flex items-end justify-between">
-          <h2 className="headline text-4xl md:text-5xl">
-            You may also <em>love</em>
+      {/* Related items */}
+      <section className="hairline border-t bg-cream py-16 md:py-24">
+        <div className="mx-auto max-w-[1440px] px-5 md:px-10">
+          <p className="eyebrow text-clay">Curated Pairings</p>
+          <h2 className="headline mt-4 text-4xl md:text-5xl">
+            You might also <em>adore</em>
           </h2>
-          <Link href="/shop" className="link-sweep eyebrow hidden pb-1 md:block">
-            View All →
-          </Link>
-        </div>
-        <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:gap-x-6 lg:grid-cols-4">
-          {related.map((p) => (
-            <ProductCard key={p.slug} product={p} />
-          ))}
+
+          <div className="mt-10 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-4 md:gap-x-8">
+            {related.map((p) => (
+              <ProductCard key={p.slug} product={p} />
+            ))}
+          </div>
         </div>
       </section>
     </>

@@ -15,6 +15,7 @@ import { formatPhone } from "@/lib/phone";
 import Swatch from "@/components/Swatch";
 import PhoneVerify from "@/components/auth/PhoneVerify";
 import { EASE } from "@/components/motion/Reveal";
+import { trackPurchase } from "@/lib/analytics";
 
 const PAYMENTS = [
   { id: "cod", label: "Cash on Delivery" },
@@ -112,8 +113,15 @@ export default function CheckoutPage() {
                     qty: l.qty,
                   })),
                 });
-                if (res.ok) clear();
-                else setError(res.error);
+
+                if (res.ok) {
+                  trackPurchase({
+                    orderId: res.orderNumber,
+                    total: res.total,
+                    itemsCount: lines.reduce((acc, l) => acc + l.qty, 0),
+                  });
+                  clear();
+                } else setError(res.error);
                 setPlaced(res);
               });
             }}

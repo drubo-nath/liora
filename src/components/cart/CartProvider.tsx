@@ -9,6 +9,7 @@ import {
   useState,
 } from "react";
 import type { ProductDTO } from "@/db/types";
+import { trackAddToCart } from "@/lib/analytics";
 
 /**
  * Cart lines carry a product SNAPSHOT (name/price/image) — anonymous carts
@@ -76,6 +77,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     (product: ProductDTO, opts?: { qty?: number; size?: string }) => {
       const qty = opts?.qty ?? 1;
       const size = opts?.size ?? "M";
+      trackAddToCart({
+        slug: product.slug,
+        name: product.name,
+        price: product.price,
+      });
       setLines((prev) => {
         const i = prev.findIndex((l) => l.slug === product.slug && l.size === size);
         if (i >= 0) {
