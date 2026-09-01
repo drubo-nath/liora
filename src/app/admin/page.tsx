@@ -3,6 +3,7 @@ import { count, desc, eq, sum } from "drizzle-orm";
 import { db, schema } from "@/db";
 import { formatBDT } from "@/lib/format";
 import { formatPhone } from "@/lib/phone";
+import { getBalance } from "@/lib/sms";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -18,7 +19,7 @@ import { Button } from "@/components/ui/button";
 export const dynamic = "force-dynamic";
 
 export default async function AdminOverview() {
-  const [[orders], [revenue], [productCount], [subs], recent] =
+  const [[orders], [revenue], [productCount], [subs], recent, smsBalance] =
     await Promise.all([
       db.select({ n: count() }).from(schema.orders),
       db
@@ -32,13 +33,17 @@ export default async function AdminOverview() {
         .from(schema.orders)
         .orderBy(desc(schema.orders.createdAt))
         .limit(8),
+      getBalance(),
     ]);
 
   const stats = [
     { label: "Orders", value: String(orders.n) },
     { label: "Fulfilled revenue", value: formatBDT(Number(revenue.total ?? 0)) },
     { label: "Products", value: String(productCount.n) },
-    { label: "Subscribers", value: String(subs.n) },
+    {
+      label: "SMS Gateway",
+      value: smsBalance !== null ? `৳${smsBalance.toFixed(2)}` : "Console (Dev)",
+    },
   ];
 
   return (

@@ -15,6 +15,7 @@ import {
   putObject,
   resolveImageUrl,
 } from "@/lib/storage";
+import { sendSMS, orderStatusUpdateMessage } from "@/lib/sms";
 
 async function requireAdmin() {
   const session = await getSessionUser();
@@ -29,7 +30,19 @@ export async function updateOrderStatus(
   status: "pending" | "confirmed" | "fulfilled" | "cancelled",
 ) {
   await requireAdmin();
-  await db.update(schema.orders).set({ status }).where(eq(schema.orders.id, orderId));
+  const [updated] = await db
+    .update(schema.orders)
+    .set({ status })
+    .where(eq(schema.orders.id, orderId))
+    .returning({ phone: schema.orders.phone, orderNumber: schema.orders.orderNumber });
+
+  if (updated?.phone) {
+    sendSMS(updated.phone, orderStatusUpdateMessage(updated.orderNumber, status)).catch(
+      (err) => {
+        console.error("[admin] Order status update SMS notification failed:", err);
+      },
+    );
+  }
 }
 
 export async function updateProductPrice(productId: number, price: number) {

@@ -55,7 +55,7 @@ export default function Footer() {
           ))}
         </div>
         <div className="hairline mt-16 flex flex-col items-start justify-between gap-4 border-t pt-8 text-xs text-taupe md:flex-row md:items-center">
-          <p>© {new Date().getFullYear()} Liora Beauty Ltd. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Liora. All rights reserved.</p>
           <p className="eyebrow text-[10px]">bKash · Nagad · Cards · Cash on Delivery</p>
         </div>
       </div>

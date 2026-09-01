@@ -67,18 +67,18 @@ export default function CheckoutPage() {
   }
 
   return (
-    <section className="mx-auto max-w-[1440px] px-5 py-14 md:px-10 md:py-20">
+    <section className="mx-auto max-w-[1440px] px-4 py-10 sm:px-6 md:px-10 md:py-20">
       <p className="eyebrow text-clay">Almost There</p>
-      <h1 className="headline mt-4 text-5xl md:text-7xl">
+      <h1 className="headline mt-3 text-4xl sm:text-5xl md:text-7xl">
         Check<em>out</em>
       </h1>
 
-      <div className="mt-12 grid gap-16 lg:grid-cols-[1.2fr_1fr]">
-        <div className="space-y-10">
+      <div className="mt-8 grid gap-10 sm:mt-12 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
+        <div className="order-2 space-y-8 md:space-y-10 lg:order-1">
           {/* Step 1 — phone verification */}
           {!isPending && !verified && <PhoneVerify />}
           {!isPending && verified && (
-            <div className="hairline border bg-cream p-6 md:p-8">
+            <div className="hairline border bg-cream p-5 sm:p-6 md:p-8">
               <p className="eyebrow text-taupe">Verified number</p>
               <p className="mt-2 font-serif text-xl">
                 {formatPhone(session?.user.phoneNumber)}
@@ -117,11 +117,11 @@ export default function CheckoutPage() {
                 setPlaced(res);
               });
             }}
-            className="space-y-10"
+            className="space-y-8 sm:space-y-10"
           >
             <fieldset disabled={!verified} className="disabled:opacity-50">
               <legend className="eyebrow text-taupe">Delivery</legend>
-              <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              <div className="mt-4 grid gap-3.5 sm:grid-cols-2 sm:gap-4">
                 <Field
                   label="Full name"
                   name="name"
@@ -149,7 +149,7 @@ export default function CheckoutPage() {
 
             <fieldset disabled={!verified} className="disabled:opacity-50">
               <legend className="eyebrow text-taupe">Payment</legend>
-              <div className="mt-4 grid gap-2 sm:grid-cols-2">
+              <div className="mt-4 grid gap-2.5 sm:grid-cols-2 sm:gap-3">
                 {PAYMENTS.map((p) => (
                   <button
                     type="button"
@@ -157,8 +157,8 @@ export default function CheckoutPage() {
                     onClick={() => setPayment(p.id)}
                     className={
                       payment === p.id
-                        ? "eyebrow border border-ink bg-ink px-5 py-4 text-left text-cream transition-colors"
-                        : "eyebrow hairline border bg-transparent px-5 py-4 text-left text-taupe transition-colors hover:border-ink hover:text-ink"
+                        ? "eyebrow border border-ink bg-ink px-4 py-3.5 text-left text-cream transition-colors sm:px-5 sm:py-4"
+                        : "eyebrow hairline border bg-transparent px-4 py-3.5 text-left text-taupe transition-colors hover:border-ink hover:text-ink sm:px-5 sm:py-4"
                     }
                   >
                     {p.label}
@@ -176,7 +176,7 @@ export default function CheckoutPage() {
             <button
               type="submit"
               disabled={pending || lines.length === 0 || !verified}
-              className="eyebrow w-full bg-ink py-5 text-cream transition-colors duration-300 hover:bg-clay-deep disabled:cursor-not-allowed disabled:opacity-40"
+              className="eyebrow w-full bg-ink px-4 py-4.5 text-center text-xs tracking-wider text-cream transition-colors duration-300 hover:bg-clay-deep disabled:cursor-not-allowed disabled:opacity-40 sm:py-5 sm:text-sm"
             >
               {pending
                 ? "Placing order…"
@@ -190,24 +190,24 @@ export default function CheckoutPage() {
         </div>
 
         {/* Summary */}
-        <aside className="hairline h-fit border bg-cream p-6 md:p-8">
+        <aside className="hairline order-1 h-fit border bg-cream p-5 sm:p-6 md:p-8 lg:order-2 lg:sticky lg:top-24">
           <p className="eyebrow text-taupe">Order Summary</p>
-          <ul className="mt-6 space-y-5">
+          <ul className="mt-5 space-y-4 sm:mt-6 sm:space-y-5">
             {lines.map((l) => (
-              <li key={`${l.slug}-${l.size}`} className="flex items-center gap-4">
+              <li key={`${l.slug}-${l.size}`} className="flex items-center gap-3.5 sm:gap-4">
                 <Swatch
                   tones={l.tones}
                   imageUrl={l.imageUrl}
-                  className="h-16 w-14 shrink-0"
+                  className="h-14 w-12 shrink-0 sm:h-16 sm:w-14"
                   variant="thumb"
                 />
-                <div className="flex-1">
-                  <p className="font-serif">{l.name}</p>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate font-serif text-sm sm:text-base">{l.name}</p>
                   <p className="text-xs text-taupe">
                     {l.finish} · {l.size} · Qty {l.qty}
                   </p>
                 </div>
-                <p className="text-sm">{formatBDT(l.price * l.qty)}</p>
+                <p className="text-xs shrink-0 font-medium sm:text-sm">{formatBDT(l.price * l.qty)}</p>
               </li>
             ))}
             {lines.length === 0 && (
@@ -230,7 +230,7 @@ export default function CheckoutPage() {
             )}
             <div className="hairline flex items-center justify-between border-t pt-3">
               <p className="eyebrow text-taupe">Total</p>
-              <p className="font-serif text-2xl">{formatBDT(total)}</p>
+              <p className="font-serif text-xl sm:text-2xl">{formatBDT(total)}</p>
             </div>
           </div>
         </aside>

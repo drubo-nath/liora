@@ -5,6 +5,7 @@ import { db, isDbConfigured, schema } from "@/db";
 import { checkoutSchema, type CheckoutInput } from "@/lib/validations";
 import { shippingFeeFor } from "@/lib/format";
 import { getSessionUser } from "@/lib/auth";
+import { sendSMS, orderConfirmationMessage } from "@/lib/sms";
 
 export type OrderResult =
   | { ok: true; orderNumber: string; total: number }
@@ -39,8 +40,10 @@ export async function placeOrder(input: CheckoutInput): Promise<OrderResult> {
       error: parsed.error.issues[0]?.message ?? "Invalid order details.",
     };
   }
-  const data = parsed.data;  try {
-    return await db.transaction(async (tx) => {
+  const data = parsed.data;
+
+  try {
+    const result = await db.transaction(async (tx) => {
       // 1. Load authoritative product rows
       const slugs = data.items.map((i) => i.slug);
       const rows = await tx
@@ -126,6 +129,15 @@ export async function placeOrder(input: CheckoutInput): Promise<OrderResult> {
 
       return { ok: true as const, orderNumber, total };
     });
+
+    // Send order confirmation SMS non-blockingly
+    sendSMS(userPhone, orderConfirmationMessage(result.orderNumber, result.total)).catch(
+      (err) => {
+        console.error("[orders] SMS notification failed:", err);
+      },
+    );
+
+    return result;
   } catch (e) {
     console.error("[orders] placeOrder failed:", e);
     return {

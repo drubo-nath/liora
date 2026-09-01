@@ -75,7 +75,7 @@ export default function PhoneVerify() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -12 }}
             transition={{ duration: 0.35, ease: EASE }}
-            className="mt-5 flex gap-2"
+            className="mt-5 flex flex-col gap-2.5 sm:flex-row sm:gap-2"
           >
             <input
               value={phone}
@@ -88,7 +88,7 @@ export default function PhoneVerify() {
             <button
               onClick={sendOtp}
               disabled={busy}
-              className="eyebrow shrink-0 bg-ink px-6 text-cream transition-colors hover:bg-clay-deep disabled:opacity-50"
+              className="eyebrow shrink-0 bg-ink px-6 py-3.5 text-cream transition-colors hover:bg-clay-deep disabled:opacity-50 sm:py-0"
             >
               {busy ? "Sending…" : "Send Code"}
             </button>
@@ -108,14 +108,14 @@ export default function PhoneVerify() {
                 Change
               </button>
             </p>
-            <div className="flex gap-2">
+            <div className="flex flex-col gap-2.5 sm:flex-row sm:gap-2">
               <input
                 value={code}
                 onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
                 placeholder="······"
                 inputMode="numeric"
                 autoComplete="one-time-code"
-                className="hairline w-40 border bg-transparent px-4 py-3.5 text-center font-serif text-xl tracking-[0.4em] outline-none focus:border-ink"
+                className="hairline w-full border bg-transparent px-4 py-3.5 text-center font-serif text-xl tracking-[0.4em] outline-none focus:border-ink sm:w-40"
               />
               <button
                 onClick={verify}

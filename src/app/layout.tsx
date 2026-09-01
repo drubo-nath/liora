@@ -27,7 +27,15 @@ export const metadata: Metadata = {
     template: "%s — LIORA",
   },
   description:
-    "Salon-perfect press-on nails handcrafted in Dhaka. Damage-free, reusable, and delivered to your door across Bangladesh.",
+    "Salon-perfect press-on nails brand in Dhaka. Damage-free, reusable, and delivered to your door across Bangladesh.",
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
