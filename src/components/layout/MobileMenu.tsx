@@ -9,7 +9,6 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 
 const LINKS = [
   { href: "/shop", label: "Shop All" },
-  { href: "/about", label: "The Atelier" },
   { href: "/checkout", label: "Checkout" },
 ];
 
@@ -22,22 +21,27 @@ interface MenuEntry {
 export default function MobileMenu({
   open,
   onClose,
+  onOpenSizeGuide,
 }: {
   open: boolean;
   onClose: () => void;
+  onOpenSizeGuide?: () => void;
 }) {
   const { data: session, isPending } = authClient.useSession();
   const router = useRouter();
 
   const links: MenuEntry[] = [
     ...LINKS,
+    ...(onOpenSizeGuide
+      ? [{ href: "#", label: "Size Guide", onClick: onOpenSizeGuide }]
+      : []),
     ...(session?.user.role === "admin"
       ? [{ href: "/admin", label: "Admin" }]
       : []),
     // Auth entry — sign in for guests, sign out for sessions.
     !isPending &&
       (!session
-        ? { href: "/login", label: "SIGN IN" }
+        ? { href: "/login", label: "Sign In" }
         : {
             href: "#",
             label: "SIGN OUT",

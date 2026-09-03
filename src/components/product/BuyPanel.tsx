@@ -7,6 +7,8 @@ import { formatBDT } from "@/lib/format";
 import { useCart } from "@/components/cart/CartProvider";
 import { cn } from "@/lib/cn";
 import { EASE } from "@/components/motion/Reveal";
+import SizeChartModal from "@/components/sizing/SizeChartModal";
+import Link from "next/link";
 
 const FINISH_ORDER = ["XS", "S", "M", "L"];
 
@@ -17,6 +19,7 @@ export default function BuyPanel({ product }: { product: ProductDTO }) {
     product.sizes.includes("M") ? "M" : (product.sizes[0] ?? "M"),
   );
   const [added, setAdded] = useState(false);
+  const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
 
   const handleAdd = () => {
     add(product, { qty, size });
@@ -48,7 +51,13 @@ export default function BuyPanel({ product }: { product: ProductDTO }) {
       <div className="mt-9">
         <div className="flex items-center justify-between">
           <p className="eyebrow text-taupe">Size</p>
-          <button className="link-sweep text-xs text-taupe">Size guide</button>
+          <Link
+            href="/sizing"
+            type="button"
+            className="link-sweep text-xs text-taupe hover:text-ink cursor-pointer"
+          >
+            Size guide
+          </Link>
         </div>
         <div className="mt-3 flex gap-2">
           {[...product.sizes].sort(
@@ -115,6 +124,11 @@ export default function BuyPanel({ product }: { product: ProductDTO }) {
           </li>
         ))}
       </ul>
+
+      <SizeChartModal
+        open={sizeGuideOpen}
+        onClose={() => setSizeGuideOpen(false)}
+      />
     </motion.div>
   );
 }
