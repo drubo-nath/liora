@@ -25,7 +25,7 @@ export const user = pgTable(
     emailVerified: boolean("email_verified").notNull().default(false),
     image: text("image"),
     phoneNumber: text("phone_number"),
-    phoneNumberVerified: boolean("phone_number_verified"),
+    phoneNumberVerified: boolean("phone_number_verified").notNull().default(false),
     /** Added by the Better Auth admin plugin: "user" | "admin". */
     role: text("role"),
     banned: boolean("banned"),
