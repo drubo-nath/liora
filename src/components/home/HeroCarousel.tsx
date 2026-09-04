@@ -10,6 +10,8 @@ import SizeChartModal from "@/components/sizing/SizeChartModal";
 
 interface Slide {
   src: string;
+  type?: "video" | "image";
+  poster?: string;
   alt: string;
   eyebrow: string;
   title: string;
@@ -20,22 +22,35 @@ interface Slide {
 
 const SLIDES: Slide[] = [
   {
+    src: "/Create_hero_section_transition_1080p_202609050243.mp4",
+    type: "video",
+    poster: "/hero-image2.jpg",
+    alt: "Liora Luxury Salon Press-On Nails Transition",
+    eyebrow: "ATELIER COLLECTION",
+    title: "SCULPTED ARTISTRY",
+    subtitle: "HANDCRAFTED SALON GEL · REUSABLE FOR MONTHS",
+    primaryCta: { label: "SHOP THE CAMPAIGN", href: "/shop" },
+    secondaryCta: { label: "FIND YOUR SIZE", href: "#size-guide", isSizeGuide: true },
+  },
+  {
     src: "/hero-image2.jpg",
+    type: "image",
     alt: "Liora Festive and Fall Handcrafted Luxury Press-On Nails",
-    eyebrow: "SAVE 15% ON FESTIVE NAILS",
-    title: "Festive Again",
-    subtitle: "Your Festive nails have arrived! Enjoy 15% off with a limited gift now! 🍂",
+    eyebrow: "LIMITED EDITION",
+    title: "THE FESTIVE EDIT",
+    subtitle: "AUTHENTIC SHIMMER & GLAZE · 15% OFF",
     primaryCta: { label: "SHOP FESTIVE", href: "/shop" },
-    secondaryCta: { label: "SHOP ALL", href: "/shop" },
+    secondaryCta: { label: "EXPLORE ALL", href: "/shop" },
   },
   {
     src: "/header-image.jpg",
+    type: "image",
     alt: "Model wearing Liora luxury handcrafted press-on nails",
-    eyebrow: "HANDCRAFTED SALON NAILS",
-    title: "Salon Artistry",
-    subtitle: "Sculpted gel press-on nails in 10 minutes. Damage-free, reusable for months.",
+    eyebrow: "SALON PERFECTION",
+    title: "MODERN LUXURY",
+    subtitle: "ENGINEERED STRENGTH · ZERO NATURAL DAMAGE",
     primaryCta: { label: "SHOP BESTSELLERS", href: "/shop" },
-    secondaryCta: { label: "FIND YOUR SIZE", href: "#size-guide", isSizeGuide: true },
+    secondaryCta: { label: "SIZE GUIDE", href: "#size-guide", isSizeGuide: true },
   },
 ];
 
@@ -49,12 +64,13 @@ export default function HeroCarousel() {
     setIndex((i) => (i + dir + SLIDES.length) % SLIDES.length);
   }, []);
 
-  useEffect(() => {
-    const t = setInterval(() => go(1), AUTO_ADVANCE_MS);
-    return () => clearInterval(t);
-  }, [go]);
-
   const slide = SLIDES[index];
+
+  useEffect(() => {
+    const duration = slide.type === "video" ? 8500 : AUTO_ADVANCE_MS;
+    const t = setTimeout(() => go(1), duration);
+    return () => clearTimeout(t);
+  }, [go, slide.type, index]);
 
   return (
     <>
@@ -64,7 +80,7 @@ export default function HeroCarousel() {
         aria-roledescription="carousel"
         aria-label="Featured campaigns"
       >
-        {/* ── Background Imagery with Crossfade & Subtle Zoom ── */}
+        {/* ── Background Imagery / Video with Crossfade ── */}
         <AnimatePresence initial={false} mode="sync">
           <motion.div
             key={slide.src}
@@ -74,84 +90,98 @@ export default function HeroCarousel() {
             exit={{ opacity: 0 }}
             transition={{ duration: 1.1, ease: EASE }}
           >
-            <motion.div
-              className="absolute inset-0"
-              initial={{ scale: 1.04 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 7, ease: [0.25, 1, 0.35, 1] }}
-            >
-              <Image
+            {slide.type === "video" ? (
+              <video
+                key={slide.src}
                 src={slide.src}
-                alt={slide.alt}
-                fill
-                priority
-                quality={94}
-                sizes="100vw"
-                // className="object-cover object-[55%_35%] md:object-[60%_35%]"
-                className={cn(
-                  "object-cover transition-all duration-700",
-                  slide.src === "/hero-image2.jpg"
-                    ? "object-[50%_35%] md:object-[60%_35%]"
-                    : "object-[55%_35%] md:object-[60%_35%]"
-                )}
+                poster={slide.poster}
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="auto"
+                className="h-full w-full object-cover"
               />
-            </motion.div>
+            ) : (
+              <motion.div
+                className="absolute inset-0"
+                initial={{ scale: 1.04 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 7, ease: [0.25, 1, 0.35, 1] }}
+              >
+                <Image
+                  src={slide.src}
+                  alt={slide.alt}
+                  fill
+                  priority
+                  quality={94}
+                  sizes="100vw"
+                  className={cn(
+                    "object-cover transition-all duration-700",
+                    slide.src === "/hero-image2.jpg"
+                      ? "object-[50%_35%] md:object-[60%_35%]"
+                      : "object-[55%_35%] md:object-[60%_35%]"
+                  )}
+                />
+              </motion.div>
+            )}
           </motion.div>
         </AnimatePresence>
 
-        {/* ── Cinematic Shadow Vignette for High Legibility (Ersa Style) ── */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/30 md:bg-gradient-to-r md:from-black/75 md:via-black/40 md:to-transparent" />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/80 to-transparent" />
+        {/* ── Versace Pure Cinema Gradient: Clear middle, focused bottom grounding ── */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
 
-        {/* ── Copy Block (Left-aligned Ersa Nails Campaign Style) ── */}
-        <div className="absolute inset-y-0 left-0 z-20 flex flex-col justify-end p-6 pb-16 md:justify-center md:p-14 lg:p-20 md:max-w-xl lg:max-w-2xl">
+        {/* ── Versace Front Hero Layout: Centered Bottom, Bold All-Caps, Sharp Geometric CTAs ── */}
+        <div className="absolute inset-x-0 bottom-10 sm:bottom-14 z-20 flex flex-col items-center justify-center px-5 sm:px-8 text-center">
           <AnimatePresence mode="wait">
             <motion.div
               key={slide.title}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -16 }}
-              transition={{ duration: 0.6, ease: EASE }}
-              className="space-y-4"
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.5, ease: EASE }}
+              className="flex flex-col items-center max-w-3xl space-y-3 md:space-y-4"
             >
-              {/* Eyebrow */}
-              <p className="eyebrow text-xs tracking-[0.24em] text-white/90 font-medium">
-                {slide.eyebrow}
-              </p>
+              {/* Versace Eyebrow */}
+              {slide.eyebrow && (
+                <p className="text-[10px] sm:text-xs uppercase tracking-[0.38em] font-semibold text-white/90">
+                  {slide.eyebrow}
+                </p>
+              )}
 
-              {/* Headline */}
-              <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-[76px] font-normal tracking-tight text-white leading-[1.04]">
+              {/* Versace Bold All-Caps Headline */}
+              <h1 className="font-sans text-3xl sm:text-5xl md:text-6xl lg:text-[68px] font-bold uppercase tracking-[0.16em] sm:tracking-[0.2em] text-white leading-tight">
                 {slide.title}
               </h1>
 
-              {/* Subtitle */}
-              <p className="text-sm md:text-base text-white/85 leading-relaxed max-w-md pt-1">
-                {slide.subtitle}
-              </p>
+              {/* Versace Minimal Subtitle */}
+              {slide.subtitle && (
+                <p className="text-[11px] sm:text-xs text-white/80 uppercase font-medium tracking-[0.24em] max-w-xl pb-1">
+                  {slide.subtitle}
+                </p>
+              )}
 
-              {/* Stacked Ersa-Style Buttons */}
-              <div className="pt-4 flex flex-col gap-3 sm:max-w-xs">
-                {/* Primary Button (Solid White) */}
+              {/* Versace Dual Sharp Buttons (Sharp Corners, Zero Border-Radius, High Contrast) */}
+              <div className="pt-2 sm:pt-3 flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto">
                 <Link
                   href={slide.primaryCta.href}
-                  className="w-full rounded-xs bg-white py-3.5 px-6 text-center text-xs tracking-[0.2em] font-semibold text-ink uppercase shadow-md transition-all duration-300 hover:bg-white/90 hover:shadow-lg active:scale-[0.99]"
+                  className="w-full sm:w-auto min-w-[210px] rounded-none border border-white bg-white px-8 py-3.5 text-center text-[11px] font-bold tracking-[0.26em] text-black uppercase transition-all duration-300 hover:bg-transparent hover:text-white active:scale-98 shadow-md"
                 >
                   {slide.primaryCta.label}
                 </Link>
 
-                {/* Secondary Button (Frosted Outline) */}
                 {slide.secondaryCta.isSizeGuide ? (
                   <button
                     type="button"
                     onClick={() => setSizeModalOpen(true)}
-                    className="w-full rounded-xs border border-white/80 bg-black/20 py-3.5 px-6 text-center text-xs tracking-[0.2em] font-medium text-white uppercase backdrop-blur-xs transition-all duration-300 hover:bg-white hover:text-ink hover:border-white active:scale-[0.99]"
+                    className="w-full sm:w-auto min-w-[210px] rounded-none border border-white bg-black/30 backdrop-blur-xs px-8 py-3.5 text-center text-[11px] font-bold tracking-[0.26em] text-white uppercase transition-all duration-300 hover:bg-white hover:text-black active:scale-98 cursor-pointer shadow-md"
                   >
                     {slide.secondaryCta.label}
                   </button>
                 ) : (
                   <Link
                     href={slide.secondaryCta.href}
-                    className="w-full rounded-xs border border-white/80 bg-black/20 py-3.5 px-6 text-center text-xs tracking-[0.2em] font-medium text-white uppercase backdrop-blur-xs transition-all duration-300 hover:bg-white hover:text-ink hover:border-white active:scale-[0.99]"
+                    className="w-full sm:w-auto min-w-[210px] rounded-none border border-white bg-black/30 backdrop-blur-xs px-8 py-3.5 text-center text-[11px] font-bold tracking-[0.26em] text-white uppercase transition-all duration-300 hover:bg-white hover:text-black active:scale-98 shadow-md"
                   >
                     {slide.secondaryCta.label}
                   </Link>
@@ -161,16 +191,16 @@ export default function HeroCarousel() {
           </AnimatePresence>
         </div>
 
-        {/* ── Slide Indicator Dots (Centered Bottom) ── */}
-        <div className="absolute bottom-6 inset-x-0 z-30 flex items-center justify-center gap-2">
+        {/* ── Versace Architectural Pagination Indicators ── */}
+        <div className="absolute bottom-3 sm:bottom-4 inset-x-0 z-30 flex items-center justify-center gap-2">
           {SLIDES.map((s, i) => (
             <button
               key={s.src}
               onClick={() => setIndex(i)}
               aria-label={`Go to slide ${i + 1}`}
               className={cn(
-                "h-1.5 transition-all duration-500 rounded-full",
-                i === index ? "w-7 bg-white" : "w-1.5 bg-white/40 hover:bg-white/70"
+                "h-[2px] transition-all duration-400 rounded-none",
+                i === index ? "w-8 sm:w-12 bg-white" : "w-3 sm:w-4 bg-white/40 hover:bg-white/70"
               )}
             />
           ))}

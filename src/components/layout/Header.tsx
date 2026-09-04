@@ -48,53 +48,55 @@ export default function Header() {
             scrolled ? "h-12 md:h-13" : "h-14 md:h-16"
           )}
         >
-          {/* Left — Clean, Minimal Navigation (Shop & Size Guide) */}
-          <nav className="hidden items-center gap-8 md:flex">
-            <Link
-              href="/shop"
+          {/* Left Column — Navigation (Desktop) & Menu Icon (Mobile) */}
+          <div className="flex items-center justify-start">
+            <button
               className={cn(
-                "link-sweep eyebrow text-xs tracking-[0.22em] transition-colors duration-300",
+                "flex h-9 w-9 items-center justify-center rounded-full md:hidden transition-all duration-200 focus:outline-none active:scale-90",
                 isTransparent
-                  ? "text-white/95 hover:text-white"
-                  : "text-ink hover:text-clay"
+                  ? "text-white hover:bg-white/10"
+                  : "text-ink hover:bg-ink/5 hover:text-clay"
               )}
+              onClick={() => setMenuOpen(true)}
+              aria-label="Open menu"
             >
-              Shop
-            </Link>
-            <Link
-              href="/sizing"
-              className={cn(
-                "link-sweep eyebrow text-xs tracking-[0.22em] transition-colors duration-300",
-                isTransparent
-                  ? "text-white/95 hover:text-white"
-                  : "text-ink hover:text-clay"
-              )}
-            >
-              Size Guide
-            </Link>
-            {!isPending && isAdmin && (
-              <Link
-                href="/admin"
-                className="link-sweep eyebrow text-xs tracking-[0.22em] text-clay font-medium"
-              >
-                Admin
-              </Link>
-            )}
-          </nav>
+              <Menu className="h-5 w-5" strokeWidth={1.75} />
+            </button>
 
-          {/* Left — Mobile Menu Button */}
-          <button
-            className={cn(
-              "flex items-center justify-center p-2 -ml-2 md:hidden transition-colors focus:outline-none",
-              isTransparent
-                ? "text-white hover:text-white/80"
-                : "text-ink hover:text-clay"
-            )}
-            onClick={() => setMenuOpen(true)}
-            aria-label="Open menu"
-          >
-            <Menu className="h-5 w-5 sm:h-6 sm:w-6" strokeWidth={1.5} />
-          </button>
+            {/* Desktop Nav */}
+            <nav className="hidden items-center gap-8 md:flex">
+              <Link
+                href="/shop"
+                className={cn(
+                  "link-sweep eyebrow text-xs tracking-[0.22em] transition-colors duration-300",
+                  isTransparent
+                    ? "text-white/95 hover:text-white"
+                    : "text-ink hover:text-clay"
+                )}
+              >
+                Shop
+              </Link>
+              <Link
+                href="/sizing"
+                className={cn(
+                  "link-sweep eyebrow text-xs tracking-[0.22em] transition-colors duration-300",
+                  isTransparent
+                    ? "text-white/95 hover:text-white"
+                    : "text-ink hover:text-clay"
+                )}
+              >
+                Size Guide
+              </Link>
+              {!isPending && isAdmin && (
+                <Link
+                  href="/admin"
+                  className="link-sweep eyebrow text-xs tracking-[0.22em] text-clay font-medium"
+                >
+                  Admin
+                </Link>
+              )}
+            </nav>
+          </div>
 
           {/* Center — Prominent, Bold & Visible Brand Logo */}
           <Link

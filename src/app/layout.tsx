@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/components/cart/CartProvider";
 import AnnouncementBar from "@/components/layout/AnnouncementBar";
@@ -9,11 +9,12 @@ import CartDrawer from "@/components/cart/CartDrawer";
 import { getAnnouncements } from "@/db/queries";
 import { cn } from "@/lib/utils";
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+const cormorant = Cormorant_Garamond({
+  variable: "--font-serif",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
   style: ["normal", "italic"],
-  axes: ["opsz", "SOFT", "WONK"],
+  display: "swap",
 });
 
 const inter = Inter({
@@ -148,7 +149,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={cn("h-full", "antialiased", fraunces.variable, inter.variable)}
+      className={cn("h-full", "antialiased", cormorant.variable, inter.variable)}
     >
       <head>
         <script
