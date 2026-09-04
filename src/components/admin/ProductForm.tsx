@@ -34,7 +34,11 @@ import {
 } from "@/components/ui/select";
 import { Loader2, Trash2, ArrowLeft, ArrowRight, Star } from "lucide-react";
 
-const FINISHES = ["Creme", "Glazed", "Shimmer"] as const;
+const FINISH_OPTIONS = [
+  { value: "Exclusive", label: "Exclusive" },
+  { value: "Classic", label: "Classic (Single Colours)" },
+  { value: "Signature", label: "Signature" },
+] as const;
 const SIZE_OPTIONS = ["XS", "S", "M", "L"];
 
 export interface ProductFormValues {
@@ -315,9 +319,9 @@ export default function ProductForm({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {FINISHES.map((f) => (
-                    <SelectItem key={f} value={f}>
-                      {f}
+                  {FINISH_OPTIONS.map((f) => (
+                    <SelectItem key={f.value} value={f.value}>
+                      {f.label}
                     </SelectItem>
                   ))}
                 </SelectContent>

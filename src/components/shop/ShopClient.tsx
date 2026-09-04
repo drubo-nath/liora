@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "motion/react";
 import type { ProductDTO, Finish } from "@/db/types";
-import { finishes } from "@/db/types";
+import { finishes, finishDisplayLabels, normalizeFinish } from "@/db/types";
 import ProductCard from "@/components/ProductCard";
 import { cn } from "@/lib/cn";
 import { EASE } from "@/components/motion/Reveal";
@@ -14,13 +14,14 @@ type Sort = "featured" | "low" | "high";
 export default function ShopClient({ products }: { products: ProductDTO[] }) {
   const params = useSearchParams();
   const [finish, setFinish] = useState<Finish | null>(() => {
-    const f = params.get("finish") as Finish | null;
-    return f && (finishes as readonly string[]).includes(f) ? f : null;
+    return normalizeFinish(params.get("finish"));
   });
   const [sort, setSort] = useState<Sort>("featured");
 
   const visible = useMemo(() => {
-    const list = finish ? products.filter((p) => p.finish === finish) : [...products];
+    const list = finish
+      ? products.filter((p) => (normalizeFinish(p.finish) ?? p.finish) === finish)
+      : [...products];
     if (sort === "low") list.sort((a, b) => a.price - b.price);
     if (sort === "high") list.sort((a, b) => b.price - a.price);
     return list;
@@ -57,7 +58,7 @@ export default function ShopClient({ products }: { products: ProductDTO[] }) {
           </FilterChip>
           {finishes.map((f) => (
             <FilterChip key={f} active={finish === f} onClick={() => setFinish(f)}>
-              {f}
+              {finishDisplayLabels[f]}
             </FilterChip>
           ))}
         </div>

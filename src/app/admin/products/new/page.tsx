@@ -11,7 +11,7 @@ const EMPTY: ProductFormValues = {
   description: "",
   price: "" as unknown as number,
   compareAtPrice: null,
-  finish: "Creme",
+  finish: "Exclusive",
   badge: "",
   sizes: [],
   toneA: "#e8cfc4",

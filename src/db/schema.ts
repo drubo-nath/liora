@@ -114,7 +114,14 @@ export const verification = pgTable("verification", {
 });
 
 /* ─── Enums ─────────────────────────────────────────────────────────── */
-export const finishEnum = pgEnum("finish", ["Creme", "Glazed", "Shimmer"]);
+export const finishEnum = pgEnum("finish", [
+  "Exclusive",
+  "Classic",
+  "Signature",
+  "Creme",
+  "Glazed",
+  "Shimmer",
+]);
 export const badgeEnum = pgEnum("badge", ["Bestseller", "New"]);
 export const paymentMethodEnum = pgEnum("payment_method", [
   "cod",

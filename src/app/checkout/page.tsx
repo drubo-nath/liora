@@ -16,6 +16,7 @@ import Swatch from "@/components/Swatch";
 import PhoneVerify from "@/components/auth/PhoneVerify";
 import { EASE } from "@/components/motion/Reveal";
 import { trackPurchase } from "@/lib/analytics";
+import { finishDisplayLabels, type Finish } from "@/db/types";
 
 const PAYMENTS = [
   { id: "cod", label: "Cash on Delivery" },
@@ -212,7 +213,7 @@ export default function CheckoutPage() {
                 <div className="min-w-0 flex-1">
                   <p className="truncate font-serif text-sm sm:text-base">{l.name}</p>
                   <p className="text-xs text-taupe">
-                    {l.finish} · {l.size} · Qty {l.qty}
+                    {(l.finish && finishDisplayLabels[l.finish as Finish]) || l.finish} · {l.size} · Qty {l.qty}
                   </p>
                 </div>
                 <p className="text-xs shrink-0 font-medium sm:text-sm">{formatBDT(l.price * l.qty)}</p>

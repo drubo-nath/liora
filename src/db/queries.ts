@@ -2,11 +2,11 @@ import { cache } from "react";
 import { asc, eq, desc, inArray } from "drizzle-orm";
 import { db, isDbConfigured, schema } from "./index";
 import { productSeeds, reviewSeeds, contentSeeds } from "./seed-data";
-import type { ProductDTO, ReviewDTO } from "./types";
+import { normalizeFinish, type ProductDTO, type ReviewDTO } from "./types";
 import { resolveImageUrl } from "@/lib/storage";
 
 export type { ProductDTO, ReviewDTO, Finish } from "./types";
-export { finishes } from "./types";
+export { finishes, finishDisplayLabels, normalizeFinish } from "./types";
 
 /* ─── DTO mapping ──────────────────────────────────────────────────── */
 
@@ -56,7 +56,7 @@ function toDTO(
     description: r.description,
     price: r.price,
     compareAtPrice: r.compareAtPrice,
-    finish: r.finish,
+    finish: normalizeFinish(r.finish) ?? "Exclusive",
     badge: r.badge,
     tones: [r.toneA, r.toneB],
     imageUrl: cover,
@@ -73,7 +73,7 @@ function seedToDTO(s: (typeof productSeeds)[number]): ProductDTO {
     description: s.description,
     price: s.price,
     compareAtPrice: s.compareAtPrice ?? null,
-    finish: s.finish as ProductDTO["finish"],
+    finish: normalizeFinish(s.finish) ?? "Exclusive",
     badge: (s.badge as ProductDTO["badge"]) ?? null,
     tones: [s.toneA, s.toneB],
     imageUrl: s.imageUrl ?? null,

@@ -6,9 +6,9 @@ const COLS = [
     title: "Collection",
     links: [
       { label: "All Press-Ons", href: "/shop" },
-      { label: "Glazed & Chrome", href: "/shop?finish=Glazed" },
-      { label: "Classic Creme", href: "/shop?finish=Creme" },
-      { label: "Festive Shimmer", href: "/shop?finish=Shimmer" },
+      { label: "Exclusive", href: "/shop?finish=Exclusive" },
+      { label: "Classic (Single Colours)", href: "/shop?finish=Classic" },
+      { label: "Signature", href: "/shop?finish=Signature" },
       { label: "New Arrivals", href: "/shop?sort=new" },
     ],
   },

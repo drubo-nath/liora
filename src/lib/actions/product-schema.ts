@@ -25,7 +25,7 @@ export const productSchema = z.object({
     .min(100)
     .max(100000),
   compareAtPrice: z.number().int().min(100).max(100000).nullable().optional(),
-  finish: z.enum(["Creme", "Glazed", "Shimmer"]),
+  finish: z.enum(["Exclusive", "Classic", "Signature", "Creme", "Glazed", "Shimmer"]),
   badge: z.enum(["Bestseller", "New", "none"]).optional(),
   sizes: z.array(z.string().trim().min(1).max(12)).max(12).optional(),
   toneA: z.string().trim().regex(/^#[0-9a-fA-F]{6}$/, "Hex color").optional(),

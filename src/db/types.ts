@@ -1,5 +1,25 @@
 /** DB-agnostic types and constants shared between server and client. */
 
+export type Finish = "Exclusive" | "Classic" | "Signature";
+
+export const finishes: Finish[] = ["Exclusive", "Classic", "Signature"];
+
+export const finishDisplayLabels: Record<Finish, string> = {
+  Exclusive: "Exclusive",
+  Classic: "Classic (Single Colours)",
+  Signature: "Signature",
+};
+
+/** Normalize legacy finish values (Creme -> Exclusive, Glazed -> Classic, Shimmer -> Signature) */
+export function normalizeFinish(f: string | null | undefined): Finish | null {
+  if (!f) return null;
+  const lower = f.toLowerCase().trim();
+  if (lower === "creme" || lower === "exclusive") return "Exclusive";
+  if (lower === "glazed" || lower === "classic" || lower.includes("single colour")) return "Classic";
+  if (lower === "shimmer" || lower === "signature") return "Signature";
+  return null;
+}
+
 export interface ProductDTO {
   slug: string;
   name: string;
@@ -7,7 +27,7 @@ export interface ProductDTO {
   description: string;
   price: number;
   compareAtPrice: number | null;
-  finish: "Creme" | "Glazed" | "Shimmer";
+  finish: Finish;
   badge: "Bestseller" | "New" | null;
   tones: [string, string];
   imageUrl: string | null;
@@ -24,7 +44,3 @@ export interface ReviewDTO {
   rating: number;
   body: string;
 }
-
-export type Finish = "Creme" | "Glazed" | "Shimmer";
-
-export const finishes: Finish[] = ["Creme", "Glazed", "Shimmer"];

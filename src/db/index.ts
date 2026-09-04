@@ -31,7 +31,7 @@ function makeClient(): ReturnType<typeof postgres> {
       "DATABASE_URL is not set — add it to your environment (.env.local locally, project settings on your host) before querying the database.",
     );
   }
-  return postgres(url, { prepare: false, max: 5 });
+  return postgres(url, { prepare: false, max: 5, connect_timeout: 4 });
 }
 
 // Lazy singleton: no pool is opened until the first real query, so module

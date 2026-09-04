@@ -10,14 +10,14 @@ const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://www.liorapressedons.
 export const metadata: Metadata = {
   title: "Shop All Shades — Luxury Press-On Nails in Bangladesh",
   description:
-    "Explore the full LIORA collection of luxury press-on nails in Dhaka, BD. Choose from creme, glazed, and shimmer finishes. Reusable, damage-free, and delivered nationwide.",
+    "Explore the full LIORA collection of luxury press-on nails in Dhaka, BD. Choose from Exclusive, Classic (single colours), and Signature collections. Reusable, damage-free, and delivered nationwide.",
   alternates: {
     canonical: "/shop",
   },
   openGraph: {
     title: "Shop All Shades — LIORA Luxury Press-On Nails",
     description:
-      "Explore the full LIORA collection of luxury press-on nails in Dhaka. Creme, glazed, and shimmer finishes delivered across Bangladesh.",
+      "Explore the full LIORA collection of luxury press-on nails in Dhaka. Exclusive, Classic, and Signature collections delivered across Bangladesh.",
     url: "/shop",
     type: "website",
     images: [{ url: "/header-image.jpg", width: 1200, height: 630, alt: "LIORA Shop Collection" }],
