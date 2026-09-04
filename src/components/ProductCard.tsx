@@ -70,7 +70,7 @@ export default function ProductCard({ product }: { product: ProductDTO }) {
 
           {/* Luxury Badge */}
           {product.badge && (
-            <span className="eyebrow absolute left-3 top-3 z-10 bg-cream/90 px-3 py-1.5 text-[9px] tracking-wider text-ink backdrop-blur-sm shadow-xs">
+            <span className="eyebrow absolute left-2.5 top-2.5 sm:left-3 sm:top-3 z-10 bg-cream/90 px-2.5 py-1 sm:px-3 sm:py-1.5 text-[8px] sm:text-[9px] tracking-wider text-ink backdrop-blur-sm shadow-xs">
               {product.badge}
             </span>
           )}
@@ -98,21 +98,30 @@ export default function ProductCard({ product }: { product: ProductDTO }) {
           </div>
         </div>
 
-        {/* Product Details & Price */}
-        <div className="mt-4 flex items-start justify-between gap-3 px-0.5">
-          <div>
-            <h3 className="font-serif text-lg leading-tight text-ink group-hover:text-clay transition-colors duration-300">
+        {/* Product Details & Price: Structured 2-row layout prevents cramped tagline wrapping on mobile */}
+        <div className="mt-2.5 sm:mt-3.5 space-y-1 sm:space-y-1.5 px-0.5">
+          {/* Row 1: Name and Price */}
+          <div className="flex items-baseline justify-between gap-2">
+            <h3 className="font-serif text-[15px] sm:text-base md:text-lg leading-snug text-ink group-hover:text-clay transition-colors duration-300 truncate">
               {product.name}
             </h3>
-            <p className="mt-1 text-xs text-taupe">{product.tagline}</p>
+            <div className="shrink-0 text-right">
+              <span className="font-medium text-[13px] sm:text-sm text-ink">
+                {formatBDT(product.price)}
+              </span>
+            </div>
           </div>
-          <div className="text-right text-sm">
+
+          {/* Row 2: Clean full-width Tagline with optional compareAtPrice */}
+          <div className="flex items-center justify-between gap-2 text-[11px] sm:text-xs text-taupe min-h-[16px] sm:min-h-[18px]">
+            <p className="truncate text-taupe/85 tracking-normal">
+              {product.tagline}
+            </p>
             {product.compareAtPrice && (
-              <p className="text-xs text-taupe line-through">
+              <span className="shrink-0 text-[10px] sm:text-xs text-taupe/70 line-through">
                 {formatBDT(product.compareAtPrice)}
-              </p>
+              </span>
             )}
-            <p className="font-medium text-ink">{formatBDT(product.price)}</p>
           </div>
         </div>
       </Link>

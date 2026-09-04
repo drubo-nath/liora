@@ -10,6 +10,7 @@ import { cn } from "@/lib/cn";
 import MobileMenu from "./MobileMenu";
 import Image from "next/image";
 import SizeChartModal from "@/components/sizing/SizeChartModal";
+import { Menu } from "lucide-react";
 
 export default function Header() {
   const { count, openCart } = useCart();
@@ -84,19 +85,15 @@ export default function Header() {
           {/* Left — Mobile Menu Button */}
           <button
             className={cn(
-              "eyebrow flex items-center gap-2 md:hidden text-xs tracking-widest transition-colors",
-              isTransparent ? "text-white" : "text-ink"
+              "flex items-center justify-center p-2 -ml-2 md:hidden transition-colors focus:outline-none",
+              isTransparent
+                ? "text-white hover:text-white/80"
+                : "text-ink hover:text-clay"
             )}
             onClick={() => setMenuOpen(true)}
             aria-label="Open menu"
           >
-            <span
-              className={cn(
-                "block h-px w-5 transition-colors",
-                isTransparent ? "bg-white" : "bg-ink"
-              )}
-            />
-            Menu
+            <Menu className="h-5 w-5 sm:h-6 sm:w-6" strokeWidth={1.5} />
           </button>
 
           {/* Center — Prominent, Bold & Visible Brand Logo */}

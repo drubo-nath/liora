@@ -5,6 +5,7 @@ import { getSessionUser } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { AdminToastProvider } from "@/components/admin/AdminToast";
 
 export const metadata: Metadata = {
   title: "Admin — LIORA",
@@ -25,7 +26,8 @@ export default async function AdminLayout({
   if (session.user.role !== "admin") notFound();
 
   return (
-    <div className="admin-root min-h-[calc(100vh-4rem)]">
+    <AdminToastProvider>
+      <div className="admin-root min-h-[calc(100vh-4rem)]">
       <div className="mx-auto flex w-full max-w-6xl gap-8 px-4 py-10 md:px-8">
         <aside className="hidden w-52 shrink-0 md:block">
           <div className="sticky top-10 space-y-6">
@@ -72,5 +74,6 @@ export default async function AdminLayout({
         admin
       </Badge>
     </div>
+    </AdminToastProvider>
   );
 }

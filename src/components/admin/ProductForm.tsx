@@ -18,6 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { useAdminToast } from "./AdminToast";
 import {
   Card,
   CardContent,
@@ -72,6 +73,7 @@ export default function ProductForm({
 }) {
   const router = useRouter();
   const isEdit = Boolean(initial.id);
+  const { toast } = useAdminToast();
 
   const [values, setValues] = useState<ProductFormValues>(initial);
   const [images, setImages] = useState<ProductImageRow[]>(initialImages);
@@ -120,10 +122,20 @@ export default function ProductForm({
         return;
       }
       if (!isEdit) {
+        toast({
+          title: "Product Created",
+          description: `"${input.name}" was added to the catalog.`,
+          type: "success",
+        });
         router.push(`/admin/products/${result.productId}`);
         return;
       }
       setValues((v) => ({ ...v, slug: result.slug }));
+      toast({
+        title: "Product Saved",
+        description: `Changes to "${input.name}" have been saved.`,
+        type: "success",
+      });
       router.refresh();
       setSaving(false);
     } catch (e) {
@@ -206,6 +218,11 @@ export default function ProductForm({
 
   function removeImage(id: number) {
     setImages((prev) => prev.filter((img) => img.id !== id));
+    toast({
+      title: "Image Removed",
+      description: "The photo has been removed from the product gallery.",
+      type: "delete",
+    });
     startTransition(async () => {
       await deleteProductImage(id);
       router.refresh();

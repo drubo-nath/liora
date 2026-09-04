@@ -2,8 +2,6 @@ import { desc, inArray } from "drizzle-orm";
 import { db, schema } from "@/db";
 import { formatBDT } from "@/lib/format";
 import { formatPhone } from "@/lib/phone";
-import { updateOrderStatus } from "@/lib/actions/admin";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -13,13 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import OrderStatusSelector from "@/components/admin/OrderStatusSelector";
 
 export const dynamic = "force-dynamic";
 
@@ -43,14 +35,6 @@ export default async function AdminOrders() {
     const list = byOrder.get(it.orderId) ?? [];
     list.push(it);
     byOrder.set(it.orderId, list);
-  }
-
-  async function setStatus(fd: FormData) {
-    "use server";
-    await updateOrderStatus(
-      Number(fd.get("orderId")),
-      fd.get("status") as (typeof STATUSES)[number],
-    );
   }
 
   return (
@@ -129,27 +113,11 @@ export default async function AdminOrders() {
               </div>
             </CardContent>
             <CardFooter>
-              <form
-                action={setStatus}
-                className="flex w-full flex-wrap items-center gap-3 border-t pt-4"
-              >
-                <input type="hidden" name="orderId" value={o.id} />
-                <Select name="status" defaultValue={o.status}>
-                  <SelectTrigger className="w-40">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {STATUSES.map((s) => (
-                      <SelectItem key={s} value={s}>
-                        {s}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Button type="submit" size="sm">
-                  Update status
-                </Button>
-              </form>
+              <OrderStatusSelector
+                orderId={o.id}
+                orderNumber={o.orderNumber}
+                currentStatus={o.status}
+              />
             </CardFooter>
           </Card>
         ))}

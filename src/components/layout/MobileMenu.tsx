@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import { X } from "lucide-react";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -63,10 +64,15 @@ export default function MobileMenu({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4, ease: EASE }}
         >
-          <div className="flex h-16 items-center justify-between px-5">
-            <span className="font-serif text-[22px] tracking-[0.32em]">LIORA</span>
-            <button onClick={onClose} className="eyebrow" aria-label="Close menu">
-              Close
+          <div className="flex h-16 items-center justify-between px-5 border-b border-line/40">
+            <span className="font-serif text-[22px] tracking-[0.32em] text-ink">LIORA</span>
+            <button
+              onClick={onClose}
+              className="p-2 -mr-2 text-ink hover:text-clay transition-colors flex items-center gap-1.5 focus:outline-none"
+              aria-label="Close menu"
+            >
+              <span className="eyebrow text-xs tracking-widest">Close</span>
+              <X className="h-5 w-5" strokeWidth={1.5} />
             </button>
           </div>
           <nav className="flex flex-1 flex-col justify-center gap-2 px-8">

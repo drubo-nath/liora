@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { asc, eq } from "drizzle-orm";
 import { db, schema } from "@/db";
 import { resolveImageUrl } from "@/lib/storage";
+import { normalizeFinish } from "@/db/types";
 import ProductForm, {
   type ProductFormValues,
 } from "@/components/admin/ProductForm";
@@ -44,7 +45,7 @@ export default async function EditProductPage({
     description: row.description,
     price: row.price,
     compareAtPrice: row.compareAtPrice,
-    finish: row.finish,
+    finish: normalizeFinish(row.finish) ?? "Exclusive",
     badge: row.badge ?? "",
     sizes: row.sizes ?? [],
     toneA: row.toneA,
