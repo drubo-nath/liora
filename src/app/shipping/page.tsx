@@ -23,10 +23,7 @@ export default function ShippingPage() {
       {/* Header */}
       <header className="max-w-3xl">
         <Reveal>
-          <p className="eyebrow text-clay">Logistics &amp; Dispatch</p>
-        </Reveal>
-        <Reveal delay={1}>
-          <h1 className="headline mt-4 text-5xl md:text-7xl">
+          <h1 className="headline text-5xl md:text-7xl">
             Shipping &amp; <em>Delivery</em>
           </h1>
         </Reveal>
@@ -71,7 +68,7 @@ export default function ShippingPage() {
             <Reveal key={tier.region} delay={idx} className="h-full">
               <div className="h-full bg-cream p-8 md:p-10 flex flex-col justify-between">
                 <div>
-                  <span className="eyebrow text-clay">Tier 0{idx + 1}</span>
+                  <span className="font-serif text-sm italic text-clay">Tier 0{idx + 1}</span>
                   <h3 className="font-serif text-2xl mt-2 text-ink">{tier.region}</h3>
                   <div className="mt-5 flex items-baseline gap-1">
                     <span className="font-serif text-4xl text-ink font-light">{tier.charge}</span>
@@ -91,8 +88,7 @@ export default function ShippingPage() {
       <section className="mt-20 grid gap-12 lg:grid-cols-2 lg:gap-16 items-start">
         <Reveal>
           <div className="border border-line bg-cream p-8 md:p-12">
-            <span className="eyebrow text-clay">Artisan Creation</span>
-            <h2 className="headline mt-3 text-3xl md:text-4xl">
+            <h2 className="headline text-3xl md:text-4xl">
               Handmade <em>to Order</em>
             </h2>
             <p className="mt-5 text-sm md:text-base text-taupe leading-relaxed">
@@ -115,8 +111,7 @@ export default function ShippingPage() {
         <div className="space-y-8">
           <Reveal delay={1}>
             <div className="border border-line bg-sand/30 p-8">
-              <span className="eyebrow text-clay">Trusted Partners</span>
-              <h3 className="headline mt-2 text-2xl">Courier Partners &amp; SMS Tracking</h3>
+              <h3 className="headline text-2xl">Courier Partners &amp; SMS Tracking</h3>
               <p className="mt-4 text-sm text-taupe leading-relaxed">
                 We partner with dependable logistics leaders in Bangladesh including{" "}
                 <strong className="text-ink">Steadfast, RedX, and Pathao</strong> to ensure prompt,
@@ -132,8 +127,7 @@ export default function ShippingPage() {
 
           <Reveal delay={2}>
             <div className="border border-line bg-cream p-8">
-              <span className="eyebrow text-clay">Order Support</span>
-              <h3 className="headline mt-2 text-2xl">Order Tracking &amp; Delays</h3>
+              <h3 className="headline text-2xl">Order Tracking &amp; Delays</h3>
               <p className="mt-4 text-sm text-taupe leading-relaxed">
                 If your parcel is delayed beyond the estimated timeline or you need assistance with
                 the rider, please reach out to our customer care team with your{" "}

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { formatBDT } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "How to Find Your Size — Press-On Nail Sizing Guide",
@@ -20,9 +19,6 @@ export default function SizingPage() {
       {/* Header Banner */}
       <div className="border-b border-line/60 bg-cream/50 py-12 md:py-16">
         <div className="mx-auto max-w-4xl px-5 text-center">
-          <p className="eyebrow text-xs tracking-[0.24em] text-taupe uppercase mb-3">
-            Accurate Fit Guarantee
-          </p>
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-ink font-normal tracking-tight">
             How to Find Your Size
           </h1>
@@ -36,7 +32,7 @@ export default function SizingPage() {
         {/* ── STEP 1: MEASURE YOUR NAILS ── */}
         <section className="space-y-6">
           <div className="border-b border-line/60 pb-4">
-            <span className="eyebrow text-xs tracking-widest text-clay font-medium uppercase">
+            <span className="font-serif text-sm italic text-clay">
               Step 01
             </span>
             <h2 className="font-serif text-2xl md:text-3xl text-ink mt-1">
@@ -93,7 +89,7 @@ export default function SizingPage() {
         {/* ── STEP 2: CHOOSE THE RIGHT SIZE ── */}
         <section className="space-y-6">
           <div className="border-b border-line/60 pb-4">
-            <span className="eyebrow text-xs tracking-widest text-clay font-medium uppercase">
+            <span className="font-serif text-sm italic text-clay">
               Step 02
             </span>
             <h2 className="font-serif text-2xl md:text-3xl text-ink mt-1">
@@ -106,7 +102,7 @@ export default function SizingPage() {
 
           {/* Standard Size Chart Graphic */}
           <div className="space-y-3">
-            <h3 className="eyebrow text-xs tracking-widest text-ink font-semibold uppercase">
+            <h3 className="text-xs tracking-widest text-ink font-semibold uppercase">
               Standard Size Chart (Measurements in MM)
             </h3>
             <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xs border border-line/60 bg-white shadow-xs">
@@ -123,7 +119,7 @@ export default function SizingPage() {
 
           {/* Short Almond Size Chart Graphic */}
           <div className="space-y-3 pt-6">
-            <h3 className="eyebrow text-xs tracking-widest text-ink font-semibold uppercase">
+            <h3 className="text-xs tracking-widest text-ink font-semibold uppercase">
               Short Almond Size Chart (Special Contour)
             </h3>
             <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xs border border-line/60 bg-white shadow-xs">
@@ -152,7 +148,7 @@ export default function SizingPage() {
         {/* ── STEP 3: NAIL SHAPES & LENGTHS ── */}
         <section className="space-y-6">
           <div className="border-b border-line/60 pb-4">
-            <span className="eyebrow text-xs tracking-widest text-clay font-medium uppercase">
+            <span className="font-serif text-sm italic text-clay">
               Step 03
             </span>
             <h2 className="font-serif text-2xl md:text-3xl text-ink mt-1">
@@ -165,7 +161,7 @@ export default function SizingPage() {
 
           {/* Shapes and Lengths Overview */}
           <div className="space-y-3">
-            <h3 className="eyebrow text-xs tracking-widest text-ink font-semibold uppercase">
+            <h3 className="text-xs tracking-widest text-ink font-semibold uppercase">
               Silhouette &amp; Length Matrix
             </h3>
             <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xs border border-line/60 bg-white shadow-xs">
@@ -181,7 +177,7 @@ export default function SizingPage() {
 
           {/* Real Hand Photo Guide */}
           <div className="space-y-3 pt-6">
-            <h3 className="eyebrow text-xs tracking-widest text-ink font-semibold uppercase">
+            <h3 className="text-xs tracking-widest text-ink font-semibold uppercase">
               Worn on Natural Hands
             </h3>
             <div className="relative aspect-[4/5] sm:aspect-[1/1] w-full overflow-hidden rounded-xs border border-line/60 bg-white shadow-xs">
@@ -197,7 +193,7 @@ export default function SizingPage() {
 
           {/* Square and Cat Claw Variations */}
           <div className="space-y-3 pt-6">
-            <h3 className="eyebrow text-xs tracking-widest text-ink font-semibold uppercase">
+            <h3 className="text-xs tracking-widest text-ink font-semibold uppercase">
               Square &amp; Cat Claw Lengths
             </h3>
             <div className="relative aspect-[16/7] w-full overflow-hidden rounded-xs border border-line/60 bg-white shadow-xs">
@@ -214,9 +210,6 @@ export default function SizingPage() {
 
         {/* ── BOTTOM CTA ── */}
         <div className="text-center border-t border-line/60 pt-12">
-          <p className="eyebrow text-xs tracking-widest text-taupe uppercase mb-3">
-            Know Your Measurements?
-          </p>
           <h3 className="font-serif text-3xl text-ink">
             Discover Your Next Signature Set
           </h3>

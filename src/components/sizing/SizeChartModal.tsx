@@ -75,10 +75,7 @@ export default function SizeChartModal({ open, onClose }: SizeChartModalProps) {
             {/* Header */}
             <div className="sticky top-0 z-20 flex items-center justify-between border-b border-line bg-cream/95 px-6 py-4 backdrop-blur-md">
               <div>
-                <p className="eyebrow text-xs tracking-widest text-clay font-medium uppercase">
-                  Accurate Fit Guide
-                </p>
-                <h2 id="size-guide-title" className="font-serif text-2xl md:text-3xl mt-0.5 text-ink">
+                <h2 id="size-guide-title" className="font-serif text-2xl md:text-3xl text-ink">
                   How to Find Your Size
                 </h2>
               </div>

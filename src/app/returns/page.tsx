@@ -23,10 +23,7 @@ export default function ReturnsPage() {
       {/* Header */}
       <header className="max-w-3xl">
         <Reveal>
-          <p className="eyebrow text-clay">Customer Assurance &amp; Hygiene</p>
-        </Reveal>
-        <Reveal delay={1}>
-          <h1 className="headline mt-4 text-5xl md:text-7xl">
+          <h1 className="headline text-5xl md:text-7xl">
             Return &amp; <em>Refund Policy</em>
           </h1>
         </Reveal>
@@ -214,7 +211,7 @@ export default function ReturnsPage() {
         {/* Sidebar */}
         <aside className="h-fit space-y-6 lg:sticky lg:top-28">
           <div className="border border-line bg-cream p-6">
-            <p className="eyebrow text-clay mb-2">Need to initiate a return?</p>
+            <p className="font-serif text-sm italic text-clay mb-2">Need to initiate a return?</p>
             <h3 className="headline text-2xl mb-3">Within 24 Hours</h3>
             <p className="text-xs text-taupe leading-relaxed mb-6">
               Have your Order ID and uncut unboxing video ready when messaging our team.

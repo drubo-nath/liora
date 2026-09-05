@@ -83,10 +83,7 @@ export default function TermsPage() {
       {/* Header */}
       <header className="max-w-3xl">
         <Reveal>
-          <p className="eyebrow text-clay">Legal &amp; Agreement</p>
-        </Reveal>
-        <Reveal delay={1}>
-          <h1 className="headline mt-4 text-5xl md:text-7xl">
+          <h1 className="headline text-5xl md:text-7xl">
             Terms &amp; <em>Conditions</em>
           </h1>
         </Reveal>
@@ -130,7 +127,7 @@ export default function TermsPage() {
         {/* Sidebar */}
         <aside className="h-fit space-y-6 lg:sticky lg:top-28">
           <div className="border border-line bg-cream p-6">
-            <p className="eyebrow text-clay mb-3">Policy Directory</p>
+            <p className="font-serif text-sm italic text-clay mb-3">Policy Directory</p>
             <ul className="space-y-2 text-sm text-taupe">
               <li>
                 <span className="text-ink font-medium">• Terms &amp; Conditions</span>

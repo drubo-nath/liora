@@ -35,10 +35,10 @@ export default function CartDrawer() {
             aria-label="Shopping bag"
           >
             <header className="hairline flex items-center justify-between border-b px-6 py-5">
-              <p className="eyebrow text-taupe">Your Bag</p>
+              <p className="font-serif text-base text-ink">Your Bag</p>
               <button
                 onClick={closeCart}
-                className="link-sweep eyebrow text-ink"
+                className="link-sweep text-xs uppercase tracking-widest text-ink"
                 aria-label="Close bag"
               >
                 Close
@@ -56,7 +56,7 @@ export default function CartDrawer() {
                 <Link
                   href="/shop"
                   onClick={closeCart}
-                  className="eyebrow mt-2 border border-ink px-8 py-4 transition-colors duration-300 hover:bg-ink hover:text-cream"
+                  className="font-serif text-xs uppercase tracking-widest mt-2 border border-ink px-8 py-4 transition-colors duration-300 hover:bg-ink hover:text-cream"
                 >
                   Shop Shades
                 </Link>
@@ -130,7 +130,7 @@ export default function CartDrawer() {
 
                 <footer className="hairline border-t px-6 py-5">
                   <div className="mb-1 flex items-center justify-between">
-                    <p className="eyebrow text-taupe">Subtotal</p>
+                    <p className="text-xs uppercase tracking-widest text-taupe font-medium">Subtotal</p>
                     <p className="font-serif text-xl">{formatBDT(subtotal)}</p>
                   </div>
                   <p className="mb-5 text-xs text-taupe">
@@ -139,7 +139,7 @@ export default function CartDrawer() {
                   <Link
                     href="/checkout"
                     onClick={closeCart}
-                    className="eyebrow block bg-ink py-4 text-center text-cream transition-colors duration-300 hover:bg-clay-deep"
+                    className="font-serif text-xs uppercase tracking-widest block bg-ink py-4 text-center text-cream transition-colors duration-300 hover:bg-clay-deep"
                   >
                     Checkout
                   </Link>

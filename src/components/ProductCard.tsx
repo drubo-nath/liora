@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useSyncExternalStore, useCallback } from "react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
+import { Heart, ShoppingBag, Check } from "lucide-react";
 import type { ProductDTO } from "@/db/types";
-import { formatBDT } from "@/lib/format";
 import { useCart } from "@/components/cart/CartProvider";
 import Swatch from "@/components/Swatch";
 import { EASE } from "@/components/motion/Reveal";
@@ -15,6 +15,29 @@ import { getProductLifestyleImage } from "@/lib/product-media";
 export default function ProductCard({ product }: { product: ProductDTO }) {
   const { add } = useCart();
   const [added, setAdded] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Subscribe to wishlist changes without cascading effect renders
+  const subscribeWishlist = useCallback((callback: () => void) => {
+    window.addEventListener("storage", callback);
+    window.addEventListener("wishlist_change", callback);
+    return () => {
+      window.removeEventListener("storage", callback);
+      window.removeEventListener("wishlist_change", callback);
+    };
+  }, []);
+
+  const wishlisted = useSyncExternalStore(
+    subscribeWishlist,
+    () => {
+      try {
+        return typeof window !== "undefined" && localStorage.getItem(`wishlist_${product.slug}`) === "1";
+      } catch {
+        return false;
+      }
+    },
+    () => false
+  );
 
   const primaryImage = product.imageUrl || (product.images && product.images[0]) || null;
   const lifestyleImage = getProductLifestyleImage(product);
@@ -28,6 +51,24 @@ export default function ProductCard({ product }: { product: ProductDTO }) {
     setTimeout(() => setAdded(false), 1600);
   };
 
+  const toggleWishlist = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      if (typeof window !== "undefined") {
+        const key = `wishlist_${product.slug}`;
+        if (localStorage.getItem(key) === "1") {
+          localStorage.removeItem(key);
+        } else {
+          localStorage.setItem(key, "1");
+        }
+        window.dispatchEvent(new Event("wishlist_change"));
+      }
+    } catch {
+      // ignore
+    }
+  };
+
   return (
     <motion.article
       variants={{
@@ -35,10 +76,17 @@ export default function ProductCard({ product }: { product: ProductDTO }) {
         visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: EASE } },
       }}
       className="group relative"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      <Link href={`/product/${product.slug}`} className="block">
-        <div className="relative aspect-[4/5] w-full overflow-hidden bg-sand">
-          {/* Image 1: Studio Flat Lay on Neutral Linen/Silk */}
+      {/* ── Product Media Container ── */}
+      <div className="relative aspect-[4/5] w-full overflow-hidden bg-sand/40">
+        <Link
+          href={`/product/${product.slug}`}
+          className="block h-full w-full relative"
+          aria-label={`View ${product.name}`}
+        >
+          {/* Primary Studio Flat Lay Image */}
           {primaryImage ? (
             <Image
               src={primaryImage}
@@ -57,7 +105,7 @@ export default function ProductCard({ product }: { product: ProductDTO }) {
             />
           )}
 
-          {/* Image 2: Model's Real Hand (Worn Perspective) — Smooth Crossfade */}
+          {/* Secondary Worn On Hand Image — Crossfade on Hover */}
           {hasSecondary && lifestyleImage && (
             <Image
               src={lifestyleImage}
@@ -68,63 +116,84 @@ export default function ProductCard({ product }: { product: ProductDTO }) {
             />
           )}
 
-          {/* Luxury Badge */}
-          {product.badge && (
-            <span className="eyebrow absolute left-2.5 top-2.5 sm:left-3 sm:top-3 z-10 bg-cream/90 px-2.5 py-1 sm:px-3 sm:py-1.5 text-[8px] sm:text-[9px] tracking-wider text-ink backdrop-blur-sm shadow-xs">
-              {product.badge}
-            </span>
-          )}
-
-          {/* Discreet "Quick Add +" Button Sliding Up from Bottom Edge */}
-          <div className="absolute inset-x-3 bottom-3 z-20 translate-y-3 opacity-0 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-y-0 group-hover:opacity-100">
-            <button
-              type="button"
-              onClick={handleQuickAdd}
-              className={cn(
-                "flex w-full items-center justify-between border px-4 py-3 text-[11px] tracking-widest uppercase backdrop-blur-md transition-all duration-300",
-                added
-                  ? "border-clay bg-clay text-cream shadow-md"
-                  : "border-line/70 bg-cream/95 text-ink shadow-sm hover:border-ink hover:bg-ink hover:text-cream"
-              )}
-              aria-label={`Quick add ${product.name} to bag`}
-            >
-              <span className="font-medium">
-                {added ? "Added to Bag" : "Quick Add"}
-              </span>
-              <span className="font-serif text-sm leading-none">
-                {added ? "✓" : "+"}
-              </span>
-            </button>
-          </div>
-        </div>
-
-        {/* Product Details & Price: Structured 2-row layout prevents cramped tagline wrapping on mobile */}
-        <div className="mt-2.5 sm:mt-3.5 space-y-1 sm:space-y-1.5 px-0.5">
-          {/* Row 1: Name and Price */}
-          <div className="flex items-baseline justify-between gap-2">
-            <h3 className="font-serif text-[15px] sm:text-base md:text-lg leading-snug text-ink group-hover:text-clay transition-colors duration-300 truncate">
-              {product.name}
-            </h3>
-            <div className="shrink-0 text-right">
-              <span className="font-medium text-[13px] sm:text-sm text-ink">
-                {formatBDT(product.price)}
-              </span>
+          {/* 2-Segment Image Indicator Bar (Matching Versace reference) */}
+          {hasSecondary && (
+            <div className="absolute bottom-2.5 inset-x-0 flex justify-center pointer-events-none z-10">
+              <div className="flex h-[2px] w-14 overflow-hidden rounded-full bg-black/15">
+                <div
+                  className={cn(
+                    "h-full w-1/2 bg-ink transition-transform duration-300 ease-out",
+                    isHovered ? "translate-x-full" : "translate-x-0"
+                  )}
+                />
+              </div>
             </div>
-          </div>
+          )}
+        </Link>
 
-          {/* Row 2: Clean full-width Tagline with optional compareAtPrice */}
-          <div className="flex items-center justify-between gap-2 text-[11px] sm:text-xs text-taupe min-h-[16px] sm:min-h-[18px]">
-            <p className="truncate text-taupe/85 tracking-normal">
-              {product.tagline}
-            </p>
+        {/* Wishlist Heart Icon (Top-Right) — Sibling to Link, avoids invalid DOM nesting */}
+        <button
+          type="button"
+          onClick={toggleWishlist}
+          suppressHydrationWarning
+          className="absolute top-1.5 right-1.5 z-20 flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center text-ink/90 hover:text-ink transition-all active:scale-90 cursor-pointer"
+          aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
+        >
+          <Heart
+            className={cn(
+              "h-5 w-5 stroke-[1.5] transition-colors",
+              wishlisted
+                ? "fill-clay text-clay stroke-clay"
+                : "text-ink/80 hover:text-clay"
+            )}
+          />
+        </button>
+
+        {/* Luxury Badge (Top-Left) */}
+        {product.badge && (
+          <span className="font-sans uppercase font-medium pointer-events-none absolute left-2.5 top-2.5 z-10 bg-cream/90 px-1.5 py-[1.5px] sm:py-1 text-[8px] sm:text-[9px] tracking-wider text-ink backdrop-blur-sm shadow-xs">
+            {product.badge}
+          </span>
+        )}
+      </div>
+
+      {/* ── Product Info & Action (Matching Versace reference) ── */}
+      <div className="mt-3 flex items-start justify-between gap-2.5 px-0.5">
+        {/* Left: Title & Price Link */}
+        <Link
+          href={`/product/${product.slug}`}
+          className="flex-1 min-w-0 block group/title"
+          aria-label={`View ${product.name}`}
+        >
+          <h3 className="font-serif font-semibold text-[14px] sm:text-[15px] md:text-base text-ink leading-snug line-clamp-2 group-hover/title:text-clay transition-colors duration-300">
+            {product.name}
+          </h3>
+          <div className="mt-1 flex items-baseline gap-2">
+            <span className="font-base text-[12px] sm:text-sm text-ink font-normal">
+              ৳ {product.price.toLocaleString("en-US")}
+            </span>
             {product.compareAtPrice && (
-              <span className="shrink-0 text-[10px] sm:text-xs text-taupe/70 line-through">
-                {formatBDT(product.compareAtPrice)}
+              <span className="text-[11px] sm:text-xs text-taupe/70 line-through">
+                ৳ {product.compareAtPrice.toLocaleString("en-US")}
               </span>
             )}
           </div>
-        </div>
-      </Link>
+        </Link>
+
+        {/* Right: Quick Add Shopping Bag Icon Button — Sibling to Link, avoids invalid DOM nesting */}
+        <button
+          type="button"
+          onClick={handleQuickAdd}
+          className="shrink-0 mt-0.5 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-end ml-0.5 text-ink hover:text-clay transition-all active:scale-90 cursor-pointer"
+          aria-label={`Add ${product.name} to bag`}
+        >
+          {added ? (
+            <Check className="h-5 w-5 stroke-[2] text-clay animate-scale-in" />
+          ) : (
+            <ShoppingBag className="h-5 w-5 stroke-[1.5]" />
+          )}
+        </button>
+      </div>
     </motion.article>
   );
 }

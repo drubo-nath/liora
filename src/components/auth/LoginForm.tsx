@@ -74,7 +74,7 @@ export default function LoginForm() {
             <button
               onClick={sendOtp}
               disabled={busy}
-              className="eyebrow w-full bg-ink py-4 text-cream transition-colors hover:bg-clay-deep disabled:opacity-50"
+              className="w-full bg-ink py-4 text-xs uppercase tracking-wider font-medium text-cream transition-colors hover:bg-clay-deep disabled:opacity-50"
             >
               {busy ? "Sending…" : "Send Code"}
             </button>
@@ -108,7 +108,7 @@ export default function LoginForm() {
             <button
               onClick={verify}
               disabled={busy || code.length !== 6}
-              className="eyebrow w-full bg-ink py-4 text-cream transition-colors hover:bg-clay-deep disabled:opacity-50"
+              className="w-full bg-ink py-4 text-xs uppercase tracking-wider font-medium text-cream transition-colors hover:bg-clay-deep disabled:opacity-50"
             >
               {busy ? "Verifying…" : "Verify & Sign In"}
             </button>

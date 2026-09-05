@@ -149,14 +149,11 @@ export default function FaqPage() {
         {/* Header */}
         <header className="max-w-3xl">
           <Reveal>
-            <p className="eyebrow text-clay">Customer Care</p>
-          </Reveal>
-          <Reveal delay={1}>
-            <h1 className="headline mt-4 text-5xl md:text-7xl">
+            <h1 className="headline text-5xl md:text-7xl">
               Frequently Asked <em>Questions</em>
             </h1>
           </Reveal>
-          <Reveal delay={2}>
+          <Reveal delay={1}>
             <p className="mt-6 text-base md:text-lg text-taupe leading-relaxed">
               Everything you need to know about measuring, wearing, caring for, and ordering your
               handcrafted Liora press-on nails.
@@ -172,7 +169,7 @@ export default function FaqPage() {
               <Reveal>
                 <div className="mb-6 flex items-baseline justify-between border-b border-line pb-3">
                   <h2 className="headline text-2xl md:text-3xl">Sizing &amp; Application</h2>
-                  <span className="eyebrow text-clay">01</span>
+                  <span className="font-serif text-sm italic text-clay">01</span>
                 </div>
               </Reveal>
               <Reveal delay={1}>
@@ -185,7 +182,7 @@ export default function FaqPage() {
               <Reveal>
                 <div className="mb-6 flex items-baseline justify-between border-b border-line pb-3">
                   <h2 className="headline text-2xl md:text-3xl">Orders &amp; Shipping</h2>
-                  <span className="eyebrow text-clay">02</span>
+                  <span className="font-serif text-sm italic text-clay">02</span>
                 </div>
               </Reveal>
               <Reveal delay={1}>
@@ -198,8 +195,7 @@ export default function FaqPage() {
           <aside className="h-fit space-y-8 lg:sticky lg:top-28">
             <Reveal delay={2}>
               <div className="border border-line bg-cream p-8">
-                <p className="eyebrow text-clay">Personalized Help</p>
-                <h3 className="headline mt-3 text-2xl">Need custom advice?</h3>
+                <h3 className="headline text-2xl">Need custom advice?</h3>
                 <p className="mt-3 text-sm text-taupe leading-relaxed">
                   Unsure about your sizing or need help picking the right shape for your hand? Our
                   nail artists are here to assist.
@@ -238,7 +234,7 @@ export default function FaqPage() {
                     </Link>
                   </li>
                   <li>
-                    <Link href="/about#ritual" className="hover:text-ink hover:underline">
+                    <Link href="/#ritual" className="hover:text-ink hover:underline">
                       The 10-Minute Application Ritual →
                     </Link>
                   </li>

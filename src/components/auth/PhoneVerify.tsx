@@ -61,7 +61,7 @@ export default function PhoneVerify() {
       transition={{ duration: 0.7, ease: EASE }}
       className="hairline border bg-cream p-6 md:p-8"
     >
-      <p className="eyebrow text-clay">Step 1 — Verify your number</p>
+      <p className="font-serif text-base text-ink">Step 1 — Verify your number</p>
       <p className="mt-3 max-w-md text-sm leading-relaxed text-taupe">
         Orders are tied to your mobile number. We&apos;ll text you a one-time
         code — no password needed.
@@ -88,7 +88,7 @@ export default function PhoneVerify() {
             <button
               onClick={sendOtp}
               disabled={busy}
-              className="eyebrow shrink-0 bg-ink px-6 py-3.5 text-cream transition-colors hover:bg-clay-deep disabled:opacity-50 sm:py-0"
+              className="text-xs uppercase tracking-wider font-medium shrink-0 bg-ink px-6 py-3.5 text-cream transition-colors hover:bg-clay-deep disabled:opacity-50 sm:py-0"
             >
               {busy ? "Sending…" : "Send Code"}
             </button>
@@ -120,7 +120,7 @@ export default function PhoneVerify() {
               <button
                 onClick={verify}
                 disabled={busy || code.length !== 6}
-                className="eyebrow flex-1 bg-ink px-6 py-3.5 text-cream transition-colors hover:bg-clay-deep disabled:opacity-50"
+                className="text-xs uppercase tracking-wider font-medium flex-1 bg-ink px-6 py-3.5 text-cream transition-colors hover:bg-clay-deep disabled:opacity-50"
               >
                 {busy ? "Verifying…" : "Verify & Continue"}
               </button>

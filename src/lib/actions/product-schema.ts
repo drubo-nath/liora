@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { normalizeFinish } from "@/db/types";
 
 /**
  * Shared product validation schema. Lives outside "use server" because
@@ -25,7 +26,10 @@ export const productSchema = z.object({
     .min(100)
     .max(100000),
   compareAtPrice: z.number().int().min(100).max(100000).nullable().optional(),
-  finish: z.enum(["Exclusive", "Classic", "Signature"]),
+  finish: z.preprocess(
+    (val) => normalizeFinish(typeof val === "string" ? val : "") ?? val,
+    z.enum(["Exclusive", "Classic", "Signature"])
+  ),
   badge: z.enum(["Bestseller", "New", "none"]).optional(),
   sizes: z.array(z.string().trim().min(1).max(12)).max(12).optional(),
   toneA: z.string().trim().regex(/^#[0-9a-fA-F]{6}$/, "Hex color").optional(),

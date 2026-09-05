@@ -15,15 +15,15 @@ export default function AnnouncementBar({ messages }: { messages: string[] }) {
   if (messages.length === 0) return null;
 
   return (
-    <div className="relative z-[60] flex h-9 items-center justify-center overflow-hidden bg-ink text-cream">
+    <div className="relative z-[60] flex h-8 items-center justify-center overflow-hidden bg-ink text-cream">
       <AnimatePresence mode="wait">
         <motion.p
           key={i}
-          initial={{ y: 12, opacity: 0 }}
+          initial={{ y: 10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -12, opacity: 0 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="eyebrow absolute text-[10px] tracking-[0.24em]"
+          exit={{ y: -10, opacity: 0 }}
+          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute font-serif text-[9px] tracking-[0.26em] uppercase font-normal text-cream/95 text-center px-4"
         >
           {messages[i]}
         </motion.p>

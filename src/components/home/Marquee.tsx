@@ -11,7 +11,7 @@ export default async function Marquee() {
           <div key={half} className="flex items-center" aria-hidden={half === 1}>
             {row.map((item, i) => (
               <span key={`${half}-${i}`} className="flex items-center">
-                <span className="eyebrow px-8 text-taupe">{item}</span>
+                <span className="font-serif text-sm italic px-8 text-taupe">{item}</span>
                 <span className="text-clay">✦</span>
               </span>
             ))}

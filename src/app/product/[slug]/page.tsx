@@ -135,7 +135,7 @@ export default async function ProductPage({
       />
 
       <nav className="mx-auto max-w-[1440px] px-5 pt-8 md:px-10" aria-label="Breadcrumb">
-        <ol className="eyebrow flex items-center gap-3 text-[10px] text-taupe">
+        <ol className="flex items-center gap-3 text-[10px] uppercase tracking-wider text-taupe font-medium">
           <li>
             <Link href="/" className="link-sweep">Home</Link>
           </li>
@@ -178,8 +178,7 @@ export default async function ProductPage({
       {/* Related items */}
       <section className="hairline border-t bg-cream py-16 md:py-24">
         <div className="mx-auto max-w-[1440px] px-5 md:px-10">
-          <p className="eyebrow text-clay">Curated Pairings</p>
-          <h2 className="headline mt-4 text-4xl md:text-5xl">
+          <h2 className="headline text-4xl md:text-5xl">
             You might also <em>adore</em>
           </h2>
 

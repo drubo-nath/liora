@@ -13,7 +13,6 @@ interface Slide {
   type?: "video" | "image";
   poster?: string;
   alt: string;
-  eyebrow: string;
   title: string;
   subtitle: string;
   primaryCta: { label: string; href: string };
@@ -26,9 +25,8 @@ const SLIDES: Slide[] = [
     type: "video",
     poster: "/hero-image2.jpg",
     alt: "Liora Luxury Salon Press-On Nails Transition",
-    eyebrow: "ATELIER COLLECTION",
     title: "SCULPTED ARTISTRY",
-    subtitle: "HANDCRAFTED SALON GEL · REUSABLE FOR MONTHS",
+    subtitle: "Handcrafted Salon Gel · Reusable For Months",
     primaryCta: { label: "SHOP THE CAMPAIGN", href: "/shop" },
     secondaryCta: { label: "FIND YOUR SIZE", href: "#size-guide", isSizeGuide: true },
   },
@@ -36,9 +34,8 @@ const SLIDES: Slide[] = [
     src: "/hero-image2.jpg",
     type: "image",
     alt: "Liora Festive and Fall Handcrafted Luxury Press-On Nails",
-    eyebrow: "LIMITED EDITION",
     title: "THE FESTIVE EDIT",
-    subtitle: "AUTHENTIC SHIMMER & GLAZE · 15% OFF",
+    subtitle: "Authentic Shimmer & Glaze · 15% Off",
     primaryCta: { label: "SHOP FESTIVE", href: "/shop" },
     secondaryCta: { label: "EXPLORE ALL", href: "/shop" },
   },
@@ -46,9 +43,8 @@ const SLIDES: Slide[] = [
     src: "/header-image.jpg",
     type: "image",
     alt: "Model wearing Liora luxury handcrafted press-on nails",
-    eyebrow: "SALON PERFECTION",
     title: "MODERN LUXURY",
-    subtitle: "ENGINEERED STRENGTH · ZERO NATURAL DAMAGE",
+    subtitle: "Engineered Strength · Zero Natural Damage",
     primaryCta: { label: "SHOP BESTSELLERS", href: "/shop" },
     secondaryCta: { label: "SIZE GUIDE", href: "#size-guide", isSizeGuide: true },
   },
@@ -128,79 +124,74 @@ export default function HeroCarousel() {
           </motion.div>
         </AnimatePresence>
 
-        {/* ── Versace Pure Cinema Gradient: Clear middle, focused bottom grounding ── */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+        {/* ── Soft Cinema Gradient: Clear middle, gentle bottom grounding ── */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
 
-        {/* ── Versace Front Hero Layout: Centered Bottom, Bold All-Caps, Sharp Geometric CTAs ── */}
-        <div className="absolute inset-x-0 bottom-10 sm:bottom-14 z-20 flex flex-col items-center justify-center px-5 sm:px-8 text-center">
+        {/* ── High-Fashion Editorial Hero Layout: Centered Bottom, Baskervville Serif Headline, Underlined Clean CTAs ── */}
+        <div className="absolute inset-x-0 bottom-12 sm:bottom-16 md:bottom-20 z-20 flex flex-col items-center justify-center px-6 sm:px-10 text-center">
           <AnimatePresence mode="wait">
             <motion.div
               key={slide.title}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.5, ease: EASE }}
-              className="flex flex-col items-center max-w-3xl space-y-3 md:space-y-4"
+              transition={{ duration: 0.6, ease: EASE }}
+              className="flex flex-col items-center max-w-4xl space-y-2.5 sm:space-y-3"
             >
-              {/* Versace Eyebrow */}
-              {slide.eyebrow && (
-                <p className="text-[10px] sm:text-xs uppercase tracking-[0.38em] font-semibold text-white/90">
-                  {slide.eyebrow}
-                </p>
-              )}
-
-              {/* Versace Bold All-Caps Headline */}
-              <h1 className="font-sans text-3xl sm:text-5xl md:text-6xl lg:text-[68px] font-bold uppercase tracking-[0.16em] sm:tracking-[0.2em] text-white leading-tight">
-                {slide.title}
-              </h1>
-
-              {/* Versace Minimal Subtitle */}
+              {/* Refined Subtitle / Campaign Tag (Positioned Above Headline) */}
               {slide.subtitle && (
-                <p className="text-[11px] sm:text-xs text-white/80 uppercase font-medium tracking-[0.24em] max-w-xl pb-1">
+                <p className="font-serif text-xs sm:text-sm md:text-[15px] text-white/90 tracking-wider font-normal drop-shadow-sm">
                   {slide.subtitle}
                 </p>
               )}
 
-              {/* Versace Dual Sharp Buttons (Sharp Corners, Zero Border-Radius, High Contrast) */}
-              <div className="pt-2 sm:pt-3 flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto">
+              {/* Baskervville High-Fashion Editorial Headline */}
+              <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-[54px] font-normal uppercase tracking-[0.18em] sm:tracking-[0.22em] text-white leading-tight drop-shadow-md">
+                {slide.title}
+              </h1>
+
+              {/* Minimalist Underlined Dual CTAs (Matching Versace Reference) */}
+              <div className="pt-3 sm:pt-4 flex items-center justify-center gap-8 sm:gap-12 md:gap-14">
                 <Link
                   href={slide.primaryCta.href}
-                  className="w-full sm:w-auto min-w-[210px] rounded-none border border-white bg-white px-8 py-3.5 text-center text-[11px] font-bold tracking-[0.26em] text-black uppercase transition-all duration-300 hover:bg-transparent hover:text-white active:scale-98 shadow-md"
+                  className="font-serif text-xs sm:text-[13px] tracking-[0.22em] sm:tracking-[0.26em] uppercase text-white font-medium border-b border-white pb-1 hover:text-white/80 hover:border-white/70 transition-all duration-300 drop-shadow-sm"
                 >
                   {slide.primaryCta.label}
                 </Link>
 
-                {slide.secondaryCta.isSizeGuide ? (
-                  <button
-                    type="button"
-                    onClick={() => setSizeModalOpen(true)}
-                    className="w-full sm:w-auto min-w-[210px] rounded-none border border-white bg-black/30 backdrop-blur-xs px-8 py-3.5 text-center text-[11px] font-bold tracking-[0.26em] text-white uppercase transition-all duration-300 hover:bg-white hover:text-black active:scale-98 cursor-pointer shadow-md"
-                  >
-                    {slide.secondaryCta.label}
-                  </button>
-                ) : (
-                  <Link
-                    href={slide.secondaryCta.href}
-                    className="w-full sm:w-auto min-w-[210px] rounded-none border border-white bg-black/30 backdrop-blur-xs px-8 py-3.5 text-center text-[11px] font-bold tracking-[0.26em] text-white uppercase transition-all duration-300 hover:bg-white hover:text-black active:scale-98 shadow-md"
-                  >
-                    {slide.secondaryCta.label}
-                  </Link>
+                {slide.secondaryCta && (
+                  slide.secondaryCta.isSizeGuide ? (
+                    <button
+                      type="button"
+                      onClick={() => setSizeModalOpen(true)}
+                      className="font-serif text-xs sm:text-[13px] tracking-[0.22em] sm:tracking-[0.26em] text-white uppercase font-medium border-b border-white pb-1 hover:text-white/80 hover:border-white/70 transition-all duration-300 drop-shadow-sm cursor-pointer"
+                    >
+                      {slide.secondaryCta.label}
+                    </button>
+                  ) : (
+                    <Link
+                      href={slide.secondaryCta.href}
+                      className="font-serif text-xs sm:text-[13px] tracking-[0.22em] sm:tracking-[0.26em] uppercase text-white font-medium border-b border-white pb-1 hover:text-white/80 hover:border-white/70 transition-all duration-300 drop-shadow-sm"
+                    >
+                      {slide.secondaryCta.label}
+                    </Link>
+                  )
                 )}
               </div>
             </motion.div>
           </AnimatePresence>
         </div>
 
-        {/* ── Versace Architectural Pagination Indicators ── */}
-        <div className="absolute bottom-3 sm:bottom-4 inset-x-0 z-30 flex items-center justify-center gap-2">
+        {/* ── Slide Pagination Indicators ── */}
+        <div className="absolute bottom-4 sm:bottom-5 inset-x-0 z-30 flex items-center justify-center gap-2">
           {SLIDES.map((s, i) => (
             <button
               key={s.src}
               onClick={() => setIndex(i)}
               aria-label={`Go to slide ${i + 1}`}
               className={cn(
-                "h-[2px] transition-all duration-400 rounded-none",
-                i === index ? "w-8 sm:w-12 bg-white" : "w-3 sm:w-4 bg-white/40 hover:bg-white/70"
+                "h-[2px] transition-all duration-400 rounded-none cursor-pointer",
+                i === index ? "w-8 sm:w-12 bg-white" : "w-3 sm:w-4 bg-white/40 hover:bg-white/75"
               )}
             />
           ))}

@@ -25,7 +25,6 @@ export default function Ritual() {
     <section id="ritual" className="hairline border-t bg-cream">
       <div className="mx-auto max-w-[1440px] px-5 py-20 md:px-10 md:py-32">
         <Reveal className="mb-14 max-w-xl md:mb-20">
-          <p className="eyebrow text-clay">The Ritual</p>
           <h2 className="headline mt-4 text-5xl md:text-7xl">
             Ten minutes. <em>Two weeks.</em>
           </h2>

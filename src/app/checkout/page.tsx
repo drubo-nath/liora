@@ -46,11 +46,10 @@ export default function CheckoutPage() {
           transition={{ duration: 0.9, ease: EASE }}
           className="w-full max-w-md"
         >
-          <p className="eyebrow text-clay">Order Confirmed</p>
-          <h1 className="headline mt-5 text-6xl md:text-8xl">
+          <h1 className="headline text-6xl md:text-8xl">
             Dhonnobad<em>.</em>
           </h1>
-          <p className="eyebrow mt-6 text-taupe">
+          <p className="font-serif text-sm tracking-wider mt-6 text-taupe">
             Order {placed.orderNumber} · {formatBDT(placed.total)}
           </p>
           <p className="mx-auto mt-6 max-w-md text-[15px] leading-relaxed text-taupe">
@@ -59,7 +58,7 @@ export default function CheckoutPage() {
           </p>
           <Link
             href="/shop"
-            className="eyebrow mt-10 inline-block bg-ink px-10 py-4.5 text-cream transition-colors duration-300 hover:bg-clay-deep"
+            className="font-serif text-xs uppercase tracking-widest mt-10 inline-block bg-ink px-10 py-4.5 text-cream transition-colors duration-300 hover:bg-clay-deep"
           >
             Continue Shopping
           </Link>
@@ -70,8 +69,7 @@ export default function CheckoutPage() {
 
   return (
     <section className="mx-auto max-w-[1440px] px-4 py-10 sm:px-6 md:px-10 md:py-20">
-      <p className="eyebrow text-clay">Almost There</p>
-      <h1 className="headline mt-3 text-4xl sm:text-5xl md:text-7xl">
+      <h1 className="headline text-4xl sm:text-5xl md:text-7xl">
         Check<em>out</em>
       </h1>
 
@@ -81,7 +79,7 @@ export default function CheckoutPage() {
           {!isPending && !verified && <PhoneVerify />}
           {!isPending && verified && (
             <div className="hairline border bg-cream p-5 sm:p-6 md:p-8">
-              <p className="eyebrow text-taupe">Verified number</p>
+              <p className="text-xs uppercase tracking-widest text-taupe">Verified number</p>
               <p className="mt-2 font-serif text-xl">
                 {formatPhone(session?.user.phoneNumber)}
               </p>
@@ -129,7 +127,7 @@ export default function CheckoutPage() {
             className="space-y-8 sm:space-y-10"
           >
             <fieldset disabled={!verified} className="disabled:opacity-50">
-              <legend className="eyebrow text-taupe">Delivery</legend>
+              <legend className="text-xs uppercase tracking-widest text-taupe font-medium">Delivery</legend>
               <div className="mt-4 grid gap-3.5 sm:grid-cols-2 sm:gap-4">
                 <Field
                   label="Full name"
@@ -157,7 +155,7 @@ export default function CheckoutPage() {
             </fieldset>
 
             <fieldset disabled={!verified} className="disabled:opacity-50">
-              <legend className="eyebrow text-taupe">Payment</legend>
+              <legend className="text-xs uppercase tracking-widest text-taupe font-medium">Payment</legend>
               <div className="mt-4 grid gap-2.5 sm:grid-cols-2 sm:gap-3">
                 {PAYMENTS.map((p) => (
                   <button
@@ -166,8 +164,8 @@ export default function CheckoutPage() {
                     onClick={() => setPayment(p.id)}
                     className={
                       payment === p.id
-                        ? "eyebrow border border-ink bg-ink px-4 py-3.5 text-left text-cream transition-colors sm:px-5 sm:py-4"
-                        : "eyebrow hairline border bg-transparent px-4 py-3.5 text-left text-taupe transition-colors hover:border-ink hover:text-ink sm:px-5 sm:py-4"
+                        ? "text-xs uppercase tracking-wider font-medium border border-ink bg-ink px-4 py-3.5 text-left text-cream transition-colors sm:px-5 sm:py-4"
+                        : "text-xs uppercase tracking-wider font-medium hairline border bg-transparent px-4 py-3.5 text-left text-taupe transition-colors hover:border-ink hover:text-ink sm:px-5 sm:py-4"
                     }
                   >
                     {p.label}
@@ -185,7 +183,7 @@ export default function CheckoutPage() {
             <button
               type="submit"
               disabled={pending || lines.length === 0 || !verified}
-              className="eyebrow w-full bg-ink px-4 py-4.5 text-center text-xs tracking-wider text-cream transition-colors duration-300 hover:bg-clay-deep disabled:cursor-not-allowed disabled:opacity-40 sm:py-5 sm:text-sm"
+              className="w-full bg-ink px-4 py-4.5 text-center text-xs tracking-wider uppercase text-cream transition-colors duration-300 hover:bg-clay-deep disabled:cursor-not-allowed disabled:opacity-40 sm:py-5 sm:text-sm font-medium"
             >
               {pending
                 ? "Placing order…"
@@ -200,7 +198,7 @@ export default function CheckoutPage() {
 
         {/* Summary */}
         <aside className="hairline order-1 h-fit border bg-cream p-5 sm:p-6 md:p-8 lg:order-2 lg:sticky lg:top-24">
-          <p className="eyebrow text-taupe">Order Summary</p>
+          <p className="text-xs uppercase tracking-widest text-taupe font-medium">Order Summary</p>
           <ul className="mt-5 space-y-4 sm:mt-6 sm:space-y-5">
             {lines.map((l) => (
               <li key={`${l.slug}-${l.size}`} className="flex items-center gap-3.5 sm:gap-4">
@@ -238,7 +236,7 @@ export default function CheckoutPage() {
               </p>
             )}
             <div className="hairline flex items-center justify-between border-t pt-3">
-              <p className="eyebrow text-taupe">Total</p>
+              <p className="text-xs uppercase tracking-widest text-taupe font-medium">Total</p>
               <p className="font-serif text-xl sm:text-2xl">{formatBDT(total)}</p>
             </div>
           </div>
@@ -255,7 +253,7 @@ function Field({
 }: React.InputHTMLAttributes<HTMLInputElement> & { label: string; name: string }) {
   return (
     <label className={`block ${className}`}>
-      <span className="eyebrow text-[10px] text-taupe">{label}</span>
+      <span className="text-[10px] uppercase tracking-wider text-taupe font-medium">{label}</span>
       <input
         {...props}
         className="hairline mt-1.5 w-full border bg-transparent px-4 py-3.5 text-sm outline-none transition-colors placeholder:text-taupe/60 focus:border-ink"

@@ -8,8 +8,7 @@ export default async function Reviews() {
   return (
     <section className="mx-auto max-w-[1440px] px-5 py-20 md:px-10 md:py-32">
       <Reveal className="mb-14 text-center md:mb-20">
-        <p className="eyebrow text-clay">Word of Mouth</p>
-        <h2 className="headline mt-4 text-5xl md:text-7xl">
+        <h2 className="headline text-5xl md:text-7xl">
           Loved, <em>loudly</em>
         </h2>
       </Reveal>
@@ -25,7 +24,7 @@ export default async function Reviews() {
               <blockquote className="mt-6 flex-1 font-serif text-xl leading-snug">
                 “{r.body}”
               </blockquote>
-              <figcaption className="eyebrow mt-8 text-taupe">
+              <figcaption className="font-serif text-xs italic tracking-wider mt-8 text-taupe">
                 {r.authorName} — {r.location}
               </figcaption>
             </figure>

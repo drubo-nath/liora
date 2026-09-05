@@ -13,8 +13,7 @@ export default function Newsletter() {
     <section className="hairline border-t bg-cream">
       <div className="mx-auto max-w-[1440px] px-5 py-20 text-center md:px-10 md:py-28">
         <Reveal>
-          <p className="eyebrow text-clay">The Inner Circle</p>
-          <h2 className="headline mx-auto mt-4 max-w-2xl text-4xl md:text-6xl">
+          <h2 className="headline mx-auto max-w-2xl text-4xl md:text-6xl">
             First access to <em>new shades</em>
           </h2>
           <p className="mx-auto mt-5 max-w-sm text-sm leading-relaxed text-taupe">
@@ -24,7 +23,7 @@ export default function Newsletter() {
 
         <Reveal delay={1}>
           {state !== "idle" ? (
-            <p className="eyebrow mx-auto mt-10 border border-line bg-bone px-8 py-4 text-clay">
+            <p className="mx-auto mt-10 border border-line bg-bone px-8 py-4 text-xs tracking-widest uppercase text-clay">
               {state === "already"
                 ? "You're already in the inner circle ✦"
                 : "Welcome to the inner circle ✦"}
@@ -54,7 +53,7 @@ export default function Newsletter() {
                 <button
                   type="submit"
                   disabled={pending}
-                  className="eyebrow shrink-0 bg-ink px-6 text-cream transition-colors duration-300 hover:bg-clay-deep disabled:opacity-50"
+                  className="text-xs uppercase tracking-widest font-medium shrink-0 bg-ink px-6 text-cream transition-colors duration-300 hover:bg-clay-deep disabled:opacity-50"
                 >
                   {pending ? "Joining…" : "Join"}
                 </button>

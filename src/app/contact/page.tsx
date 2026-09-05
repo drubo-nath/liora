@@ -59,10 +59,7 @@ export default function ContactPage() {
         {/* Header */}
         <header className="max-w-3xl">
           <Reveal>
-            <p className="eyebrow text-clay">Get In Touch</p>
-          </Reveal>
-          <Reveal delay={1}>
-            <h1 className="headline mt-4 text-5xl md:text-7xl">
+            <h1 className="headline text-5xl md:text-7xl">
               Contact <em>Us</em>
             </h1>
           </Reveal>
@@ -80,8 +77,7 @@ export default function ContactPage() {
           <Reveal delay={1} className="h-full">
             <div className="h-full bg-cream p-8 md:p-10 flex flex-col justify-between">
               <div>
-                <span className="eyebrow text-clay">Instant Messaging</span>
-                <h2 className="headline mt-3 text-2xl md:text-3xl text-ink">WhatsApp</h2>
+                <h2 className="headline text-2xl md:text-3xl text-ink">WhatsApp</h2>
                 <p className="mt-3 text-sm text-taupe leading-relaxed">
                   Fastest response for sizing advice, urgent address changes, and custom design
                   photos.
@@ -105,8 +101,7 @@ export default function ContactPage() {
           <Reveal delay={2} className="h-full">
             <div className="h-full bg-cream p-8 md:p-10 flex flex-col justify-between">
               <div>
-                <span className="eyebrow text-clay">Direct Inquiries</span>
-                <h2 className="headline mt-3 text-2xl md:text-3xl text-ink">Email Support</h2>
+                <h2 className="headline text-2xl md:text-3xl text-ink">Email Support</h2>
                 <p className="mt-3 text-sm text-taupe leading-relaxed">
                   For order inquiries, corporate orders, press partnerships, and formal feedback.
                 </p>
@@ -129,8 +124,7 @@ export default function ContactPage() {
           <Reveal delay={3} className="h-full">
             <div className="h-full bg-cream p-8 md:p-10 flex flex-col justify-between">
               <div>
-                <span className="eyebrow text-clay">Social Community</span>
-                <h2 className="headline mt-3 text-2xl md:text-3xl text-ink">Facebook</h2>
+                <h2 className="headline text-2xl md:text-3xl text-ink">Facebook</h2>
                 <p className="mt-3 text-sm text-taupe leading-relaxed">
                   Join our official beauty community, view new drops, customer tagged photos, and
                   message our inbox.
@@ -156,8 +150,7 @@ export default function ContactPage() {
           {/* Business Hours */}
           <Reveal>
             <div className="border border-line bg-cream p-8 md:p-12">
-              <span className="eyebrow text-clay">Availability</span>
-              <h2 className="headline mt-3 text-3xl md:text-4xl">
+              <h2 className="headline text-3xl md:text-4xl">
                 Business <em>Hours</em>
               </h2>
               <p className="mt-4 text-sm text-taupe leading-relaxed">
@@ -175,7 +168,7 @@ export default function ContactPage() {
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-ink font-medium">Friday</span>
-                  <span className="eyebrow text-clay">Closed (Family &amp; Atelier Rest)</span>
+                  <span className="font-serif text-sm italic text-clay">Closed (Family &amp; Atelier Rest)</span>
                 </div>
               </div>
 
@@ -190,8 +183,7 @@ export default function ContactPage() {
           <Reveal delay={1}>
             <div className="border border-line bg-sand/30 p-8 md:p-12 space-y-6">
               <div>
-                <span className="eyebrow text-clay">Self-Service</span>
-                <h3 className="headline mt-2 text-2xl md:text-3xl">Looking for quick answers?</h3>
+                <h3 className="headline text-2xl md:text-3xl">Looking for quick answers?</h3>
                 <p className="mt-3 text-sm text-taupe leading-relaxed">
                   Many common questions about sizing, delivery times, and returns can be resolved
                   instantly through our dedicated guides.

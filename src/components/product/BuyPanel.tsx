@@ -50,7 +50,7 @@ export default function BuyPanel({ product }: { product: ProductDTO }) {
       {/* Size */}
       <div className="mt-9">
         <div className="flex items-center justify-between">
-          <p className="eyebrow text-taupe">Size</p>
+          <p className="font-serif text-sm text-ink">Size</p>
           <Link
             href="/sizing"
             type="button"
@@ -102,7 +102,7 @@ export default function BuyPanel({ product }: { product: ProductDTO }) {
           onClick={handleAdd}
           whileTap={{ scale: 0.98 }}
           className={cn(
-            "eyebrow flex-1 py-4 transition-colors duration-300",
+            "font-serif text-xs uppercase tracking-widest flex-1 py-4 transition-colors duration-300",
             added ? "bg-clay text-cream" : "bg-ink text-cream hover:bg-clay-deep",
           )}
         >
