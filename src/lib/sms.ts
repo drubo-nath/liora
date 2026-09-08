@@ -1,5 +1,5 @@
 /**
- * sms.net.bd (Alpha SMS) transactional SMS sender for LIORA.
+ * sms.net.bd (Alpha SMS) transactional SMS sender for LIVRA.
  *
  * Configure via .env.local:
  *   SMS_NET_BD_API_KEY      — your portal API key (omit in dev to log to console)
@@ -189,7 +189,7 @@ export async function getBalance(): Promise<number | null> {
  * Standard message template for Better Auth phone verification OTP.
  */
 export function otpMessage(code: string): string {
-  return `Your LIORA verification code is ${code}.`;
+  return `Your LIVRA verification code is ${code}.`;
 }
 
 /**
@@ -199,7 +199,7 @@ export function orderConfirmationMessage(
   orderNumber: string,
   total: number,
 ): string {
-  return `Thank you for shopping at LIORA! Your order #${orderNumber} for BDT ${total.toLocaleString("en-BD")} has been placed successfully.`;
+  return `Thank you for shopping at LIVRA! Your order #${orderNumber} for BDT ${total.toLocaleString("en-BD")} has been placed successfully.`;
 }
 
 /**
@@ -210,5 +210,5 @@ export function orderStatusUpdateMessage(
   status: string,
 ): string {
   const prettyStatus = status.charAt(0).toUpperCase() + status.slice(1);
-  return `Your LIORA order #${orderNumber} status is now: ${prettyStatus}. Thank you for choosing LIORA.`;
+  return `Your LIVRA order #${orderNumber} status is now: ${prettyStatus}. Thank you for choosing LIVRA.`;
 }

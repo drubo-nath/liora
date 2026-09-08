@@ -16,7 +16,7 @@ export default async function ProductOpenGraphImage({
   const { slug } = await params;
   const product = await getProductBySlug(slug);
 
-  const name = product?.name || "LIORA Luxury Press-On Nails";
+  const name = product?.name || "LIVRA Luxury Press-On Nails";
   const finish = product?.finish ? `${product.finish.toUpperCase()} FINISH` : "LUXURY FINISH";
   const price = product?.price ? `৳${product.price.toLocaleString()}` : "৳1,450";
   const tagline = product?.tagline || "Salon-perfect, damage-free press-on nails handcrafted in Dhaka.";
@@ -70,7 +70,7 @@ export default async function ProductOpenGraphImage({
               textTransform: "uppercase",
             }}
           >
-            LIORA • {finish}
+            LIVRA • {finish}
           </div>
 
           <div
@@ -158,7 +158,7 @@ export default async function ProductOpenGraphImage({
               textTransform: "uppercase",
             }}
           >
-            LIORA
+            LIVRA
           </div>
         </div>
       </div>

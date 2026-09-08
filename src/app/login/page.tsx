@@ -4,7 +4,7 @@ import LoginForm from "@/components/auth/LoginForm";
 
 export const metadata: Metadata = {
   title: "Sign In",
-  description: "Sign in to Liora with your mobile number.",
+  description: "Sign in to Livra with your mobile number.",
 };
 
 export default function LoginPage() {

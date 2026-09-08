@@ -3,29 +3,29 @@ import Link from "next/link";
 import Reveal from "@/components/motion/Reveal";
 
 export const metadata: Metadata = {
-  title: "Contact Us | LIORA Pressed Ons",
+  title: "Contact Us | LIVRA Pressed Ons",
   description:
-    "Get in touch with the Liora team for nail sizing assistance, live order tracking, custom bespoke press-on designs, and customer care across Bangladesh.",
+    "Get in touch with the Livra team for nail sizing assistance, live order tracking, custom bespoke press-on designs, and customer care across Bangladesh.",
   alternates: {
     canonical: "/contact",
   },
   openGraph: {
-    title: "Contact Us | LIORA Pressed Ons",
+    title: "Contact Us | LIVRA Pressed Ons",
     description:
       "We love hearing from our customers! Reach us via WhatsApp (+8801577-759518), email, or Facebook for sizing, orders, and custom designs.",
-    url: "https://www.liorapressedons.com/contact",
+    url: "https://www.livrapressons.com/contact",
   },
 };
 
 const CONTACT_SCHEMA = {
   "@context": "https://schema.org",
   "@type": "ContactPage",
-  name: "Contact Liora Pressed Ons",
-  url: "https://www.liorapressedons.com/contact",
+  name: "Contact Livra Pressed Ons",
+  url: "https://www.livrapressons.com/contact",
   mainEntity: {
     "@type": "Organization",
-    name: "LIORA Pressed Ons",
-    url: "https://www.liorapressedons.com",
+    name: "LIVRA Pressed Ons",
+    url: "https://www.livrapressons.com",
     email: "liorapressedons@gmail.com",
     telephone: "+8801577759518",
     contactPoint: [
@@ -66,7 +66,7 @@ export default function ContactPage() {
           <Reveal delay={2}>
             <p className="mt-6 text-base md:text-lg text-taupe leading-relaxed">
               We love hearing from our customers! Whether you need help with sizing, tracking an
-              order, or custom designs, the Liora Pressed Ons team is here for you.
+              order, or custom designs, the Livra Pressed Ons team is here for you.
             </p>
           </Reveal>
         </header>
@@ -129,7 +129,7 @@ export default function ContactPage() {
                   Join our official beauty community, view new drops, customer tagged photos, and
                   message our inbox.
                 </p>
-                <p className="mt-6 font-serif text-xl text-ink">Liora Pressed Ons</p>
+                <p className="mt-6 font-serif text-xl text-ink">Livra Pressed Ons</p>
               </div>
               <div className="mt-8">
                 <a

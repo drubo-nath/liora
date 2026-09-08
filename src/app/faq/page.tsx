@@ -4,17 +4,17 @@ import Reveal from "@/components/motion/Reveal";
 import FaqAccordion, { FaqItem } from "@/components/faq/FaqAccordion";
 
 export const metadata: Metadata = {
-  title: "Frequently Asked Questions | LIORA",
+  title: "Frequently Asked Questions | LIVRA",
   description:
-    "Find answers about nail sizing, measuring with clear tape and ruler, application longevity, reusable press-ons, Cash on Delivery, and bespoke custom orders at Liora.",
+    "Find answers about nail sizing, measuring with clear tape and ruler, application longevity, reusable press-ons, Cash on Delivery, and bespoke custom orders at Livra.",
   alternates: {
     canonical: "/faq",
   },
   openGraph: {
-    title: "Frequently Asked Questions | LIORA",
+    title: "Frequently Asked Questions | LIVRA",
     description:
       "All your questions answered: measuring guide, wear duration, reusability, Cash on Delivery, and custom press-on sets.",
-    url: "https://www.liorapressedons.com/faq",
+    url: "https://www.livrapressons.com/faq",
   },
 };
 
@@ -107,7 +107,7 @@ const FAQ_SCHEMA = {
       name: "How long do the press-on nails last?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "With proper nail preparation and liquid glue, Liora press-on nails last up to 2-3 months. Using sticky tabs, they last 1-3 weeks.",
+        text: "With proper nail preparation and liquid glue, Livra press-on nails last up to 2-3 months. Using sticky tabs, they last 1-3 weeks.",
       },
     },
     {
@@ -115,7 +115,7 @@ const FAQ_SCHEMA = {
       name: "Are they reusable?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes! Handcrafted Liora press-on nails are durable and reusable. Peel off adhesive tabs or gently buff away dry liquid glue residue from the back before reapplying.",
+        text: "Yes! Handcrafted Livra press-on nails are durable and reusable. Peel off adhesive tabs or gently buff away dry liquid glue residue from the back before reapplying.",
       },
     },
     {
@@ -156,7 +156,7 @@ export default function FaqPage() {
           <Reveal delay={1}>
             <p className="mt-6 text-base md:text-lg text-taupe leading-relaxed">
               Everything you need to know about measuring, wearing, caring for, and ordering your
-              handcrafted Liora press-on nails.
+              handcrafted Livra press-on nails.
             </p>
           </Reveal>
         </header>

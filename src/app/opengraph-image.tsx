@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "LIORA — Luxury Press-On Nails in Bangladesh";
+export const alt = "LIVRA — Luxury Press-On Nails in Bangladesh";
 export const size = {
   width: 1200,
   height: 630,
@@ -49,7 +49,7 @@ export default function OpenGraphImage() {
             textTransform: "uppercase",
           }}
         >
-          LIORA
+          LIVRA
         </div>
 
         {/* Subtitle */}

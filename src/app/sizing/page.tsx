@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Follow our simple 3-step guide to measure your natural nails, choose your perfect press-on size (XS, S, M, L), and explore nail shapes and lengths.",
   openGraph: {
-    title: "How to Find Your Size — Liora Press-On Nail Sizing Guide",
+    title: "How to Find Your Size — Livra Press-On Nail Sizing Guide",
     description:
       "Follow our simple 3-step guide to measure your natural nails and choose your perfect press-on size.",
   },
@@ -214,7 +214,7 @@ export default function SizingPage() {
             Discover Your Next Signature Set
           </h3>
           <p className="text-sm text-taupe mt-2 max-w-md mx-auto font-light">
-            Every Liora press-on nail set includes salon gel nails, dual adhesive tabs, professional glue, cuticle stick, and prep pads.
+            Every Livra press-on nail set includes salon gel nails, dual adhesive tabs, professional glue, cuticle stick, and prep pads.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
             <Link

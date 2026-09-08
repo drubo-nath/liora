@@ -8,7 +8,7 @@ import ProductCard from "@/components/ProductCard";
 
 export const dynamic = "force-dynamic";
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://www.liorapressedons.com";
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://www.livrapressons.com";
 
 export async function generateMetadata({
   params,
@@ -32,7 +32,7 @@ export async function generateMetadata({
       `${p.finish.toLowerCase()} press on nails`,
       "press on nails bangladesh",
       "handmade nails dhaka",
-      "liora beauty",
+      "livra beauty",
     ],
     alternates: {
       canonical: `/product/${p.slug}`,
@@ -44,7 +44,7 @@ export async function generateMetadata({
       type: "article",
       images: images.map((url) => ({
         url,
-        alt: `${p.name} — LIORA Press-On Nails`,
+        alt: `${p.name} — LIVRA Press-On Nails`,
       })),
     },
     twitter: {
@@ -81,7 +81,7 @@ export default async function ProductPage({
     "sku": product.slug,
     "brand": {
       "@type": "Brand",
-      "name": "LIORA",
+      "name": "LIVRA",
     },
     "offers": {
       "@type": "Offer",
@@ -93,7 +93,7 @@ export default async function ProductPage({
       "availability": "https://schema.org/InStock",
       "seller": {
         "@type": "Organization",
-        "name": "LIORA Beauty",
+        "name": "LIVRA Beauty",
       },
     },
   };

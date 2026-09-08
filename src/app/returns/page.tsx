@@ -3,17 +3,17 @@ import Link from "next/link";
 import Reveal from "@/components/motion/Reveal";
 
 export const metadata: Metadata = {
-  title: "Return & Refund Policy | LIORA",
+  title: "Return & Refund Policy | LIVRA",
   description:
-    "Understand Liora's return conditions, mandatory unboxing video requirements, non-returnable hygiene items, bKash/Nagad refund procedures, and cancellation terms.",
+    "Understand Livra's return conditions, mandatory unboxing video requirements, non-returnable hygiene items, bKash/Nagad refund procedures, and cancellation terms.",
   alternates: {
     canonical: "/returns",
   },
   openGraph: {
-    title: "Return & Refund Policy | LIORA",
+    title: "Return & Refund Policy | LIVRA",
     description:
       "Handcrafted press-on nails return & refund terms. Hygiene protocols, unboxing video requirement, and bKash/Nagad refund disbursement.",
-    url: "https://www.liorapressedons.com/returns",
+    url: "https://www.livrapressons.com/returns",
   },
 };
 
@@ -29,7 +29,7 @@ export default function ReturnsPage() {
         </Reveal>
         <Reveal delay={2}>
           <p className="mt-6 text-base md:text-lg text-taupe leading-relaxed">
-            At Liora Pressed Ons, we take pride in delivering premium, handcrafted press-on nails.
+            At Livra Pressed Ons, we take pride in delivering premium, handcrafted press-on nails.
             Because our products fall under the beauty and personal care category, strict hygiene
             protocols must be maintained. This policy ensures transparency, safety, and satisfaction
             for all customers across Bangladesh.
@@ -134,7 +134,7 @@ export default function ReturnsPage() {
                     <a href="https://wa.me/8801577759518" className="text-clay underline">
                       +8801577-759518
                     </a>
-                    ), or through www.liorapressedons.com.
+                    ), or through www.livrapressons.com.
                   </li>
                   <li>Provide your Order ID, full name, and phone number.</li>
                   <li>Attach the clear, uncut unboxing video and photos of the affected product.</li>
@@ -200,7 +200,7 @@ export default function ReturnsPage() {
                 <div className="rounded-sm bg-sand/40 p-4 border border-line text-xs text-taupe">
                   <p className="font-medium text-ink mb-1">Notice on Cash on Delivery (COD) Parcels</p>
                   Refusing Cash on Delivery (COD) parcels at your doorstep without a valid, verifiable
-                  reason may result in a permanent ban from placing future COD orders with Liora
+                  reason may result in a permanent ban from placing future COD orders with Livra
                   Pressed Ons.
                 </div>
               </div>

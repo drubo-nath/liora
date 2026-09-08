@@ -41,7 +41,8 @@ interface CartState {
 }
 
 const CartContext = createContext<CartState | null>(null);
-const STORAGE_KEY = "liora-cart-v2";
+const STORAGE_KEY = "livra-cart-v2";
+const LEGACY_STORAGE_KEY = "liora-cart-v2";
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [lines, setLines] = useState<CartLine[]>([]);
@@ -54,7 +55,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
      visitors whose bags already contain items. */
   useEffect(() => {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_STORAGE_KEY);
       if (raw) setLines(JSON.parse(raw));
     } catch {}
     setHydrated(true);

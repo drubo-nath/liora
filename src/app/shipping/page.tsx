@@ -3,17 +3,17 @@ import Link from "next/link";
 import Reveal from "@/components/motion/Reveal";
 
 export const metadata: Metadata = {
-  title: "Shipping & Delivery | LIORA",
+  title: "Shipping & Delivery | LIVRA",
   description:
-    "Learn about Liora's handmade creation timelines, delivery rates across Dhaka (70 BDT), suburbs (100 BDT), and nationwide Bangladesh (130 BDT), courier partners, and tracking.",
+    "Learn about Livra's handmade creation timelines, delivery rates across Dhaka (70 BDT), suburbs (100 BDT), and nationwide Bangladesh (130 BDT), courier partners, and tracking.",
   alternates: {
     canonical: "/shipping",
   },
   openGraph: {
-    title: "Shipping & Delivery | LIORA",
+    title: "Shipping & Delivery | LIVRA",
     description:
       "Handmade to order in Dhaka. Reliable nationwide courier delivery via Steadfast, RedX, and Pathao with live SMS tracking.",
-    url: "https://www.liorapressedons.com/shipping",
+    url: "https://www.livrapressons.com/shipping",
   },
 };
 
@@ -29,7 +29,7 @@ export default function ShippingPage() {
         </Reveal>
         <Reveal delay={2}>
           <p className="mt-6 text-base md:text-lg text-taupe leading-relaxed">
-            At Liora Pressed Ons, we strive to deliver your beautiful handcrafted nail sets safely,
+            At Livra Pressed Ons, we strive to deliver your beautiful handcrafted nail sets safely,
             securely, and as quickly as possible across all of Bangladesh.
           </p>
         </Reveal>
@@ -92,7 +92,7 @@ export default function ShippingPage() {
               Handmade <em>to Order</em>
             </h2>
             <p className="mt-5 text-sm md:text-base text-taupe leading-relaxed">
-              Because every Liora set is individually handcrafted by our artisan nail team in Dhaka,
+              Because every Livra set is individually handcrafted by our artisan nail team in Dhaka,
               please allow a <strong>processing/creation time of 2 to 4 days</strong> before your order
               is handed over to the courier.
             </p>

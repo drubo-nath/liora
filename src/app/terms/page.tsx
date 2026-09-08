@@ -3,16 +3,16 @@ import Link from "next/link";
 import Reveal from "@/components/motion/Reveal";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions | LIORA",
+  title: "Terms & Conditions | LIVRA",
   description:
-    "Read the terms and conditions governing the purchase of handcrafted press-on nails, payment methods, intellectual property, and service agreements at Liora Pressed Ons.",
+    "Read the terms and conditions governing the purchase of handcrafted press-on nails, payment methods, intellectual property, and service agreements at Livra Pressed Ons.",
   alternates: {
     canonical: "/terms",
   },
   openGraph: {
-    title: "Terms & Conditions | LIORA",
-    description: "Official Terms & Conditions for Liora Pressed Ons in Bangladesh.",
-    url: "https://www.liorapressedons.com/terms",
+    title: "Terms & Conditions | LIVRA",
+    description: "Official Terms & Conditions for Livra Pressed Ons in Bangladesh.",
+    url: "https://www.livrapressons.com/terms",
   },
 };
 
@@ -25,7 +25,7 @@ const SECTIONS = [
         We reserve the right to refuse service to anyone for any reason at any time. You agree not
         to reproduce, duplicate, copy, sell, or exploit any portion of our products, nail designs,
         artisan patterns, brand photography, or written content without express prior written
-        permission from Liora Pressed Ons.
+        permission from Livra Pressed Ons.
       </p>
     ),
   },
@@ -89,7 +89,7 @@ export default function TermsPage() {
         </Reveal>
         <Reveal delay={2}>
           <p className="mt-6 text-base md:text-lg text-taupe leading-relaxed">
-            Welcome to Liora Pressed Ons. By accessing our website and purchasing our products, you
+            Welcome to Livra Pressed Ons. By accessing our website and purchasing our products, you
             agree to be bound by the following Terms &amp; Conditions.
           </p>
         </Reveal>

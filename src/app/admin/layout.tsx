@@ -8,7 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { AdminToastProvider } from "@/components/admin/AdminToast";
 
 export const metadata: Metadata = {
-  title: "Admin — LIORA",
+  title: "Admin — LIVRA",
   robots: { index: false, follow: false },
 };
 
@@ -33,7 +33,7 @@ export default async function AdminLayout({
           <div className="sticky top-10 space-y-6">
             <div>
               <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
-                LIORA Admin
+                LIVRA Admin
               </p>
               <p className="mt-1 truncate text-sm text-muted-foreground">
                 {session.user.phoneNumber}

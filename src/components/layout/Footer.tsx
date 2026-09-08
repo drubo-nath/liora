@@ -58,8 +58,8 @@ export default function Footer() {
           <div className="space-y-4 max-w-sm">
             <Link href="/" className="inline-block">
               <Image
-                src="/liora.svg"
-                alt="Liora"
+                src="/livra.svg"
+                alt="Livra"
                 width={180}
                 height={60}
                 className="h-9 md:h-10 w-auto brightness-0 invert opacity-95 hover:opacity-100 transition-opacity"
@@ -123,8 +123,8 @@ export default function Footer() {
           <div className="space-y-4 max-w-sm mb-8">
             <Link href="/" className="inline-block">
               <Image
-                src="/liora.svg"
-                alt="Liora"
+                src="/livra.svg"
+                alt="Livra"
                 width={160}
                 height={54}
                 className="h-6.5 w-auto brightness-0 invert opacity-95 hover:opacity-100 transition-opacity"
@@ -215,7 +215,7 @@ export default function Footer() {
 
         {/* ── Sub-Footer Bottom Bar ── */}
         <div className="mt-12 md:mt-18 border-t border-white/10 pt-8 flex flex-col items-start justify-between gap-6 text-xs text-white/50 md:flex-row md:items-center">
-          <p>© {new Date().getFullYear()} Liora Pressed Ons. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Livra Pressed Ons. All rights reserved.</p>
 
           <div className="hidden md:flex flex-wrap items-center gap-3.5 text-xs text-white/60">
             <Link href="/terms" className="hover:text-white transition-colors">

@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* ─── Liora palette ─────────────────────────────── */
+  /* ─── Livra palette ─────────────────────────────── */
   --color-bone: #f5f1ea;
   --color-cream: #fbf9f5;
   --color-sand: #ece5d9;

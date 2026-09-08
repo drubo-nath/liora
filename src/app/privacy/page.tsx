@@ -3,16 +3,16 @@ import Link from "next/link";
 import Reveal from "@/components/motion/Reveal";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | LIORA",
+  title: "Privacy Policy | LIVRA",
   description:
-    "Learn how Liora Pressed Ons protects your personal data, secures online transactions via SSLCOMMERZ/bKash/Nagad, uses cookies, and respects your privacy.",
+    "Learn how Livra Pressed Ons protects your personal data, secures online transactions via SSLCOMMERZ/bKash/Nagad, uses cookies, and respects your privacy.",
   alternates: {
     canonical: "/privacy",
   },
   openGraph: {
-    title: "Privacy Policy | LIORA",
-    description: "Official Privacy Policy for Liora Pressed Ons in Bangladesh.",
-    url: "https://www.liorapressedons.com/privacy",
+    title: "Privacy Policy | LIVRA",
+    description: "Official Privacy Policy for Livra Pressed Ons in Bangladesh.",
+    url: "https://www.livrapressons.com/privacy",
   },
 };
 
@@ -85,7 +85,7 @@ export default function PrivacyPage() {
         </Reveal>
         <Reveal delay={2}>
           <p className="mt-6 text-base md:text-lg text-taupe leading-relaxed">
-            Liora Pressed Ons respects your privacy and is committed to protecting your personal
+            Livra Pressed Ons respects your privacy and is committed to protecting your personal
             data across every digital interaction.
           </p>
         </Reveal>
@@ -115,7 +115,6 @@ export default function PrivacyPage() {
               <a href="mailto:liorapressedons@gmail.com" className="text-clay underline">
                 liorapressedons@gmail.com
               </a>{" "}
-              or via WhatsApp at +880 1991 166660.
               or via WhatsApp at{" "}
               <a href="https://wa.me/8801577759518" className="text-clay underline">
                 +8801577-759518

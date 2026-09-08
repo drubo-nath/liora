@@ -5,7 +5,7 @@ import WishlistClient from "@/components/wishlist/WishlistClient";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "My Wishlist — LIORA Luxury Press-On Nails",
+  title: "My Wishlist — LIVRA Luxury Press-On Nails",
   description: "View and manage your saved luxury press-on nail sets.",
 };
 

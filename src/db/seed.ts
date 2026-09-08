@@ -11,7 +11,7 @@ async function seed() {
     process.exit(1);
   }
 
-  console.log("Seeding Liora…");
+  console.log("Seeding Livra…");
 
   await db.transaction(async (tx) => {
     // Order matters: children before parents.

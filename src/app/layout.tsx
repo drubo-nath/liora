@@ -24,14 +24,14 @@ const inter = Inter({
 });
 
 const baseUrl = new URL(
-  process.env.NEXT_PUBLIC_APP_URL || "https://www.liorapressedons.com",
+  process.env.NEXT_PUBLIC_APP_URL || "https://www.livrapressons.com",
 );
 
 export const metadata: Metadata = {
   metadataBase: baseUrl,
   title: {
-    default: "LIORA — Luxury Press-On Nails in Bangladesh",
-    template: "%s | LIORA Luxury Nails",
+    default: "LIVRA — Luxury Press-On Nails in Bangladesh",
+    template: "%s | LIVRA Luxury Nails",
   },
   description:
     "Salon-perfect, handmade press-on nails in Dhaka, Bangladesh. Damage-free, reusable, and delivered to your door nationwide.",
@@ -40,15 +40,15 @@ export const metadata: Metadata = {
     "press on nails dhaka",
     "luxury press on nails",
     "handmade nails bd",
-    "liora beauty",
+    "livra beauty",
     "reusable false nails",
     "nail art dhaka",
     "custom press on nails",
     "bkash nail shop",
   ],
-  authors: [{ name: "LIORA Beauty Ltd", url: "https://www.liorapressedons.com" }],
-  creator: "LIORA Beauty",
-  publisher: "LIORA Beauty Ltd",
+  authors: [{ name: "LIVRA Beauty Ltd", url: "https://www.livrapressons.com" }],
+  creator: "LIVRA Beauty",
+  publisher: "LIVRA Beauty Ltd",
   formatDetection: {
     telephone: true,
     address: true,
@@ -61,8 +61,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_BD",
     url: "/",
-    siteName: "LIORA Luxury Nails",
-    title: "LIORA — Luxury Press-On Nails in Bangladesh",
+    siteName: "LIVRA Luxury Nails",
+    title: "LIVRA — Luxury Press-On Nails in Bangladesh",
     description:
       "Salon-perfect, handmade press-on nails in Dhaka. Damage-free, reusable, and delivered nationwide.",
     images: [
@@ -70,13 +70,13 @@ export const metadata: Metadata = {
         url: "/header-image.jpg",
         width: 1200,
         height: 630,
-        alt: "LIORA Luxury Press-On Nails",
+        alt: "LIVRA Luxury Press-On Nails",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "LIORA — Luxury Press-On Nails in Bangladesh",
+    title: "LIVRA — Luxury Press-On Nails in Bangladesh",
     description:
       "Salon-perfect press-on nails handcrafted in Dhaka. Reusable, damage-free, and delivered nationwide.",
     images: ["/header-image.jpg"],
@@ -107,10 +107,10 @@ const jsonLd = {
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://www.liorapressedons.com/#organization",
-      "name": "LIORA Beauty Ltd",
-      "url": "https://www.liorapressedons.com",
-      "logo": "https://www.liorapressedons.com/favicon.svg",
+      "@id": "https://www.livrapressons.com/#organization",
+      "name": "LIVRA Beauty Ltd",
+      "url": "https://www.livrapressons.com",
+      "logo": "https://www.livrapressons.com/favicon.svg",
       "description":
         "Luxury handmade press-on nails crafted in Dhaka, Bangladesh.",
       "address": {
@@ -128,13 +128,13 @@ const jsonLd = {
     },
     {
       "@type": "WebSite",
-      "@id": "https://www.liorapressedons.com/#website",
-      "url": "https://www.liorapressedons.com",
-      "name": "LIORA",
-      "publisher": { "@id": "https://www.liorapressedons.com/#organization" },
+      "@id": "https://www.livrapressons.com/#website",
+      "url": "https://www.livrapressons.com",
+      "name": "LIVRA",
+      "publisher": { "@id": "https://www.livrapressons.com/#organization" },
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://www.liorapressedons.com/shop?q={search_term_string}",
+        "target": "https://www.livrapressons.com/shop?q={search_term_string}",
         "query-input": "required name=search_term_string",
       },
     },

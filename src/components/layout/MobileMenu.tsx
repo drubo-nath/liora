@@ -76,7 +76,7 @@ export default function MobileMenu({
           {/* ── Top Header Bar (Centered Logo + Square Boxed Close Button) ── */}
           <div className="relative flex h-16 items-center justify-center border-b border-neutral-200 px-5 bg-white">
             <span className="font-serif text-xl sm:text-2xl tracking-[0.28em] font-medium text-ink uppercase">
-              LIORA
+              LIVRA
             </span>
 
             {/* Square Boxed Close Button (Exact match from Versace reference) */}

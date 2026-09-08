@@ -134,16 +134,16 @@ export default function Header() {
             </nav>
           </div>
 
-          {/* Center — Liora Brand Logo (Smooth Cross-Fade) */}
+          {/* Center — Livra Brand Logo (Smooth Cross-Fade) */}
           <Link
             href="/"
             className="relative justify-self-center flex items-center justify-center h-8 md:h-10 w-[140px] md:w-[180px] transition-transform duration-200 active:scale-95 py-1"
-            aria-label="Liora home"
+            aria-label="Livra home"
           >
             {/* White Logo with soft drop shadow for transparent hero state */}
             <Image
-              src="/liora.svg"
-              alt="Liora"
+              src="/livra.svg"
+              alt="Livra"
               width={180}
               height={55}
               priority
@@ -154,8 +154,8 @@ export default function Header() {
             />
             {/* Dark Logo for solid scrolled state */}
             <Image
-              src="/liora.svg"
-              alt="Liora"
+              src="/livra.svg"
+              alt="Livra"
               width={180}
               height={55}
               priority

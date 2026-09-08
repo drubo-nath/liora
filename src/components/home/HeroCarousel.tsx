@@ -24,7 +24,7 @@ const SLIDES: Slide[] = [
     src: "/Create_hero_section_transition_1080p_202609050243.mp4",
     type: "video",
     poster: "/hero-image2.jpg",
-    alt: "Liora Luxury Salon Press-On Nails Transition",
+    alt: "Livra Luxury Salon Press-On Nails Transition",
     title: "SCULPTED ARTISTRY",
     subtitle: "Handcrafted Salon Gel · Reusable For Months",
     primaryCta: { label: "SHOP THE CAMPAIGN", href: "/shop" },
@@ -33,7 +33,7 @@ const SLIDES: Slide[] = [
   {
     src: "/hero-image2.jpg",
     type: "image",
-    alt: "Liora Festive and Fall Handcrafted Luxury Press-On Nails",
+    alt: "Livra Festive and Fall Handcrafted Luxury Press-On Nails",
     title: "THE FESTIVE EDIT",
     subtitle: "Authentic Shimmer & Glaze · 15% Off",
     primaryCta: { label: "SHOP FESTIVE", href: "/shop" },
@@ -42,7 +42,7 @@ const SLIDES: Slide[] = [
   {
     src: "/header-image.jpg",
     type: "image",
-    alt: "Model wearing Liora luxury handcrafted press-on nails",
+    alt: "Model wearing Livra luxury handcrafted press-on nails",
     title: "MODERN LUXURY",
     subtitle: "Engineered Strength · Zero Natural Damage",
     primaryCta: { label: "SHOP BESTSELLERS", href: "/shop" },
