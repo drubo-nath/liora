@@ -112,17 +112,7 @@ export default function Header() {
               >
                 Size Guide
               </Link>
-              <Link
-                href="/#ritual"
-                className={cn(
-                  "link-sweep font-serif text-[15px] tracking-wide font-normal transition-colors duration-500",
-                  isTransparent
-                    ? "text-white/95 hover:text-white"
-                    : "text-ink hover:text-clay"
-                )}
-              >
-                The Ritual
-              </Link>
+      
               {!isPending && isAdmin && (
                 <Link
                   href="/admin"
@@ -137,18 +127,18 @@ export default function Header() {
           {/* Center — Livra Brand Logo (Smooth Cross-Fade) */}
           <Link
             href="/"
-            className="relative justify-self-center flex items-center justify-center h-8 md:h-10 w-[140px] md:w-[180px] transition-transform duration-200 active:scale-95 py-1"
+            className="relative justify-self-center flex items-center justify-center h-7.5 sm:h-8 md:h-9.5 w-[110px] sm:w-[130px] md:w-[150px] transition-transform duration-200 active:scale-95 py-0.5"
             aria-label="Livra home"
           >
             {/* White Logo with soft drop shadow for transparent hero state */}
             <Image
-              src="/livra.svg"
+              src="/livra_transparent.svg"
               alt="Livra"
               width={180}
-              height={55}
+              height={79}
               priority
               className={cn(
-                "absolute inset-0 h-full w-auto mx-auto object-contain brightness-0 invert drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)] transition-opacity duration-500 ease-out",
+                "pointer-events-none absolute inset-0 h-full w-auto mx-auto object-contain brightness-0 invert drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)] transition-opacity duration-500 ease-out",
                 isTransparent ? "opacity-100" : "opacity-0"
               )}
             />
@@ -157,10 +147,10 @@ export default function Header() {
               src="/livra.svg"
               alt="Livra"
               width={180}
-              height={55}
+              height={79}
               priority
               className={cn(
-                "absolute inset-0 h-full w-auto mx-auto object-contain transition-opacity duration-500 ease-out",
+                "pointer-events-none absolute inset-0 h-full w-auto mx-auto object-contain transition-opacity duration-500 ease-out",
                 isTransparent ? "opacity-0" : "opacity-100"
               )}
             />

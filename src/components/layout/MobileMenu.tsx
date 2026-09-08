@@ -42,7 +42,7 @@ export default function MobileMenu({
     });
   };
 
-  const menuSections = [
+  const menuSections: { label: string; href: string; onClick?: () => void }[] = [
     { label: "New In", href: "/shop?badge=New" },
     { label: "Exclusive Collection", href: "/shop?finish=Exclusive" },
     { label: "Classic (Single Colours)", href: "/shop?finish=Classic" },
@@ -51,13 +51,8 @@ export default function MobileMenu({
     { label: "Wishlist", href: "/wishlist" },
     {
       label: "Size Guide",
-      href: "#",
-      onClick: () => {
-        onClose();
-        onOpenSizeGuide?.();
-      },
+      href: "/sizing",
     },
-    { label: "The Application Ritual", href: "/#ritual" },
     ...(session?.user.role === "admin"
       ? [{ label: "Admin Portal", href: "/admin" }]
       : []),
@@ -122,7 +117,7 @@ export default function MobileMenu({
               ))}
             </nav>
 
-            {/* Newsletter Sign Up Card (Matching Versace reference) */}
+            {/* Newsletter Sign Up Card (Matching Versace reference)
             <div className="px-6 py-10 text-center border-t border-neutral-100 mt-2">
               <p className="font-serif text-xs md:text-sm text-neutral-600 max-w-xs mx-auto leading-relaxed">
                 Hear about exclusive events, collections and news
@@ -165,7 +160,7 @@ export default function MobileMenu({
                   </button>
                 )}
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* ── Footer Bar (Matching Versace reference) ── */}

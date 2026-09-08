@@ -215,7 +215,7 @@ export default function Footer() {
 
         {/* ── Sub-Footer Bottom Bar ── */}
         <div className="mt-12 md:mt-18 border-t border-white/10 pt-8 flex flex-col items-start justify-between gap-6 text-xs text-white/50 md:flex-row md:items-center">
-          <p>© {new Date().getFullYear()} Livra Pressed Ons. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Livra Press-Ons. All rights reserved.</p>
 
           <div className="hidden md:flex flex-wrap items-center gap-3.5 text-xs text-white/60">
             <Link href="/terms" className="hover:text-white transition-colors">
