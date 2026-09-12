@@ -21,8 +21,15 @@ import {
 function wantsBytes(req: Request): boolean {
   const accept = req.headers.get("accept") ?? "";
   const secFetchDest = req.headers.get("sec-fetch-dest") ?? "";
-  // The optimizer sends a plain "/*" accept and no navigation metadata.
-  return secFetchDest === "" || accept.trim() === "*/*" || accept === "";
+  const userAgent = req.headers.get("user-agent") ?? "";
+  // Match next/image optimizer, ImageKit fetch bot, or direct image requests
+  return (
+    secFetchDest === "" ||
+    accept.trim() === "*/*" ||
+    accept === "" ||
+    accept.includes("image/") ||
+    userAgent.toLowerCase().includes("imagekit")
+  );
 }
 
 export async function GET(
@@ -49,7 +56,7 @@ export async function GET(
   const objectKey = segments.join("/");
 
   if (wantsBytes(req)) {
-    // Proxy mode for the next/image optimizer.
+    // Proxy mode for CDN / optimizer (streams bytes with 1-year immutable cache)
     try {
       const res = await client().send(
         new GetObjectCommand({ Bucket: bucketName(), Key: objectKey }),
@@ -63,7 +70,7 @@ export async function GET(
         headers: {
           "Content-Type": res.ContentType ?? "application/octet-stream",
           "Content-Length": String(res.ContentLength ?? body.byteLength),
-          "Cache-Control": "public, max-age=300, stale-while-revalidate=3600",
+          "Cache-Control": "public, max-age=31536000, immutable",
           ETag: res.ETag ?? "",
         },
       });
