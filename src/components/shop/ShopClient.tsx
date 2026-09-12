@@ -4,7 +4,7 @@ import { useMemo, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
-import { SlidersHorizontal, X, Check } from "lucide-react";
+import { SlidersHorizontal, X, Check, ChevronLeft, ChevronRight } from "lucide-react";
 import type { ProductDTO, Finish } from "@/db/types";
 import { finishes, finishDisplayLabels, normalizeFinish } from "@/db/types";
 import ProductCard from "@/components/ProductCard";
@@ -59,12 +59,56 @@ export default function ShopClient({ products }: { products: ProductDTO[] }) {
     return list;
   }, [products, finish, sort]);
 
+  const ITEMS_PER_PAGE = 12;
+  const [page, setPage] = useState<number>(1);
+
+  const selectFinish = (f: Finish | null) => {
+    setFinish(f);
+    setPage(1);
+  };
+
+  const selectSort = (s: Sort) => {
+    setSort(s);
+    setPage(1);
+  };
+
+  const totalPages = Math.ceil(visible.length / ITEMS_PER_PAGE);
+  const currentPage = Math.min(page, Math.max(1, totalPages));
+
+  const paginatedProducts = useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return visible.slice(start, start + ITEMS_PER_PAGE);
+  }, [visible, currentPage]);
+
+  const paginationItems = useMemo(() => {
+    if (totalPages <= 5) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+    if (currentPage <= 3) {
+      return [1, 2, 3, "...", totalPages];
+    }
+    if (currentPage >= totalPages - 2) {
+      return [1, "...", totalPages - 2, totalPages - 1, totalPages];
+    }
+    return [1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages];
+  }, [currentPage, totalPages]);
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage < 1 || newPage > totalPages || newPage === currentPage) return;
+    setPage(newPage);
+    const topEl = document.getElementById("products-grid-top");
+    if (topEl) {
+      topEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   const hasActiveFilters = finish !== null || sort !== "featured";
   const activeFilterCount = (finish !== null ? 1 : 0) + (sort !== "featured" ? 1 : 0);
 
   const resetFilters = () => {
     setFinish(null);
     setSort("featured");
+    setPage(1);
   };
 
   return (
@@ -103,7 +147,7 @@ export default function ShopClient({ products }: { products: ProductDTO[] }) {
           <span className="text-line select-none">/</span>
           <button
             type="button"
-            onClick={() => setFinish(null)}
+            onClick={() => selectFinish(null)}
             className="hover:text-ink transition-colors cursor-pointer"
           >
             Collections
@@ -134,11 +178,11 @@ export default function ShopClient({ products }: { products: ProductDTO[] }) {
         {/* Desktop: Inline Filter Chips & Sort Dropdown */}
         <div className="hidden md:flex md:items-center md:gap-6">
           <div className="flex flex-wrap items-center gap-2">
-            <FilterChip active={finish === null} onClick={() => setFinish(null)}>
+            <FilterChip active={finish === null} onClick={() => selectFinish(null)}>
               All
             </FilterChip>
             {finishes.map((f) => (
-              <FilterChip key={f} active={finish === f} onClick={() => setFinish(f)}>
+              <FilterChip key={f} active={finish === f} onClick={() => selectFinish(f)}>
                 {finishDisplayLabels[f]}
               </FilterChip>
             ))}
@@ -148,7 +192,7 @@ export default function ShopClient({ products }: { products: ProductDTO[] }) {
             <span className="text-[10px] uppercase tracking-wider text-taupe font-medium">Sort</span>
             <select
               value={sort}
-              onChange={(e) => setSort(e.target.value as Sort)}
+              onChange={(e) => selectSort(e.target.value as Sort)}
               className="cursor-pointer bg-transparent text-sm text-ink outline-none"
               aria-label="Sort products"
             >
@@ -160,9 +204,12 @@ export default function ShopClient({ products }: { products: ProductDTO[] }) {
         </div>
       </motion.div>
 
+      {/* ── Anchor for smooth scroll ── */}
+      <div id="products-grid-top" className="scroll-mt-32" />
+
       {/* ── Product Grid ── */}
       <motion.div layout className="mt-8 md:mt-12 grid grid-cols-2 gap-x-4 gap-y-10 md:gap-x-6 md:gap-y-12 lg:grid-cols-4">
-        {visible.map((p, i) => (
+        {paginatedProducts.map((p, i) => (
           <motion.div
             key={p.slug}
             initial={{ opacity: 0, y: 32 }}
@@ -175,8 +222,85 @@ export default function ShopClient({ products }: { products: ProductDTO[] }) {
         ))}
       </motion.div>
 
-      <p className="mt-16 text-center text-xs uppercase tracking-widest text-taupe font-medium">
-        {visible.length} shades · Hand-finished in Dhaka
+      {/* ── Minimalist Luxury Pagination Bar (Matching Reference) ── */}
+      {totalPages > 1 && (
+        <nav
+          aria-label="Product pagination"
+          className="mt-14 md:mt-20 flex items-center justify-center gap-6 sm:gap-8 font-sans select-none"
+        >
+          {/* Previous Page Arrow */}
+          <button
+            type="button"
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage <= 1}
+            aria-label="Previous page"
+            className={cn(
+              "flex items-center justify-center p-1 text-taupe transition-colors cursor-pointer hover:text-ink disabled:opacity-0 disabled:pointer-events-none",
+            )}
+          >
+            <ChevronLeft className="h-4 w-4 stroke-[1.75]" />
+          </button>
+
+          {/* Page Numbers & Ellipsis */}
+          <div className="flex items-center gap-5 sm:gap-7">
+            {paginationItems.map((item, idx) => {
+              if (item === "...") {
+                return (
+                  <span
+                    key={`ellipsis-${idx}`}
+                    className="text-sm sm:text-base text-taupe/60 cursor-default select-none px-1 tracking-wider"
+                  >
+                    ...
+                  </span>
+                );
+              }
+
+              const isCurrent = item === currentPage;
+              return (
+                <button
+                  key={`page-${item}`}
+                  type="button"
+                  onClick={() => handlePageChange(item as number)}
+                  aria-current={isCurrent ? "page" : undefined}
+                  className={cn(
+                    "relative pb-1 transition-colors cursor-pointer text-sm sm:text-base font-normal tracking-wider",
+                    isCurrent
+                      ? "text-ink font-medium"
+                      : "text-taupe hover:text-ink"
+                  )}
+                >
+                  {item}
+                  {isCurrent && (
+                    <motion.span
+                      layoutId="pagination-active-underline"
+                      className="absolute bottom-0 inset-x-0 h-[1.5px] bg-ink"
+                      transition={{ duration: 0.3, ease: EASE }}
+                    />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Next Page Arrow */}
+          <button
+            type="button"
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage >= totalPages}
+            aria-label="Next page"
+            className={cn(
+              "flex items-center justify-center p-1 text-taupe transition-colors cursor-pointer hover:text-ink disabled:opacity-0 disabled:pointer-events-none",
+            )}
+          >
+            <ChevronRight className="h-4 w-4 stroke-[1.75]" />
+          </button>
+        </nav>
+      )}
+
+      <p className="mt-10 text-center text-xs uppercase tracking-widest text-taupe font-medium">
+        {totalPages > 1
+          ? `Showing ${(currentPage - 1) * ITEMS_PER_PAGE + 1}–${Math.min(currentPage * ITEMS_PER_PAGE, visible.length)} of ${visible.length} shades`
+          : `${visible.length} shades`}
       </p>
 
       {/* ── Mobile Filter & Sort Drawer ── */}
@@ -233,7 +357,7 @@ export default function ShopClient({ products }: { products: ProductDTO[] }) {
                   <div className="space-y-1.5">
                     <button
                       type="button"
-                      onClick={() => setFinish(null)}
+                      onClick={() => selectFinish(null)}
                       className={cn(
                         "flex w-full items-center justify-between px-4 py-3 rounded-lg border transition-all cursor-pointer text-left",
                         finish === null
@@ -261,7 +385,7 @@ export default function ShopClient({ products }: { products: ProductDTO[] }) {
                         <button
                           key={f}
                           type="button"
-                          onClick={() => setFinish(f)}
+                          onClick={() => selectFinish(f)}
                           className={cn(
                             "flex w-full items-center justify-between px-4 py-3 rounded-lg border transition-all cursor-pointer text-left",
                             isSelected
@@ -303,7 +427,7 @@ export default function ShopClient({ products }: { products: ProductDTO[] }) {
                         <button
                           key={item.key}
                           type="button"
-                          onClick={() => setSort(item.key)}
+                          onClick={() => selectSort(item.key)}
                           className={cn(
                             "flex w-full items-center justify-between px-4 py-3 rounded-lg border transition-all cursor-pointer text-left",
                             isSelected

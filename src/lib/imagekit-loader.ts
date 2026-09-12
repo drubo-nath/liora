@@ -33,6 +33,15 @@ export default function imageKitLoader({
     return src;
   }
 
+  // In development, serve local static assets directly so they render on localhost before deploy
+  if (
+    process.env.NODE_ENV === "development" &&
+    !src.startsWith("http://") &&
+    !src.startsWith("https://")
+  ) {
+    return src;
+  }
+
   // If the image is already served by ImageKit, avoid duplicate prefixing
   if (src.includes("ik.imagekit.io")) {
     return src;

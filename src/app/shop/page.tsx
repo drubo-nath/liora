@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { listProducts } from "@/db/queries";
+import { listNails } from "@/db/queries";
 import ShopClient from "@/components/shop/ShopClient";
 
 export const revalidate = 3600;
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ShopPage() {
-  const products = await listProducts();
+  const products = await listNails();
 
   const itemListJsonLd = {
     "@context": "https://schema.org",

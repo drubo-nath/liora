@@ -52,6 +52,7 @@ export default async function EditProductPage({
     toneB: row.toneB,
     isActive: row.isActive,
     sortOrder: row.sortOrder,
+    isTool: (row.sizes ?? []).includes("tool") || (row.tagline ?? "").toLowerCase().includes("tool"),
   };
 
   return (

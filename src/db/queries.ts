@@ -77,7 +77,7 @@ function seedToDTO(s: (typeof productSeeds)[number]): ProductDTO {
     badge: (s.badge as ProductDTO["badge"]) ?? null,
     tones: [s.toneA, s.toneB],
     imageUrl: s.imageUrl ?? null,
-    sizes: DEFAULT_SIZES,
+    sizes: s.sizes?.length ? s.sizes : DEFAULT_SIZES,
     images: s.imageUrl ? [s.imageUrl] : [],
   };
 }
@@ -137,8 +137,29 @@ export const getProductBySlug = cache(
   },
 );
 
-export const listBestsellers = cache(async (): Promise<ProductDTO[]> => {
+export function isToolProduct(p: ProductDTO): boolean {
+  const sizes = p.sizes ?? [];
+  return (
+    sizes.includes("tool") ||
+    sizes.includes("tools") ||
+    sizes.includes("accessory") ||
+    p.tagline?.toLowerCase().includes("tool") ||
+    p.tagline?.toLowerCase().includes("accessor")
+  );
+}
+
+export const listTools = cache(async (): Promise<ProductDTO[]> => {
   const all = await listProducts();
+  return all.filter((p) => isToolProduct(p));
+});
+
+export const listNails = cache(async (): Promise<ProductDTO[]> => {
+  const all = await listProducts();
+  return all.filter((p) => !isToolProduct(p));
+});
+
+export const listBestsellers = cache(async (): Promise<ProductDTO[]> => {
+  const all = await listNails();
   return all.filter((p) => p.badge === "Bestseller").slice(0, 4);
 });
 

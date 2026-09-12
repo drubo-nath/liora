@@ -102,6 +102,17 @@ export default function Header() {
                 Shop
               </Link>
               <Link
+                href="/tools-accessories"
+                className={cn(
+                  "link-sweep font-serif text-[15px] tracking-wide font-normal transition-colors duration-500",
+                  isTransparent
+                    ? "text-white/95 hover:text-white"
+                    : "text-ink hover:text-clay"
+                )}
+              >
+                Tools
+              </Link>
+              <Link
                 href="/sizing"
                 className={cn(
                   "link-sweep font-serif text-[15px] tracking-wide font-normal transition-colors duration-500",

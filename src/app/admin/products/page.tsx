@@ -11,9 +11,11 @@ export default async function AdminProducts() {
       id: schema.products.id,
       slug: schema.products.slug,
       name: schema.products.name,
+      tagline: schema.products.tagline,
       finish: schema.products.finish,
       badge: schema.products.badge,
       price: schema.products.price,
+      sizes: schema.products.sizes,
       isActive: schema.products.isActive,
       imageUrl: schema.products.imageUrl,
       imageCount: sql<number>`(
@@ -47,6 +49,7 @@ export default async function AdminProducts() {
     isActive: r.isActive,
     imageUrl: r.imageUrl,
     imageCount: Number(r.imageCount),
+    isTool: (r.sizes ?? []).includes("tool") || (r.tagline ?? "").toLowerCase().includes("tool"),
   }));
 
   return <ProductsTable initialProducts={products} covers={coversObj} />;

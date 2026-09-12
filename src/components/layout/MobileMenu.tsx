@@ -48,6 +48,7 @@ export default function MobileMenu({
     { label: "Classic (Single Colours)", href: "/shop?finish=Classic" },
     { label: "Signature Sets", href: "/shop?finish=Signature" },
     { label: "Shop All Nails", href: "/shop" },
+    { label: "Tools & Accessories", href: "/tools-accessories" },
     { label: "Wishlist", href: "/wishlist" },
     {
       label: "Size Guide",

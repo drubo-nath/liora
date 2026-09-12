@@ -11,6 +11,7 @@ const SECTIONS = [
     title: "Collection",
     links: [
       { label: "All Press-Ons", href: "/shop" },
+      { label: "Tools & Accessories", href: "/tools-accessories" },
       { label: "Exclusive", href: "/shop?finish=Exclusive" },
       { label: "Classic (Single Colours)", href: "/shop?finish=Classic" },
       { label: "Signature", href: "/shop?finish=Signature" },
@@ -86,10 +87,10 @@ export default function Footer() {
               <p className="flex items-center gap-2">
                 <span className="text-clay font-medium">Email:</span>
                 <a
-                  href="mailto:liorapressedons@gmail.com"
+                  href="mailto:livrapressons@gmail.com"
                   className="hover:text-white transition-colors underline-offset-4 hover:underline"
                 >
-                  liorapressedons@gmail.com
+                  livrapressons@gmail.com
                 </a>
               </p>
             </div>
@@ -150,10 +151,10 @@ export default function Footer() {
               <p className="flex items-center gap-2">
                 <span className="text-clay font-medium">Email:</span>
                 <a
-                  href="mailto:liorapressedons@gmail.com"
+                  href="mailto:livrapressons@gmail.com"
                   className="hover:text-white transition-colors underline-offset-4 hover:underline"
                 >
-                  liorapressedons@gmail.com
+                  livrapressons@gmail.com
                 </a>
               </p>
             </div>

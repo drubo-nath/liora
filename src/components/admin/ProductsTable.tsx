@@ -30,6 +30,7 @@ export interface AdminProductRow {
   isActive: boolean;
   imageUrl: string | null;
   imageCount: number;
+  isTool?: boolean;
 }
 
 interface ProductsTableProps {
@@ -197,7 +198,15 @@ export default function ProductsTable({
                       </p>
                       <p className="text-xs text-muted-foreground">/{p.slug}</p>
                     </TableCell>
-                    <TableCell className="text-muted-foreground">{p.finish}</TableCell>
+                    <TableCell>
+                      {p.isTool ? (
+                        <Badge variant="outline" className="bg-amber-50 text-amber-900 border-amber-200">
+                          Tool &amp; Accessory
+                        </Badge>
+                      ) : (
+                        <span className="text-muted-foreground">{p.finish}</span>
+                      )}
+                    </TableCell>
                     <TableCell>{formatBDT(p.price)}</TableCell>
                     <TableCell className="text-muted-foreground">
                       {Number(p.imageCount)}

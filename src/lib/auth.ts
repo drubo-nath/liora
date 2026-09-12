@@ -21,6 +21,7 @@ export const auth = betterAuth({
     phoneNumber({
       /** OTPs are delivered through the BDSMS gateway (dev: console). */
       async sendOTP({ phoneNumber, code }) {
+        console.log('hello')
         await sendSMS(phoneNumber, otpMessage(code));
       },
       /** Enforce E.164 BD format everywhere it touches the DB. */

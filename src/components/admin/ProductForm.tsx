@@ -57,6 +57,7 @@ export interface ProductFormValues {
   toneB: string;
   isActive: boolean;
   sortOrder: number;
+  isTool?: boolean;
 }
 
 export interface ProductImageRow {
@@ -92,10 +93,14 @@ export default function ProductForm({
   async function handleSave() {
     setError(null);
     setSaving(true);
+    const sizes = values.isTool
+      ? ["tool"]
+      : values.sizes.filter((s) => s !== "tool");
+
     const input: ProductInput = {
       name: values.name,
       slug: values.slug,
-      tagline: values.tagline,
+      tagline: values.isTool && !values.tagline ? "Tools & Accessories" : values.tagline,
       description: values.description,
       price: values.price,
       compareAtPrice: values.compareAtPrice,
@@ -104,7 +109,7 @@ export default function ProductForm({
         values.badge === ""
           ? undefined
           : (values.badge as ProductInput["badge"]),
-      sizes: values.sizes,
+      sizes,
       toneA: values.toneA,
       toneB: values.toneB,
       isActive: values.isActive,
@@ -246,6 +251,20 @@ export default function ProductForm({
           <CardTitle>Product details</CardTitle>
         </CardHeader>
         <CardContent className="space-y-5">
+          {/* ── Product Category: Press-On Nails vs Tools & Accessories ── */}
+          <div className="flex items-center justify-between rounded-lg border p-4 bg-muted/20">
+            <div className="space-y-0.5">
+              <Label className="text-sm font-medium">Tool or Accessory</Label>
+              <p className="text-xs text-muted-foreground">
+                Toggle ON to display this item in the &ldquo;Tools &amp; Accessories&rdquo; collection and home section.
+              </p>
+            </div>
+            <Switch
+              checked={Boolean(values.isTool)}
+              onCheckedChange={(checked) => set("isTool", checked)}
+            />
+          </div>
+
           <div className="grid gap-5 md:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="name">Name *</Label>
@@ -399,34 +418,37 @@ export default function ProductForm({
             </div>
           </div>
 
-          <Separator />
-
-          <div className="space-y-2">
-            <Label>Available sizes</Label>
-            <div className="flex flex-wrap gap-2">
-              {SIZE_OPTIONS.map((s) => {
-                const active = values.sizes.includes(s);
-                return (
-                  <button
-                    key={s}
-                    type="button"
-                    onClick={() => toggleSize(s)}
-                    className={`h-9 min-w-11 rounded-md border px-3 text-sm transition-colors ${
-                      active
-                        ? "border-primary bg-primary text-primary-foreground"
-                        : "bg-background hover:bg-accent"
-                    }`}
-                    aria-pressed={active}
-                  >
-                    {s}
-                  </button>
-                );
-              })}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Leave all off to fall back to the standard XS–L range.
-            </p>
-          </div>
+          {!values.isTool && (
+            <>
+              <Separator />
+              <div className="space-y-2">
+                <Label>Available sizes</Label>
+                <div className="flex flex-wrap gap-2">
+                  {SIZE_OPTIONS.map((s) => {
+                    const active = values.sizes.includes(s);
+                    return (
+                      <button
+                        key={s}
+                        type="button"
+                        onClick={() => toggleSize(s)}
+                        className={`h-9 min-w-11 rounded-md border px-3 text-sm transition-colors ${
+                          active
+                            ? "border-primary bg-primary text-primary-foreground"
+                            : "bg-background hover:bg-accent"
+                        }`}
+                        aria-pressed={active}
+                      >
+                        {s}
+                      </button>
+                    );
+                  })}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Leave all off to fall back to the standard XS–L range.
+                </p>
+              </div>
+            </>
+          )}
 
           <div className="flex flex-wrap items-center gap-6">
             <div className="flex items-center gap-2">

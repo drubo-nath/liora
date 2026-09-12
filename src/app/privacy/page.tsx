@@ -112,8 +112,8 @@ export default function PrivacyPage() {
             <div className="border border-line bg-cream p-6 text-xs text-taupe leading-relaxed">
               <p className="font-medium text-ink mb-1">Data Privacy Questions?</p>
               If you have any questions or wish to request data updates, please contact us at{" "}
-              <a href="mailto:liorapressedons@gmail.com" className="text-clay underline">
-                liorapressedons@gmail.com
+              <a href="mailto:livrapressons@gmail.com" className="text-clay underline">
+                livrapressons@gmail.com
               </a>{" "}
               or via WhatsApp at{" "}
               <a href="https://wa.me/8801577759518" className="text-clay underline">

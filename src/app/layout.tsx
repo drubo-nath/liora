@@ -121,7 +121,7 @@ const jsonLd = {
       "contactPoint": {
         "@type": "ContactPoint",
         "telephone": "+8801577759518",
-        "email": "liorapressedons@gmail.com",
+        "email": "livrapressons@gmail.com",
         "contactType": "customer service",
         "availableLanguage": ["en", "bn"],
       },

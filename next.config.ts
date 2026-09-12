@@ -19,6 +19,25 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/collections/tools-accessories",
+        destination: "/tools-accessories",
+        permanent: true,
+      },
+      {
+        source: "/collections/tools",
+        destination: "/tools-accessories",
+        permanent: true,
+      },
+      {
+        source: "/tools",
+        destination: "/tools-accessories",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

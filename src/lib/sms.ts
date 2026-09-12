@@ -114,6 +114,8 @@ export async function sendSMS(
       formData.append("sender_id", senderId);
     }
 
+    console.log(formData)
+
     const res = await fetch(endpoint, {
       method: "POST",
       body: formData,

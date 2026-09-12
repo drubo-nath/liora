@@ -26,7 +26,7 @@ const CONTACT_SCHEMA = {
     "@type": "Organization",
     name: "LIVRA Pressed Ons",
     url: "https://www.livrapressons.com",
-    email: "liorapressedons@gmail.com",
+    email: "livrapressons@gmail.com",
     telephone: "+8801577759518",
     contactPoint: [
       {
@@ -106,12 +106,12 @@ export default function ContactPage() {
                   For order inquiries, corporate orders, press partnerships, and formal feedback.
                 </p>
                 <p className="mt-6 font-serif text-lg text-ink break-all">
-                  liorapressedons@gmail.com
+                  livrapressons@gmail.com
                 </p>
               </div>
               <div className="mt-8">
                 <a
-                  href="mailto:liorapressedons@gmail.com"
+                  href="mailto:livrapressons@gmail.com"
                   className="inline-block w-full border border-line bg-cream py-3.5 text-center text-xs tracking-wider uppercase text-ink transition-colors duration-300 hover:border-ink hover:bg-bone"
                 >
                   Send an Email
